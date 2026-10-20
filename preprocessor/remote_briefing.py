@@ -37,6 +37,8 @@ The morning run:
      The open-claims audit asks about every ledger row the post shows,
      with Claude's verdicts (the remote model's when Claude fails); rows
      it closes or parks leave the post, and the post is rendered again.
+  7. Each project room with items in the post gets its slice, in a new
+     topic (briefing_rooms); the EA post names those rooms in one line.
 The afternoon run picks what is new since the morning and what is still
 pending; it drafts and escalates nothing. When the remote model cannot
 answer, code renders the ranked queue alone and the post says so.
@@ -593,18 +595,6 @@ def _soon_refs(cands: dict[str, dict], today: date, skip: set[str]) -> list[str]
     return out[:6]
 
 
-def _soon(cands: dict[str, dict], today: date, skip: set[str]) -> list[str]:
-    out = []
-    for r in _soon_refs(cands, today, skip):
-        c = cands[r]
-        d = _date(c.get("due"))
-        if d < today:
-            out.append(f":red_circle: OVERDUE: {_line_of(c)}, was due {d:%a %b} {d.day}")
-        else:
-            out.append(f":alarm_clock: DUE SOON: {_line_of(c)}, {d:%a %b} {d.day}")
-    return out
-
-
 def shown_refs(cands: dict[str, dict], plan: dict, drafts: list[dict], escalated: list[dict],
                *, now: datetime, morning: bool) -> list[str]:
     """Every ref the post shows: the pre-send audit asks about each."""
@@ -670,30 +660,20 @@ def _looks_done_line(b: dict, audit: dict) -> list[str]:
                 f"card in your DM: " + "; ".join(looks[:8]) + "."]
 
 
-def render_morning(b: dict, cands: dict[str, dict], plan: dict, *, now: datetime,
-                   drafts: list[dict], escalated: list[dict], audit: dict | None = None,
-                   stale: bool = False, fallback: str = "") -> str:
-    audit = audit or {}
+def _morning_lists(cands: dict[str, dict], plan: dict, drafts: list[dict],
+                   escalated: list[dict], audit: dict, today: date) -> dict:
+    """The morning post's sections as {key: [(ref, line)]}, each item
+    named once: the do-list wins, and the date banner ("due") names only
+    what no other section shows. A line is the item and its detail, with
+    no section marker; the EA post and the room slices both use them."""
     gone = set(audit.get("closed") or []) | set(audit.get("parked") or [])
     unsure = {u["id"]: u.get("why", "") for u in audit.get("unsure_rows") or []}
     skip = {r for r, c in cands.items() if c.get("ledger_id") in gone}
-    local = now.astimezone()
-    today = local.date()
 
     def mark(r: str) -> str:
         why = unsure.get(cands[r].get("ledger_id") or "")
         return f" Evidence: {_clean(why, 120)}; still open?" if why else ""
 
-    out = [f":sunny: *Morning Briefing, {local:%a %b} {local.day}*"]
-    if stale:
-        out.append(":warning: The mail sync failed this run; this briefing uses older data.")
-    for err in b.get("calendar_fetch_errors") or []:
-        acct = err.get("account") if isinstance(err, dict) else err
-        out.append(f":warning: Calendar source {_clean(acct, 60)} failed to load; free time below may be wrong.")
-    if fallback:
-        out.append(f":warning: {fallback}")
-    # One mention per item: the do-list wins, and the date banner names
-    # only what no other section shows.
     top = [p for p in plan.get("get_done_today") or [] if p["ref"] not in skip]
     on_list = {p["ref"] for p in top}
     flex = [p for p in plan.get("flexes") or [] if p["ref"] not in skip | on_list]
@@ -703,20 +683,79 @@ def render_morning(b: dict, cands: dict[str, dict], plan: dict, *, now: datetime
     escalated = [e for e in escalated if e["ref"] not in on_list]
     elsewhere = on_list | {p["ref"] for p in flex} | {p["ref"] for p in needs} \
         | {e["ref"] for e in escalated}
-    out += _soon(cands, today, skip | elsewhere)
+    due = []
+    for r in _soon_refs(cands, today, skip | elsewhere):
+        d = _date(cands[r].get("due"))
+        due.append((r, f"{_line_of(cands[r])}, " + (f"was due {d:%a %b} {d.day}" if d < today
+                                                     else f"{d:%a %b} {d.day}")))
+    return {
+        "due": due,
+        "top": [(p["ref"], _line_of(cands[p["ref"]])
+                 + (f": {_clean(p.get('when'), 60)}" if p.get("when") else "")
+                 + (f". {_clean(p.get('why'), 140)}" if p.get("why") else "") + mark(p["ref"]))
+                for p in top],
+        "flex": [(p["ref"], f"{_line_of(cands[p['ref']])}: {_clean(p.get('line'), 140)}{mark(p['ref'])}")
+                 for p in flex],
+        "draft": [(d["ref"], f"{_line_of(cands[d['ref']])}: "
+                   + (f"thanks only; they ask: {_clean(cands[d['ref']].get('ask'), 140)}" if d.get("ack")
+                      else _clean(d.get("says"), 140)))
+                  for d in drafts if d.get("ok")],
+        "needs": [(p["ref"], f"{_line_of(cands[p['ref']])}: {_clean(p.get('decision'), 160)}")
+                  for p in needs],
+        "escalated": [(e["ref"], f"{_line_of(cands[e['ref']])}: {_clean(e.get('why'), 140)}")
+                      for e in escalated],
+    }
+
+
+def _afternoon_lists(cands: dict[str, dict], plan: dict, audit: dict) -> dict:
+    gone = set(audit.get("closed") or []) | set(audit.get("parked") or [])
+    skip = {r for r, c in cands.items() if c.get("ledger_id") in gone}
+    return {k: [(p["ref"], f"{_line_of(cands[p['ref']])}: {_clean(p.get('line'), 140)}")
+                for p in plan.get(key) or [] if p["ref"] not in skip]
+            for k, key in (("since", "since_morning"), ("pending", "pending"))}
+
+
+def room_entries(cands: dict[str, dict], lists: dict) -> list[dict]:
+    """The post's items as briefing_rooms entries."""
+    out = []
+    for sec, items in lists.items():
+        for ref, line in items:
+            c = cands[ref]
+            out.append({"ref": ref, "section": sec, "line": line,
+                        "ledger_id": c.get("ledger_id") or "",
+                        "conversation_id": c.get("conversation_id") or "",
+                        "title": c.get("title") or "", "summary": c.get("summary") or ""})
+    return out
+
+
+def render_morning(b: dict, cands: dict[str, dict], plan: dict, *, now: datetime,
+                   drafts: list[dict], escalated: list[dict], audit: dict | None = None,
+                   stale: bool = False, fallback: str = "") -> str:
+    audit = audit or {}
+    local = now.astimezone()
+    today = local.date()
+    lists = _morning_lists(cands, plan, drafts, escalated, audit, today)
+
+    out = [f":sunny: *Morning Briefing, {local:%a %b} {local.day}*"]
+    if stale:
+        out.append(":warning: The mail sync failed this run; this briefing uses older data.")
+    for err in b.get("calendar_fetch_errors") or []:
+        acct = err.get("account") if isinstance(err, dict) else err
+        out.append(f":warning: Calendar source {_clean(acct, 60)} failed to load; free time below may be wrong.")
+    if fallback:
+        out.append(f":warning: {fallback}")
+    for r, line in lists["due"]:
+        overdue = _date(cands[r].get("due")) < today
+        out.append((":red_circle: OVERDUE: " if overdue else ":alarm_clock: DUE SOON: ") + line)
     out.append("")
     out.append(":dart: *Get done today* (in this order, fitted to your gaps)")
-    if top:
-        for i, p in enumerate(top, 1):
-            when = f": {_clean(p.get('when'), 60)}" if p.get("when") else ""
-            why = f". {_clean(p.get('why'), 140)}" if p.get("why") else ""
-            out.append(f"{i}. {_line_of(cands[p['ref']])}{when}{why}{mark(p['ref'])}")
+    if lists["top"]:
+        out += [f"{i}. {line}" for i, (_r, line) in enumerate(lists["top"], 1)]
     else:
         out.append("Nothing is pressing today.")
-    if flex:
+    if lists["flex"]:
         out += ["", ":leaves: *Flexes* (fine today, fine tomorrow)"]
-        out += [f"- {_line_of(cands[p['ref']])}: {_clean(p.get('line'), 140)}{mark(p['ref'])}"
-                for p in flex]
+        out += [f"- {line}" for _r, line in lists["flex"]]
     cal = _calendar(b, today)
     if cal:
         out += ["", ":clipboard: " + " · ".join(cal)]
@@ -724,7 +763,7 @@ def render_morning(b: dict, cands: dict[str, dict], plan: dict, *, now: datetime
     n_reply = len(b.get("handled_by_reply") or [])
     if n_reply:
         handled.append(f"{n_reply} answered by your replies")
-    ok = [d for d in drafts if d.get("ok")]
+    ok = lists["draft"]
     if ok:
         handled.append(f"{len(ok)} draft(s) staged")
     if handled:
@@ -737,15 +776,13 @@ def render_morning(b: dict, cands: dict[str, dict], plan: dict, *, now: datetime
     if ok:
         out += ["", f":envelope: *Drafts ready* ({len(ok)}): Send, Edit or Handled on each "
                     "block in your DM; one Send-all card when several are ready"]
-        out += [f"- {_line_of(cands[d['ref']])}: "
-                + (f"thanks only; they ask: {_clean(cands[d['ref']].get('ask'), 140)}" if d.get("ack")
-                   else _clean(d.get('says'), 140)) for d in ok]
-    if needs:
-        out += ["", f":question: *Needs you* ({len(needs)})"]
-        out += [f"- {_line_of(cands[p['ref']])}: {_clean(p.get('decision'), 160)}" for p in needs]
-    if escalated:
-        out += ["", f":arrow_up: *Sent to Claude* ({len(escalated)}): one topic each in the EA channel"]
-        out += [f"- {_line_of(cands[e['ref']])}: {_clean(e.get('why'), 140)}" for e in escalated]
+        out += [f"- {line}" for _r, line in ok]
+    if lists["needs"]:
+        out += ["", f":question: *Needs you* ({len(lists['needs'])})"]
+        out += [f"- {line}" for _r, line in lists["needs"]]
+    if lists["escalated"]:
+        out += ["", f":arrow_up: *Sent to Claude* ({len(lists['escalated'])}): one topic each in the EA channel"]
+        out += [f"- {line}" for _r, line in lists["escalated"]]
     tail = []
     n_sched = len(b.get("new_scheduling_requests") or [])
     if n_sched and b.get("scheduling_channel_active"):
@@ -921,9 +958,50 @@ def _preview(text: str) -> bool:
         zcfg, {"stream": mail_gate.DIGEST_STREAM, "topic": "Briefing preview"}, [text])
 
 
+def room_slices(agent: str, cands: dict[str, dict], plan: dict, drafts: list[dict],
+                escalated: list[dict], audit: dict, briefing: dict, *, now: datetime,
+                dry_run: bool, poster=None, conn=None, targets=None, open_rows=None,
+                matcher=None) -> list[dict]:
+    """Post each project room its slice of this post (briefing_rooms);
+    returns the posts, each with `ok` once sent. A dry run plans them and
+    sends nothing. Off on a frontend other than Zulip, and with
+    `"briefing_rooms": false` in remote-llm.json."""
+    import briefing_rooms
+    import chat_notify
+    if not briefing_rooms.enabled() or chat_notify.frontend_name() != "zulip":
+        return []
+    morning = agent == "morning-briefing"
+    local = now.astimezone()
+    lists = (_morning_lists(cands, plan, drafts, escalated, audit, local.date()) if morning
+             else _afternoon_lists(cands, plan, audit))
+    entries = room_entries(cands, lists)
+    if not entries:
+        return []
+    if conn is None:
+        import project_store
+        conn = project_store._get_db()
+    targets = targets if targets is not None else briefing_rooms.rooms()
+    if not targets:
+        return []
+    heading = f"{'Morning briefing' if morning else 'Afternoon update'}, {local:%a %b} {local.day}"
+    gone = set(audit.get("closed") or []) | set(audit.get("parked") or [])
+    if open_rows is None:
+        try:   # the whole ledger: the briefing JSON carries only a slice of it
+            open_rows = _ledger.get_open_entries()
+        except Exception:
+            open_rows = briefing.get("open_obligations") or []
+    open_rows = [o for o in open_rows if _live_row(o, local.date()) and o.get("id") not in gone]
+    posts = briefing_rooms.plan_posts(entries, heading=heading, open_rows=open_rows, conn=conn,
+                                      targets=targets, clean=_clean, matcher=matcher)
+    if not dry_run:
+        for p, r in zip(posts, briefing_rooms.send(posts, poster=poster)):
+            p["ok"] = r["ok"]
+    return posts
+
+
 def run(agent: str, briefing: dict, *, run_id: str, stale: bool = False, dry_run: bool = False,
         now: datetime | None = None, chat=None, audit=None, drafter=None,
-        queue=None) -> tuple[str, dict]:
+        queue=None, rooms=None) -> tuple[str, dict]:
     """(the post, the run record)."""
     now = now or _now()
     morning = agent == "morning-briefing"
@@ -989,6 +1067,18 @@ def run(agent: str, briefing: dict, *, run_id: str, stale: bool = False, dry_run
                                     rendered=shown_rows(cands, shown))
     if checked and (checked.get("closed") or checked.get("parked") or checked.get("unsure_rows")):
         text = render(checked)
+    try:
+        posts = (rooms or room_slices)(agent, cands, plan, drafts, escalated, checked or {},
+                                       briefing, now=now, dry_run=dry_run)
+    except Exception as e:
+        print(f"remote_briefing: project-room slices skipped: {str(e)[:200]}", file=sys.stderr)
+        posts = []
+    if posts:
+        import briefing_rooms
+        sent = [p for p in posts if p.get("ok", dry_run)]
+        text = "\n".join([text] + briefing_rooms.pointer_line(sent))
+        rec["rooms"] = [{"stream": p["stream"], "items": len(p["refs"]), "ok": p.get("ok")}
+                        for p in posts]
     rec.update(plan={k: len(v) for k, v in plan.items()},
                drafts=sum(1 for d in drafts if d.get("ok")),
                decisions_from_rails=sum(1 for d in drafts if not d.get("ok")),

@@ -376,7 +376,9 @@ them by ref, code applies the rails (an afternoon pick the sent folder or
 the EA channel already shows the user on leaves "since this morning" for
 an "Already in motion" line), drafts through the writer and renders
 the post, and the open-claims audit asks Claude about every row the post
-shows (remote verdicts when Claude fails). Items the
+shows (remote verdicts when Claude fails). Each project room with items
+in the post then gets its slice in a new topic (`briefing_rooms.py`,
+switch `briefing_rooms`), posted only to rooms the owner's record names. Items the
 remote model cannot handle go to a queue the bot drains each tick
 (`_remote_escalation_tick`): the pending hand-offs (up to two, the rest
 next tick) share one EA topic and one Claude session, which reads each
