@@ -1,0 +1,84 @@
+{
+  "_meta": {
+    "id": "regression-006",
+    "name": "Contact name must come from email header, never hallucinated",
+    "category": "regression",
+    "bug_ref": "Name hallucination (commit 077c447)",
+    "description": "The system was guessing or hallucinating last names for contacts not in the writing_style.per_contact list. Names must be extracted exactly from the email From header. For new contacts, use the full name from the header ('Harper Kowalczyk') or first name only ('Harper'). Never fabricate a last name."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T07:30:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 1,
+      "new_sent_messages": 0,
+      "total_delta_items": 1,
+      "total_inbox": 36,
+      "flagged_count": 0,
+      "events_next_14d": 6
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-name-harper-001",
+        "subject": "Collaboration opportunity - autonomous navigation",
+        "from": {
+          "emailAddress": {
+            "name": "Harper Kowalczyk",
+            "address": "harper.kowalczyk@example.com"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T06:45:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Dear Professor Calloway, I came across your recent work on terrain-adaptive navigation and I think there may be a strong opportunity for collaboration. My group at Example Labs has been working on complementary sensor fusion approaches. Would you be open to a brief call to explore synergies?",
+        "conversationId": "AAQk-name-harper-conv-001",
+        "hasAttachments": false,
+        "response_signals": 3
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [
+      {"start": "2026-04-14T09:00:00", "end": "2026-04-14T11:00:00"},
+      {"start": "2026-04-15T13:00:00", "end": "2026-04-15T15:00:00"}
+    ],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": []
+}

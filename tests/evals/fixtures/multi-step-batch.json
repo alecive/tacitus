@@ -1,0 +1,325 @@
+{
+  "_meta": {
+    "id": "regression-005",
+    "name": "Multi-step user instruction must decompose into 5+ distinct tasks",
+    "category": "regression",
+    "bug_ref": "Under-decomposition of multi-step messages (commit 2c10903)",
+    "description": "A complex user instruction in Slack containing 5 distinct tasks was being treated as a single action. The system must decompose it into separate tasks: archive an email, draft a bio, acknowledge a travel request, fill a scheduling poll, and draft a reply about a budget."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T10:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 5,
+      "new_sent_messages": 1,
+      "total_delta_items": 5,
+      "total_inbox": 52,
+      "flagged_count": 0,
+      "events_next_14d": 11
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-batch-ash-001",
+        "subject": "Re: Lab equipment order status",
+        "from": {
+          "emailAddress": {
+            "name": "Ash Ravensworth",
+            "address": "finley.tremaine67@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": true,
+        "received": "2026-04-08T16:20:00Z",
+        "days_in_inbox": 1,
+        "bodyPreview": "Thanks Kit, the order has shipped. Tracking number is in the portal. No action needed on your end.",
+        "conversationId": "AAQk-batch-ash-conv-001",
+        "hasAttachments": false,
+        "response_signals": 0
+      },
+      {
+        "message_id": "AAMk-batch-taylor-001",
+        "subject": "Travel authorization request - ICRA 2026",
+        "from": {
+          "emailAddress": {
+            "name": "Taylor Bancroft",
+            "address": "hale.bancroft24@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T08:05:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, I'd like to attend ICRA 2026 in Atlanta (May 19-23). Estimated costs: registration $750, flights $400, hotel $800. Could you approve the travel authorization? I've attached the DA form.",
+        "conversationId": "AAQk-batch-taylor-conv-001",
+        "hasAttachments": true,
+        "response_signals": 3
+      },
+      {
+        "message_id": "AAMk-batch-zev-001",
+        "subject": "FY27 budget allocations - robotics lab",
+        "from": {
+          "emailAddress": {
+            "name": "Zev Dalby",
+            "address": "ari.umberfield44@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": ["sage.quillon80@example.edu"],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T09:12:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, Attached are the draft FY27 budget allocations for your lab. We've increased the equipment line by 12% as discussed. Let me know if the RA support numbers look right -- I want to finalize by next Wednesday.",
+        "conversationId": "AAQk-batch-zev-conv-001",
+        "hasAttachments": true,
+        "response_signals": 3
+      }
+    ],
+    "new_scheduling_requests": [
+      {
+        "message_id": "AAMk-batch-when2meet-001",
+        "subject": "When2Meet for project kickoff",
+        "from": {
+          "emailAddress": {
+            "name": "Tam Valentijn",
+            "address": "eli.ashcombe77@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu", "bri.hargrove62@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T07:50:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi all, Please fill out this When2Meet for our project kickoff next week: https://www.when2meet.com/fake-poll-12345. Hoping to find a 1-hour slot that works for everyone.",
+        "conversationId": "AAQk-batch-when2meet-conv-001",
+        "hasAttachments": false,
+        "response_signals": 2,
+        "poll_url": "https://www.when2meet.com/fake-poll-12345"
+      }
+    ],
+    "travel_reimbursement": [],
+    "availability_merged": [
+      {"start": "2026-04-14T09:00:00", "end": "2026-04-14T11:00:00"},
+      {"start": "2026-04-14T13:00:00", "end": "2026-04-14T15:00:00"},
+      {"start": "2026-04-15T09:00:00", "end": "2026-04-15T12:00:00"},
+      {"start": "2026-04-16T10:00:00", "end": "2026-04-16T14:00:00"}
+    ],
+    "open_obligations": [
+      {
+        "id": "response-ash-equipment-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Ash Ravensworth replied re: lab equipment order. Informational -- order shipped, no action needed.",
+        "from_email": "finley.tremaine67@example.edu",
+        "date_identified": "2026-04-08T16:20:00Z",
+        "days_stale": 1
+      },
+      {
+        "id": "response-taylor-travel-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Taylor Bancroft requesting travel authorization for ICRA 2026.",
+        "from_email": "hale.bancroft24@example.edu",
+        "date_identified": "2026-04-09T08:05:00Z",
+        "days_stale": 0
+      },
+      {
+        "id": "response-zev-budget-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Zev Dalby sent FY27 budget allocations for robotics lab, needs confirmation on RA support numbers.",
+        "from_email": "ari.umberfield44@example.edu",
+        "date_identified": "2026-04-09T09:12:00Z",
+        "days_stale": 0
+      },
+      {
+        "id": "scheduling-when2meet-kickoff-001",
+        "type": "scheduling",
+        "status": "open",
+        "description": "Fill When2Meet poll for project kickoff next week from Tam Valentijn.",
+        "from_email": "eli.ashcombe77@example.edu",
+        "date_identified": "2026-04-09T07:50:00Z",
+        "days_stale": 0
+      },
+      {
+        "id": "task-conference-bio-001",
+        "type": "task",
+        "status": "open",
+        "description": "Draft a bio for the conference website (user-initiated task).",
+        "from_email": "",
+        "date_identified": "2026-04-09T10:00:00Z",
+        "days_stale": 0
+      }
+    ],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "Research Group Meeting",
+        "start": {"dateTime": "2026-04-09T11:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T12:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 1,
+      "user_message_count": 1,
+      "messages": [
+        {
+          "user": "U_OWNER",
+          "text": "Archive the Ash email. Draft a bio for the conference website. Acknowledge Taylor's travel request. Fill out the When2Meet poll for next week. Draft a reply to Zev about the budget.",
+          "ts": "1744203600.000100"
+        }
+      ],
+      "user_instructions": [
+        "Archive the Ash email. Draft a bio for the conference website. Acknowledge Taylor's travel request. Fill out the When2Meet poll for next week. Draft a reply to Zev about the budget."
+      ],
+      "pending_instructions": [
+        "Archive the Ash email. Draft a bio for the conference website. Acknowledge Taylor's travel request. Fill out the When2Meet poll for next week. Draft a reply to Zev about the budget."
+      ],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": [
+    {
+      "id": "response-ash-equipment-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Ash Ravensworth replied re: lab equipment order. Order shipped, tracking in portal. Informational only.",
+      "from_email": "finley.tremaine67@example.edu",
+      "from_name": "Ash Ravensworth",
+      "source_message_id": "AAMk-batch-ash-001",
+      "date_identified": "2026-04-08",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "Surfaced in briefing 2026-04-08.",
+      "notes": "Ash confirmed equipment shipped. No reply needed -- user should archive.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-08T16:20:00Z",
+      "updated_at": "2026-04-08T16:20:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-batch-ash-conv-001",
+      "email_archived": 0
+    },
+    {
+      "id": "response-taylor-travel-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Taylor Bancroft requesting travel authorization for ICRA 2026 in Atlanta (May 19-23). Estimated $1950 total. DA form attached.",
+      "from_email": "hale.bancroft24@example.edu",
+      "from_name": "Taylor Bancroft",
+      "source_message_id": "AAMk-batch-taylor-001",
+      "date_identified": "2026-04-09",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "Student travel auth request. Has DA form attachment.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T08:05:00Z",
+      "updated_at": "2026-04-09T08:05:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-batch-taylor-conv-001",
+      "email_archived": 0
+    },
+    {
+      "id": "response-zev-budget-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Zev Dalby sent FY27 budget allocations for robotics lab. Equipment line up 12%. Needs confirmation on RA support numbers by next Wednesday.",
+      "from_email": "ari.umberfield44@example.edu",
+      "from_name": "Zev Dalby",
+      "source_message_id": "AAMk-batch-zev-001",
+      "date_identified": "2026-04-09",
+      "deadline": "2026-04-15",
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "Budget draft attached. Deadline: next Wednesday for finalization.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T09:12:00Z",
+      "updated_at": "2026-04-09T09:12:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-batch-zev-conv-001",
+      "email_archived": 0
+    },
+    {
+      "id": "scheduling-when2meet-kickoff-001",
+      "type": "scheduling",
+      "status": "open",
+      "description": "Fill When2Meet poll for project kickoff next week. Sent by Tam Valentijn. URL: https://www.when2meet.com/fake-poll-12345",
+      "from_email": "eli.ashcombe77@example.edu",
+      "from_name": "Tam Valentijn",
+      "source_message_id": "AAMk-batch-when2meet-001",
+      "date_identified": "2026-04-09",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "1-hour slot needed. Poll URL in email body.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T07:50:00Z",
+      "updated_at": "2026-04-09T07:50:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-batch-when2meet-conv-001",
+      "email_archived": 0
+    },
+    {
+      "id": "task-conference-bio-001",
+      "type": "task",
+      "status": "open",
+      "description": "Draft a bio for the conference website. User-initiated task from Slack.",
+      "from_email": "",
+      "from_name": "",
+      "source_message_id": "",
+      "date_identified": "2026-04-09",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "User requested in Slack batch instruction.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T10:00:00Z",
+      "updated_at": "2026-04-09T10:00:00Z",
+      "closed_at": null,
+      "conversation_id": "",
+      "email_archived": 0
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "_comment": "The canned calendar the release suite's scheduling lane reads when EA_CANNED_CALENDAR names this file (scheduling_engine.load_canned_calendar). Dates are {{+Nd}} tokens relative to today; naive times are wall clock in `timezone`. `weekly` templates expand to one instance per listed weekday over the horizon. `attendees` stands in for Graph getSchedule.",
+  "timezone": "America/Denver",
+  "weekly": [
+    {
+      "calendar": "ea_managed",
+      "subject": "wh working hours",
+      "days": ["MO", "TU", "WE", "TH", "FR"],
+      "start": "09:00",
+      "end": "17:00"
+    },
+    {
+      "calendar": "ea_managed",
+      "subject": "nm lunch",
+      "days": ["MO", "TU", "WE", "TH", "FR"],
+      "start": "12:00",
+      "end": "13:00"
+    },
+    {
+      "calendar": "ea_managed",
+      "subject": "p1 writing block",
+      "days": ["TU", "TH"],
+      "start": "09:00",
+      "end": "10:30"
+    },
+    {
+      "calendar": "outlook",
+      "subject": "Group meeting",
+      "days": ["MO"],
+      "start": "10:00",
+      "end": "11:00",
+      "showAs": "busy",
+      "seriesMasterId": "series-group-meeting",
+      "type": "occurrence",
+      "attendees": [
+        {"emailAddress": {"address": "rowan.ashby12@example.edu", "name": "Rowan Ashby"}},
+        {"emailAddress": {"address": "sage.bancroft74@example.edu", "name": "Sage Bancroft"}},
+        {"emailAddress": {"address": "tatum.ellery9@example.edu", "name": "Tatum Ellery"}}
+      ]
+    }
+  ],
+  "outlook": [
+    {
+      "id": "canned-o-lecture",
+      "subject": "CSCI 4100 lecture",
+      "start": {"dateTime": "{{+1d}}T13:00:00"},
+      "end": {"dateTime": "{{+1d}}T14:15:00"},
+      "isAllDay": false,
+      "showAs": "busy",
+      "attendees": [],
+      "location": {"displayName": "ENGR 101"}
+    },
+    {
+      "id": "canned-o-one-on-one",
+      "subject": "1:1 with Sage",
+      "start": {"dateTime": "{{+2d}}T14:00:00"},
+      "end": {"dateTime": "{{+2d}}T15:00:00"},
+      "isAllDay": false,
+      "showAs": "busy",
+      "attendees": [
+        {"emailAddress": {"address": "sage.bancroft74@example.edu", "name": "Sage Bancroft"}}
+      ]
+    },
+    {
+      "id": "canned-o-ea-hold",
+      "subject": "EA Hold: call with the vendor",
+      "start": {"dateTime": "{{+5d}}T11:00:00"},
+      "end": {"dateTime": "{{+5d}}T11:30:00"},
+      "isAllDay": false,
+      "showAs": "tentative",
+      "categories": ["EA Hold"],
+      "attendees": []
+    },
+    {
+      "id": "canned-o-retreat",
+      "subject": "Department retreat",
+      "start": {"dateTime": "{{+9d}}T00:00:00", "timeZone": "UTC"},
+      "end": {"dateTime": "{{+10d}}T00:00:00", "timeZone": "UTC"},
+      "isAllDay": true,
+      "showAs": "oof",
+      "attendees": []
+    }
+  ],
+  "google": [
+    {
+      "id": "canned-g-dentist",
+      "subject": "Dentist",
+      "start": {"dateTime": "{{+3d}}T08:00:00"},
+      "end": {"dateTime": "{{+3d}}T09:00:00"},
+      "source_calendar": "personal@gmail.com",
+      "calendar_id": "personal@gmail.com",
+      "is_all_day": false,
+      "attendees": [],
+      "status": "confirmed",
+      "response_status": "accepted"
+    },
+    {
+      "id": "canned-g-cleaner",
+      "subject": "[note] house cleaner",
+      "start": {"dateTime": "{{+4d}}T10:00:00"},
+      "end": {"dateTime": "{{+4d}}T12:00:00"},
+      "source_calendar": "personal@gmail.com",
+      "calendar_id": "personal@gmail.com",
+      "is_all_day": false,
+      "attendees": [],
+      "status": "confirmed",
+      "response_status": "accepted"
+    }
+  ],
+  "ea_managed": [
+    {
+      "id": "canned-ea-hold-preread",
+      "subject": "Hold: committee pre-read",
+      "start": {"dateTime": "{{+8d}}T15:00:00"},
+      "end": {"dateTime": "{{+8d}}T16:00:00"},
+      "is_all_day": false,
+      "attendees": []
+    }
+  ],
+  "attendees": {
+    "indra.isenberg18@example.edu": [
+      {"start": "{{+1d}}T10:00:00", "end": "{{+1d}}T11:00:00", "state": "busy"},
+      {"start": "{{+2d}}T09:00:00", "end": "{{+2d}}T12:00:00", "state": "busy"}
+    ],
+    "eli.dalby4@example.edu": [
+      {"start": "{{+6d}}T14:00:00", "end": "{{+6d}}T15:00:00", "state": "tentative"}
+    ],
+    "wren.fairbanks84@example.edu": [],
+    "drew.umberfield85@example.edu": [
+      {"start": "{{+11d}}T09:00:00", "end": "{{+11d}}T10:00:00", "state": "busy"}
+    ]
+  }
+}

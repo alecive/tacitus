@@ -1,0 +1,5 @@
+{
+ "code": "REACTION_ALREADY_EXISTS",
+ "msg": "Reaction already exists.",
+ "result": "error"
+}

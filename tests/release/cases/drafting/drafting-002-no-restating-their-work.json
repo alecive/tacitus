@@ -1,0 +1,21 @@
+{
+  "id": "drafting-002",
+  "name": "A reply to a prospective student does not mirror the student's own work back",
+  "category": "regression",
+  "bug_ref": "feedback_no_restating_their_work: the user cuts a paragraph that restates the recipient's research to argue fit as an LLM tell",
+  "to": "dana.larchmont60@example.com",
+  "brief": "Reply to Kai Stavros (dana.larchmont60@example.com), a master's student at NTU who wrote asking about PhD openings. Kai's email described a thesis on visual-inertial odometry for drones in GPS-denied forests, a workshop paper at IROS, and a summer at a mapping startup.\n\nThe reply: thank Kai for writing; the lab is recruiting for fall 2027; apply to the Example University CS PhD program by the December deadline and name me as a faculty of interest in the application; send a CV and transcript by email before applying. Do not summarize or praise Kai's thesis, paper or internship.\n\nNo style profile exists for this contact: greet with \"Hi Kai,\" and sign off with \"{{first_name}}\" on its own line.",
+  "must_include": [
+    "apply",
+    "CV"
+  ],
+  "must_not_include": [
+    "visual-inertial",
+    "GPS-denied",
+    "IROS",
+    "startup",
+    "impressive"
+  ],
+  "max_words": 150,
+  "rubric": "The body thanks the student, says the lab is recruiting, gives the application instruction with the professor named, asks for the CV and transcript. It never restates the student's research or praises it. Short and direct."
+}

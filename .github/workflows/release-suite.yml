@@ -1,0 +1,174 @@
+# The LLM release suite (tests/release/run_release.py) on a fresh machine:
+# the Docker image, a scratch configuration, ea-bot's Claude login from a
+# repository secret, no mail or calendar token and no remote model. The
+# scheduling lane reads the canned calendar; drafting runs on Claude.
+# docs/EVAL.md, "On a fresh machine", says how to mint the token.
+name: Release suite
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: "one lane (briefing, drafting, scheduling); empty runs every lane"
+        required: false
+        default: ""
+      harness:
+        description: "the harness the briefing lane runs on"
+        required: false
+        default: "claude"
+        type: choice
+        options: ["claude", "codex"]
+
+jobs:
+  release-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      COMPOSE_PROJECT_NAME: ea-release
+      TAG: ${{ github.ref_type == 'tag' && github.ref_name || github.sha }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Settings for compose
+        run: |
+          cp deploy/docker/env.example .env
+          sed -i 's/^EA_PROFILE=.*/EA_PROFILE=email/; s/^EA_WITH_BROWSER=.*/EA_WITH_BROWSER=0/' .env
+          echo "OWNER_UID=$(id -u)" >> .env
+          echo "OWNER_GID=$(id -g)" >> .env
+
+      - name: Build the image
+        run: docker compose build
+
+      - name: Prepare the volumes
+        run: docker compose up init
+
+      - name: Scratch configuration
+        # The install answers of the install tests when they exist; else
+        # the example profile under config/examples with its example values. Either
+        # way the profile names a user, a timezone and an institution,
+        # which is what the drafting and scheduling cases read.
+        run: |
+          set -eu
+          mkdir -p scratch-config
+          if [ -f tests/install/answers-email.json ]; then
+            python3 - <<'EOF'
+          import json, pathlib
+          answers = json.loads(pathlib.Path("tests/install/answers-email.json").read_text())
+          profile = json.loads(pathlib.Path("config/examples/cu-boulder/user-profile.json").read_text())
+          for key in ("name", "email", "role_description", "department", "university", "timezone", "office"):
+              if isinstance(answers.get(key), str) and answers[key].strip():
+                  profile[key] = answers[key]
+          profile.setdefault("name", "Release Tester")
+          profile.setdefault("timezone", "America/New_York")
+          pathlib.Path("scratch-config/user-profile.json").write_text(json.dumps(profile, indent=2) + "\n")
+          EOF
+          else
+            python3 - <<'EOF'
+          import json, pathlib
+          profile = json.loads(pathlib.Path("config/examples/cu-boulder/user-profile.json").read_text())
+          profile.update({"name": "Release Tester", "timezone": "America/New_York"})
+          pathlib.Path("scratch-config/user-profile.json").write_text(json.dumps(profile, indent=2) + "\n")
+          EOF
+          fi
+          python3 - <<'EOF'
+          import json, pathlib
+          prefs = json.loads(pathlib.Path("config/scheduling-preferences.json").read_text())
+          prefs["timezone"] = "America/New_York"
+          prefs["calendars"] = {}
+          prefs.pop("ea_managed_calendar", None)
+          pathlib.Path("scratch-config/scheduling-preferences.json").write_text(json.dumps(prefs, indent=2) + "\n")
+          EOF
+          for f in user-profile.json scheduling-preferences.json; do
+            docker compose run --rm -T agent sh -c "umask 027; cat > /home/ea-bot/.ea/config/$f" < "scratch-config/$f"
+          done
+          docker compose up init
+
+      - name: Install ea-bot's Claude login
+        # The token from `claude setup-token` as ea-bot, kept as
+        # env.CLAUDE_CODE_OAUTH_TOKEN in ea-bot's settings.json, the shape
+        # docs/macos-claude-binary.md gives. It spends the subscription's
+        # quota of the account that minted it.
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          set -eu
+          if [ -z "${CLAUDE_CODE_OAUTH_TOKEN}" ]; then
+            echo "::error::the repository secret CLAUDE_CODE_OAUTH_TOKEN is not set (docs/EVAL.md, On a fresh machine)"
+            exit 1
+          fi
+          docker compose run --rm -T -e CLAUDE_CODE_OAUTH_TOKEN agent python3 - <<'EOF'
+          import json, os, pathlib
+          path = pathlib.Path.home() / ".claude" / "settings.json"
+          try:
+              settings = json.loads(path.read_text())
+          except (OSError, ValueError):
+              settings = {}
+          env = settings.setdefault("env", {})
+          env["CLAUDE_CODE_OAUTH_TOKEN"] = os.environ["CLAUDE_CODE_OAUTH_TOKEN"]
+          env.setdefault("DISABLE_AUTOUPDATER", "1")
+          path.write_text(json.dumps(settings, indent=2) + "\n")
+          os.chmod(path, 0o600)
+          print("settings written")
+          EOF
+
+      - name: Run the release suite
+        # As ea-bot, whose login this is. The remote switches read off
+        # outside an owner process, so drafting runs on Claude and the
+        # scheduling lane is skipped until it has a Claude runner; with
+        # the lane on, --canned-calendar keeps the solver off the live
+        # calendars. The run's JSON is the artifact; a red or harness
+        # verdict fails the job below.
+        run: |
+          set -u
+          lane=""
+          if [ -n "${{ github.event.inputs.lane }}" ]; then lane="--lane ${{ github.event.inputs.lane }}"; fi
+          docker compose run --rm -T agent \
+            python3 /home/ea-bot/ea-system/tests/release/run_release.py \
+              --canned-calendar --json --tag "$TAG" --harness "${{ github.event.inputs.harness || 'claude' }}" $lane \
+              > release-run.json
+          rc=$?
+          echo "rc=$rc" > release-run.rc
+          echo "run_release exited $rc"
+
+      - name: Upload the run
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: release-run-${{ env.TAG }}
+          path: |
+            release-run.json
+            release-run.rc
+          if-no-files-found: warn
+
+      - name: Verdict
+        run: |
+          set -u
+          if ! python3 -c "import json; json.load(open('release-run.json'))" 2>/dev/null; then
+            echo "::error::the suite produced no run JSON (exit $(cat release-run.rc))"
+            exit 1
+          fi
+          verdict=$(python3 -c "import json; print(json.load(open('release-run.json'))['summary']['verdict'])")
+          python3 - <<'EOF'
+          import json
+          run = json.load(open("release-run.json"))
+          s = run["summary"]
+          print(f"Release tests {s['run_id']}: {s['verdict'].upper()} (harness {s.get('harness')}, calendar {s.get('calendar', {}).get('mode')})")
+          for r in s["reasons"]:
+              print("  !", r)
+          for lane, v in s["lanes"].items():
+              print(f"  {lane:<11} pass {v['passed']}/{v['measured']} errors {v['errors']} skipped {v['skipped']} mean {v['mean']}")
+          for r in run["results"]:
+              if not r["pass"]:
+                  print(f"    {'ERR ' if r.get('error') else 'FAIL'} {r['lane']}/{r['id']} {r.get('error', '')}")
+          EOF
+          case "$verdict" in
+            green) ;;
+            amber) echo "::warning::release suite verdict amber: a lane's mean fell below the baseline" ;;
+            *) echo "::error::release suite verdict $verdict"; exit 1 ;;
+          esac
+
+      - name: Remove the stack
+        if: always()
+        run: docker compose down -v --remove-orphans

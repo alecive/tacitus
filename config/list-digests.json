@@ -1,0 +1,49 @@
+{
+  "_doc": "Mailing-list digests and newsletters the EA triages for you (run-agent.sh list-digest). The preprocessor finds each mail in the inbox, splits it into items (plain-text digests by their dash rules; HTML newsletters one item per content link, with section, due date and NEW flag) and drops job posts in code. Claude judges the remaining items against your profile and YOUR RULES from preferences.json (scopes `newsletters`, `newsletters:<name>` and the list's own `scopes`), posts to Slack, and the orchestrator then archives the mail. Nothing relevant means a silent archive. Per list: `senders` OR `list_address` (recipient) match a message; `subject_contains` is an optional extra filter; `format` auto|digest|newsletter; `mode` filter (post the few relevant items) or prioritize (rank what is worth your time); `follow_links` makes Claude fetch each candidate's page with fetch_url.py before judging; `resolve_redirects` turns click-tracking links into the real page URL in code; `emoji` heads the Slack post; `notes` is free text about the LIST's conventions (not about you); `scopes` adds preference scopes whose rules apply to this list (e.g. funding); `drop_tags` extends the built-in job-tag set; `skip_link_text` names navigation anchors that are not items. What counts as relevant, who you are, and how high the bar sits are NOT here: they are rules in preferences.json (`preferences.py add --scope newsletters ...`).",
+  "_example": {
+    "lists": [
+      {
+        "name": "robotics-worldwide",
+        "senders": [
+          "robotics-worldwide-request@lists.kit.edu"
+        ],
+        "list_address": "robotics-worldwide@lists.kit.edu",
+        "subject_contains": "",
+        "format": "digest",
+        "mode": "filter",
+        "follow_links": false,
+        "resolve_redirects": false,
+        "emoji": ":newspaper:",
+        "drop_tags": [
+          "jobs"
+        ],
+        "notes": "Daily digest; items carry [Jobs]/[Meetings]/... tags.",
+        "scopes": []
+      },
+      {
+        "name": "research-bulletin",
+        "senders": [
+          "research-office@mail.example.edu"
+        ],
+        "list_address": "",
+        "subject_contains": "",
+        "format": "newsletter",
+        "mode": "prioritize",
+        "follow_links": true,
+        "resolve_redirects": true,
+        "emoji": ":moneybag:",
+        "drop_tags": [],
+        "skip_link_text": [
+          "Research Office"
+        ],
+        "notes": "Funding newsletter from the university's research office; 'Limited Submission' due dates are internal deadlines.",
+        "scopes": [
+          "funding"
+        ]
+      }
+    ]
+  },
+  "lookback_days": 7,
+  "max_item_chars": 2200,
+  "lists": []
+}

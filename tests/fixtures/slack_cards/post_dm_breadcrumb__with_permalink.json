@@ -1,0 +1,40 @@
+{
+  "blocks": [],
+  "calls": [
+    {
+      "kwargs": {
+        "channel": "D_OWNER",
+        "message_ts": "1700000001.000200"
+      },
+      "method": "chat_getPermalink"
+    },
+    {
+      "kwargs": {
+        "channel": "C_MAIN",
+        "text": ":lock: The Send button for this draft is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>",
+        "thread_ts": "1700000000.000100",
+        "unfurl_links": false,
+        "unfurl_media": false
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "dm_channel": "D_OWNER",
+      "dm_ts": "1700000001.000200",
+      "ea_channel": "C_MAIN",
+      "thread_ts": "1700000000.000100",
+      "what": "The Send button for this draft"
+    },
+    "stubs": {}
+  },
+  "kwargs": {
+    "channel": "C_MAIN",
+    "text": ":lock: The Send button for this draft is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>",
+    "thread_ts": "1700000000.000100",
+    "unfurl_links": false,
+    "unfurl_media": false
+  },
+  "text": ":lock: The Send button for this draft is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>"
+}

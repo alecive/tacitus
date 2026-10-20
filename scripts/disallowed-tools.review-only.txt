@@ -1,0 +1,17 @@
+# Extra deny list for the review-only profile: the EA reads, tracks and
+# briefs, and writes nothing to the mailbox. Every launcher appends this
+# to scripts/disallowed-tools.txt when ea-config.json says
+# "profile": "review-only" (run-agent.sh, run-plugin.sh, the ea-bot
+# shell, the resident pane). Same syntax as the main list.
+Bash(python3 *graph_actions.py create-draft *)
+Bash(python3 *graph_actions.py create-reply *)
+Bash(python3 *graph_actions.py update-draft *)
+Bash(*graph_actions.py create-draft *)
+Bash(*graph_actions.py create-reply *)
+Bash(*graph_actions.py update-draft *)
+Bash(python3 *gmail_client.py create-draft *)
+Bash(python3 *gmail_client.py update-draft *)
+Bash(*gmail_client.py create-draft *)
+Bash(*gmail_client.py update-draft *)
+mcp__claude_ai_Gmail__create_draft
+mcp__claude_ai_Gmail__update_draft

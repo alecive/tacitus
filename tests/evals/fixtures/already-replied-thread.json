@@ -1,0 +1,102 @@
+{
+  "_meta": {
+    "id": "regression-002",
+    "name": "Already-replied thread should not be flagged for response",
+    "category": "regression",
+    "bug_ref": "Morning briefing false positives (2026-04-09)",
+    "description": "Emails where user_already_replied_in_thread=true and the new message does not ask a new question should be mentioned as informational only, not as needing a response. The briefing was surfacing these as 'needs response' because sentDateTime was missing from MAIL_FIELDS."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 3,
+      "new_sent_messages": 0,
+      "total_delta_items": 2,
+      "total_inbox": 42,
+      "flagged_count": 0,
+      "events_next_14d": 10
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-replied-thread-001",
+        "subject": "Re: Lab Meeting Agenda",
+        "from": {
+          "emailAddress": {
+            "name": "Jo Carrow",
+            "address": "ode.ellery60@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu", "emerson.zielinski78@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": true,
+        "received": "2026-04-09T09:30:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Sounds good, I'll present the LiDAR results at Thursday's meeting. Thanks for confirming the time slot.",
+        "conversationId": "AAQk-lab-meeting-001",
+        "hasAttachments": false,
+        "response_signals": 0
+      },
+      {
+        "message_id": "AAMk-replied-with-question-001",
+        "subject": "Re: Conference Travel Budget",
+        "from": {
+          "emailAddress": {
+            "name": "Harper Ravensworth",
+            "address": "xan.fairbanks18@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": true,
+        "received": "2026-04-09T11:00:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Thanks for approving the ICRA budget. One more question: can we also cover the workshop registration fee? It's $150 and required for presenting.",
+        "conversationId": "AAQk-budget-conv-001",
+        "hasAttachments": false,
+        "response_signals": 3
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": []
+}

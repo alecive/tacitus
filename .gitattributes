@@ -1,0 +1,3 @@
+# The developer guide is for sessions that change the code; it stays out
+# of every copy the EA runs from (git archive, the Docker context).
+/.claude/CLAUDE.md export-ignore

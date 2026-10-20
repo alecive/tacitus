@@ -1,0 +1,29 @@
+{
+  "_note": "The made-up user every eval fixture is written for (tests/evals/provider.py copies this into each full-mode run; the live ~/.ea/config is never read). The address matches the user's address in tests/evals/fixtures.",
+  "name": "Wren Fairbanks",
+  "email": "wren.fairbanks84@example.edu",
+  "role_description": "A tenured professor of computer science working on autonomous systems, with federal research grants and graduate students.",
+  "department": "Computer Science",
+  "university": "Example University",
+  "institution": {
+    "name": "Example University",
+    "domains": [
+      "example.edu"
+    ],
+    "related_domains": [],
+    "safety_rail_domain": "example.edu",
+    "video": {
+      "platform": "Zoom",
+      "link": "https://example.zoom.us/my/wren.fairbanks"
+    },
+    "boilerplate_tokens": [],
+    "boilerplate_phrases": []
+  },
+  "slack_channel_name": "ai-assistant-wren",
+  "bio_blurb": "Professor of computer science at Example University.",
+  "calendar_accounts": [],
+  "gmail_accounts": [],
+  "family": [],
+  "zoom_link": "https://example.zoom.us/my/wren.fairbanks",
+  "office": "Engineering Center 101"
+}

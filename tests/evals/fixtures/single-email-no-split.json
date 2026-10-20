@@ -1,0 +1,141 @@
+{
+  "_meta": {
+    "id": "hard-success-004",
+    "name": "Single simple instruction must not be over-decomposed",
+    "category": "hard-success",
+    "bug_ref": "Over-decomposition of simple tasks (commit 2a3e86e)",
+    "description": "A simple user instruction ('Draft a reply to Jules confirming the Thursday meeting') was being split into multiple sub-tasks. The system must treat this as a single-step task: find the email, draft the reply."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T09:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 1,
+      "new_sent_messages": 0,
+      "total_delta_items": 1,
+      "total_inbox": 33,
+      "flagged_count": 0,
+      "events_next_14d": 8
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-single-jules-001",
+        "subject": "Thursday meeting - LiDAR calibration review",
+        "from": {
+          "emailAddress": {
+            "name": "Jules Corvino",
+            "address": "pax.kowalczyk1@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T07:30:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, Would Thursday at 2pm work to go over the LiDAR calibration results? I have the updated error analysis ready and would like to walk through it before we finalize the paper submission.",
+        "conversationId": "AAQk-single-jules-conv-001",
+        "hasAttachments": false,
+        "response_signals": 3
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [
+      {"start": "2026-04-09T13:00:00", "end": "2026-04-09T15:00:00"},
+      {"start": "2026-04-09T09:00:00", "end": "2026-04-09T10:30:00"}
+    ],
+    "open_obligations": [
+      {
+        "id": "response-jules-meeting-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Jules Corvino asking about Thursday 2pm for LiDAR calibration review.",
+        "from_email": "pax.kowalczyk1@example.edu",
+        "date_identified": "2026-04-09T07:30:00Z",
+        "days_stale": 0
+      }
+    ],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "Grad Student Check-in",
+        "start": {"dateTime": "2026-04-09T10:30:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T11:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {
+        "pax.kowalczyk1@example.edu": {
+          "greeting": "Hi Jules",
+          "closing": "Best,\nKit",
+          "avg_length": 45,
+          "tone": "casual-collegial"
+        }
+      }
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 1,
+      "user_message_count": 1,
+      "messages": [
+        {
+          "user": "U_OWNER",
+          "text": "Draft a reply to Jules confirming the Thursday meeting.",
+          "ts": "1744196400.000200"
+        }
+      ],
+      "user_instructions": [
+        "Draft a reply to Jules confirming the Thursday meeting."
+      ],
+      "pending_instructions": [
+        "Draft a reply to Jules confirming the Thursday meeting."
+      ],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": [
+    {
+      "id": "response-jules-meeting-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Jules Corvino proposing Thursday 2pm for LiDAR calibration review meeting. Has updated error analysis ready.",
+      "from_email": "pax.kowalczyk1@example.edu",
+      "from_name": "Jules Corvino",
+      "source_message_id": "AAMk-single-jules-001",
+      "date_identified": "2026-04-09",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "Wants to walk through calibration results before paper submission.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T07:30:00Z",
+      "updated_at": "2026-04-09T07:30:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-single-jules-conv-001",
+      "email_archived": 0
+    }
+  ]
+}

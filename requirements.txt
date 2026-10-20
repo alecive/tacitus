@@ -1,0 +1,26 @@
+msal>=1.28.0
+msal-extensions>=1.1.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.1
+google-auth-oauthlib>=1.1.0
+slack-bolt>=1.18.0
+slack-sdk>=3.27.0
+zulip>=0.9
+ortools>=9.8
+python-docx>=1.0
+# site_tools reads a Jekyll site's _config.yml exclude list; without it the
+# live check would also compare files Jekyll never copies.
+PyYAML>=6.0
+playwright>=1.55
+# PDF text extraction. OPTIONAL and NOT installed on this host: the system
+# python is PEP 668 externally-managed, so `pip install --user pypdf` as
+# ea-bot is refused and installing it would mean --break-system-packages on
+# a machine running the live assistant. pdf_utils therefore runs on poppler's
+# /usr/bin/pdftotext here, which is present and is the load-bearing backend.
+# Install pypdf only in an environment that can take it; the code prefers it
+# when importable and needs no config either way. tests/test_pdf_utils.py
+# fails the wall if NEITHER backend is available, so this cannot silently
+# regress to the 2026-08-28 state where every PDF extracted to "".
+pypdf>=4.0

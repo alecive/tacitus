@@ -1,0 +1,20 @@
+{
+  "id": "drafting-001",
+  "name": "A factual reply states the facts and stops",
+  "category": "regression",
+  "bug_ref": "2026-07-31 user on a drafted close: 'I would never use this language' (feedback_email_no_editorializing, feedback_no_em_dashes)",
+  "to": "jules.dunmore4@example.edu",
+  "brief": "Reply to Uma Yamamura (jules.dunmore4@example.edu) in the college communications office. Uma asked for a two or three sentence summary of the MapLab project for the college newsletter, due Friday.\n\nFacts for the summary: the project builds a shared inference service for satellite image models on university hardware; the first users are three research groups in geography and computer science; the status page went live in September.\n\nThe reply gives the summary and says Uma can shorten it as needed.\n\nNo style profile exists for this contact: greet with \"Hi Uma,\" and sign off with \"{{first_name}}\" on its own line.",
+  "must_include": [
+    "MapLab"
+  ],
+  "must_not_include": [
+    "excited",
+    "thrilled",
+    "which is why",
+    "not just",
+    "game-chang"
+  ],
+  "max_words": 160,
+  "rubric": "The summary states the three facts plainly. No sentence tells the reader why the project matters or claims importance. No em-dash. Length fits a newsletter request: short."
+}

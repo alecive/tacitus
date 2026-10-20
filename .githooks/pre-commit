@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Pre-commit hook: secrets lint + owner trust check + architecture drift warning
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# --- Check 1: Scan staged files for secrets ---
+"$REPO_ROOT/tests/secrets_lint.sh" --staged || exit 1
+
+# --- Check 2: Block a new bypass of the owner trust rules ---
+# (docs/SECURITY.md, "Owner trust rules"). Scans the staged content of the
+# staged files; an accepted exception goes in tests/boundary_baseline.json.
+python3 "$REPO_ROOT/scripts/boundary_lint.py" --staged || exit 1
+
+# --- Check 3: Warn if architecture-affecting files changed ---
+# without updating docs/ARCHITECTURE.md.
+MANIFEST="$REPO_ROOT/.githooks/architecture-manifest.txt"
+ARCH_DOC="docs/ARCHITECTURE.md"
+
+if [[ -f "$MANIFEST" ]]; then
+    STAGED=$(git diff --cached --name-only)
+    MATCHED=()
+
+    while IFS= read -r pattern; do
+        # Skip comments and blank lines
+        [[ -z "$pattern" || "$pattern" == \#* ]] && continue
+        # Expand glob patterns against the git index
+        while IFS= read -r tracked_file; do
+            if echo "$STAGED" | grep -qxF "$tracked_file"; then
+                MATCHED+=("$tracked_file")
+            fi
+        done < <(git -C "$REPO_ROOT" ls-files -- "$pattern" 2>/dev/null)
+    done < "$MANIFEST"
+
+    if [[ ${#MATCHED[@]} -gt 0 ]]; then
+        if ! echo "$STAGED" | grep -qxF "$ARCH_DOC"; then
+            echo ""
+            echo -e "\033[33m\xe2\x9a\xa0  Architecture-affecting files changed:\033[0m"
+            for f in "${MATCHED[@]}"; do
+                echo "   - $f"
+            done
+            echo ""
+            echo -e "\033[33m   but $ARCH_DOC was not updated.\033[0m"
+            # The manifest covers the whole hot core, so this warning fires on
+            # roughly 2 of every 3 commits while the doc is touched in about 1
+            # in 30. Fired every time, "you did not update the doc" is not new
+            # information. How stale the doc actually is, is.
+            ARCH_LAST=$(git -C "$REPO_ROOT" rev-list -1 HEAD -- "$ARCH_DOC" 2>/dev/null)
+            if [[ -n "$ARCH_LAST" ]]; then
+                ARCH_AGE=$(git -C "$REPO_ROOT" rev-list --count "$ARCH_LAST"..HEAD 2>/dev/null)
+                ARCH_WHEN=$(git -C "$REPO_ROOT" log -1 --format=%cr "$ARCH_LAST" 2>/dev/null)
+                echo -e "\033[33m   Doc last changed $ARCH_WHEN, ${ARCH_AGE:-?} commits ago.\033[0m"
+            fi
+            echo "   If the change affects prompt construction, data flow, or"
+            echo "   the approval pipeline, update the architecture doc too."
+            echo ""
+            # Warn only, don't block
+        fi
+    fi
+fi
+
+exit 0

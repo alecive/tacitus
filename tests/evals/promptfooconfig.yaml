@@ -1,0 +1,370 @@
+# EA System Integration Eval Suite
+#
+# Tests LLM decision-making quality across the full morning briefing pipeline.
+# Each test provides a synthetic briefing JSON + ledger state and asserts on
+# the output text and actions taken.
+#
+# Usage:
+#   npx promptfoo eval                    # run all tests
+#   npx promptfoo eval --repeat 3         # run 3x for variance detection
+#   npx promptfoo eval --filter-pattern "regression"  # run only regressions
+#
+# Modes:
+#   prompt-only (default): Builds the full prompt, evaluates with LLM-as-judge.
+#     Fast (~5s/test), no Claude tokens, good for CI.
+#   full: Actually invokes Claude subprocess. Slow (~60-120s/test), uses tokens.
+#     Run manually for thorough pre-deploy validation.
+
+description: "EA Morning Briefing Integration Evals"
+
+prompts:
+  - "Evaluate the EA morning briefing output for fixture: {{fixture_path}}"
+
+providers:
+  - id: "python:provider.py"
+    label: "EA Pipeline (prompt-only)"
+    config:
+      mode: prompt-only
+      skill: morning-briefing
+
+# To run full Claude integration tests, uncomment:
+# - id: "python:provider.py"
+#   label: "EA Pipeline (full Claude)"
+#   config:
+#     mode: full
+#     skill: morning-briefing
+#     model: sonnet
+#     # 420, not 180: a full agent pass over CLAUDE.md + the skill runs
+#     # 80-250 s, and 180 killed 8 of 19 fixtures nightly. Matches
+#     # run_evals.py --timeout.
+#     timeout: 420
+
+defaultTest:
+  assert:
+    # Format check on every test
+    - type: python
+      value: file://judge.py
+      metadata:
+        assertion: briefing_format_valid
+
+tests:
+  # ============================================================
+  # REGRESSIONS — bugs we fixed, must never recur
+  # ============================================================
+
+  - description: "REGRESSION: Completed item must NOT appear as overdue"
+    vars:
+      fixture_path: "fixtures/completed-with-deadline.json"
+    metadata:
+      category: regression
+      bug_ref: "Completed outreach shown overdue (2026-04-09)"
+    assert:
+      - type: not-contains
+        value: "OVERDUE"
+        metric: overdue_check
+      - type: not-icontains
+        value: "overdue"
+        metric: overdue_check_insensitive
+      - type: not-icontains
+        value: "was due 2026-04-03"
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: no_overdue_completed
+      - type: llm-rubric
+        value: |
+          The output must NOT mention the Tam Marchetti certificate curriculum
+          outreach as overdue or needing action. That item was completed
+          on April 7. If Tam is mentioned at all, it should only be
+          in the context of her NEW reply (a response_needed item), not
+          the old completed outreach. Score 0 if the completed item is
+          surfaced as overdue. Score 1 if handled correctly.
+
+  - description: "REGRESSION: Already-replied threads are informational, not action items"
+    vars:
+      fixture_path: "fixtures/already-replied-thread.json"
+    metadata:
+      category: regression
+      bug_ref: "Morning briefing false positives (2026-04-09)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: already_replied_informational
+      - type: llm-rubric
+        value: |
+          There are two emails from people in already-replied threads:
+          1. Jo Carrow — confirmed she'll present LiDAR results.
+             This is purely informational (no question asked). The briefing
+             should either skip it or mention it as FYI. It should NOT
+             suggest drafting a reply.
+          2. Harper Ravensworth — asks a NEW question about workshop registration
+             fee ($150). Even though the user already replied in this thread,
+             the new message asks something specific. This SHOULD be flagged
+             as needing attention.
+          Score 1 if Jo is FYI/skipped AND Harper is flagged.
+          Score 0.5 if one is correct. Score 0 if both wrong.
+
+  # ============================================================
+  # HARD SUCCESSES — non-obvious correct behaviors to preserve
+  # ============================================================
+
+  - description: "HARD SUCCESS: CC-only email treated as FYI, direct email gets action"
+    vars:
+      fixture_path: "fixtures/cc-only-no-reply.json"
+    metadata:
+      category: hard-success
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: cc_only_no_reply_suggestion
+      - type: llm-rubric
+        value: |
+          Two emails are in the briefing:
+          1. Harper Ashcombe replied to Oakley about serving on a committee.
+             The user (Kit) is CC-only. This should be presented as FYI
+             ("Harper agreed to serve on the committee" or similar).
+             It should NOT suggest "want to send a quick thanks?" or
+             draft any reply.
+          2. Cy Rasmussen asked Kit directly about the GPU cluster.
+             This SHOULD be flagged as needing a response.
+          Score 1 if Harper is FYI/no-reply AND Cy is flagged.
+          Score 0.5 if one is correct. Score 0 if both wrong.
+
+  - description: "HARD SUCCESS: Priority ordering — deadline > VIP > routine CC"
+    vars:
+      fixture_path: "fixtures/mixed-priority-triage.json"
+    metadata:
+      category: hard-success
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: priority_ordering
+      - type: llm-rubric
+        value: |
+          Three emails in the briefing:
+          1. NSF program officer (Hale Merriweather) with ACTION REQUIRED,
+             budget justification due April 11 (2 days away).
+          2. Rio Oyelaran (colleague) wants to schedule coffee.
+          3. Lane Larchmont CC-only about department happy hour.
+
+          The briefing MUST prioritize the NSF deadline prominently
+          (ideally with a deadline/urgency marker). The scheduling request
+          should come second. The CC-only happy hour should be last or
+          just an FYI. Score 1 if ordering is correct. Score 0.5 if
+          NSF is prominent but others are mis-ordered. Score 0 if the
+          CC-only item or the scheduling request comes before the NSF deadline.
+
+  - description: "HARD SUCCESS: Calm day briefing is concise, no fabricated urgency"
+    vars:
+      fixture_path: "fixtures/empty-calm-day.json"
+    metadata:
+      category: hard-success
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: calm_day_concise
+      - type: llm-rubric
+        value: |
+          This is a calm day: no new emails, no stale obligations, just
+          a 1:1 meeting and lunch on the calendar. One snoozed item
+          (Acme DLI) is not due until May 1.
+
+          The briefing should be SHORT (under 300 words ideally).
+          It should mention today's calendar and say there's nothing
+          urgent. It should NOT re-surface the snoozed Acme item
+          as needing action. It should NOT fabricate urgency or suggest
+          unnecessary tasks just to fill space. Score 1 if concise and
+          calm. Score 0.5 if correct but verbose. Score 0 if it
+          invents urgency or re-surfaces snoozed items.
+
+  # ============================================================
+  # REGRESSIONS (expanded) — from historical bug audit
+  # ============================================================
+
+  - description: "REGRESSION: Unreplied emails must resurface in subsequent delta runs"
+    vars:
+      fixture_path: "fixtures/delta-filter-unreplied.json"
+    metadata:
+      category: regression
+      bug_ref: "Delta filter dropping unreplied emails (commit 75c2c00)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: delta_unreplied_resurface
+
+  - description: "REGRESSION: Professional emails without question marks must surface"
+    vars:
+      fixture_path: "fixtures/normal-email-no-question.json"
+    metadata:
+      category: regression
+      bug_ref: "Positive-signal gate dropping normal emails (commit 4ed5160)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: normal_email_surfaces
+
+  - description: "REGRESSION: Multi-step instructions must decompose to multiple tasks"
+    vars:
+      fixture_path: "fixtures/multi-step-batch.json"
+    metadata:
+      category: regression
+      bug_ref: "Under-decomposition of multi-step messages (commit 2c10903)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: multi_step_decomposition
+
+  - description: "REGRESSION: Contact names must come from email headers, not hallucinated"
+    vars:
+      fixture_path: "fixtures/name-from-header.json"
+    metadata:
+      category: regression
+      bug_ref: "Name hallucination (commit 077c447)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: name_from_header
+
+  - description: "REGRESSION: Output must never contain sandbox or permission errors"
+    vars:
+      fixture_path: "fixtures/no-sandbox-leak.json"
+    metadata:
+      category: regression
+      bug_ref: "Sandbox errors in Slack output (commit d1f7efd)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: no_sandbox_leak
+
+  - description: "REGRESSION: New replies on closed threads must be surfaced"
+    vars:
+      fixture_path: "fixtures/reopened-thread.json"
+    metadata:
+      category: regression
+      bug_ref: "Re-opened thread detection failure (commit cd672ef)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: reopened_thread_surfaced
+
+  - description: "REGRESSION: Slack output must use correct mrkdwn formatting"
+    vars:
+      fixture_path: "fixtures/slack-format-valid.json"
+    metadata:
+      category: regression
+      bug_ref: "Slack formatting bugs (commits b2526a1, b6342ac)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: briefing_format_valid
+
+  # ============================================================
+  # HARD SUCCESSES (expanded) — correct non-obvious behaviors
+  # ============================================================
+
+  - description: "HARD SUCCESS: Single simple instruction must not be over-decomposed"
+    vars:
+      fixture_path: "fixtures/single-email-no-split.json"
+    metadata:
+      category: hard-success
+      bug_ref: "Over-decomposition of simple tasks (commit 2a3e86e)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: single_step_no_split
+
+  - description: "HARD SUCCESS: Meeting creation must use Zoom, never Teams"
+    vars:
+      fixture_path: "fixtures/zoom-not-teams.json"
+    metadata:
+      category: hard-success
+      bug_ref: "Teams meeting instead of Zoom (commit 077c447)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: zoom_not_teams
+
+  - description: "HARD SUCCESS: Scheduling poll replies must use --sender-only"
+    vars:
+      fixture_path: "fixtures/poll-reply-sender-only.json"
+    metadata:
+      category: hard-success
+      bug_ref: "Scheduling poll reply-all (commit f52ff53)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: poll_reply_sender_only
+
+  - description: "HARD SUCCESS: Scheduling defaults to 30 min, invite-only (no redundant email)"
+    vars:
+      fixture_path: "fixtures/scheduling-defaults.json"
+    metadata:
+      category: hard-success
+      bug_ref: "1-hour meeting + redundant email to Jules (2026-04-14)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: scheduling_defaults
+
+  - description: "HARD SUCCESS: Draft revisions must use update-draft, not create new"
+    vars:
+      fixture_path: "fixtures/draft-revision-no-new.json"
+    metadata:
+      category: hard-success
+      bug_ref: "Duplicate drafts on revision (commit 83bf885)"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: draft_revision_uses_update
+
+  - description: "HARD SUCCESS: Scheduling prompt must not contain dead tool names"
+    vars:
+      fixture_path: "fixtures/scheduling-no-dead-tools.json"
+    metadata:
+      category: hard-success
+      bug_ref: "Dead scheduling tools in prompt (check-slots, find-slots, get-availability) — 2026-04-15"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: no_dead_scheduling_tools
+
+  - description: "HARD SUCCESS: scheduling-rules.md has the four canonical sections"
+    vars:
+      fixture_path: "fixtures/scheduling-canonical-rules.json"
+    metadata:
+      category: hard-success
+      bug_ref: "Wrong subcommand + relative path + date arithmetic — 2026-05-22"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: scheduling_rules_has_canonical_block
+
+  - description: "HARD SUCCESS: scheduling-rules.md references the canonical four"
+    vars:
+      fixture_path: "fixtures/scheduling-canonical-rules.json"
+    metadata:
+      category: hard-success
+      bug_ref: "Wrong subcommand drift — 2026-05-22"
+    assert:
+      - type: python
+        value: file://judge.py
+        metadata:
+          assertion: scheduling_rules_lists_canonical_four

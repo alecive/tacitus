@@ -1,0 +1,18 @@
+{
+ "msg": "",
+ "result": "success",
+ "subscriptions": [
+  {
+   "invite_only": true,
+   "is_archived": false,
+   "name": "ea",
+   "stream_id": 7
+  },
+  {
+   "invite_only": true,
+   "is_archived": false,
+   "name": "ea-dm",
+   "stream_id": 8
+  }
+ ]
+}

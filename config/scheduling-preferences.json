@@ -1,0 +1,49 @@
+{
+  "timezone": "",
+  "ea_managed_calendar": {
+    "email": "",
+    "calendar_id": "",
+    "name": "EA-Managed Calendar",
+    "note": "Optional. A dedicated secondary Google calendar the EA may auto-create attendee-less HOLDS on WITHOUT a Slack button (see Branch B). Events here block availability. Leave calendar_id empty to disable. Isolation is enforced by the calendar-id allowlist in preprocessor/mail_mediation.py (EA_MANAGED_CALENDAR_ID must match); update BOTH if you change the calendar."
+  },
+  "calendars": {
+    "outlook": {
+      "type": "graph_api",
+      "note": "Primary work calendar, read via Graph API in preprocessor"
+    },
+    "google_primary": {
+      "email": "you@gmail.com",
+      "type": "google_calendar_mcp",
+      "note": "Personal Google Calendar. Read via Google Calendar MCP during Claude runs."
+    },
+    "google_secondary": {
+      "email": "",
+      "type": "google_calendar_mcp",
+      "note": "Optional second Google Calendar. Leave email empty to skip.",
+      "blocks_availability": false,
+      "block_note": "Set to false for informational calendars (family, shared) whose events don't block your scheduling. Only calendars with blocks_availability=true (or unset, defaults true) count as busy time."
+    }
+  },
+  "slot_selection": {
+    "preferred_duration_minutes": 30,
+    "prefer_contiguous": true,
+    "contiguous_note": "If I have a meeting at 10:00-10:30, prefer suggesting 10:30 or 9:30 over a random 2pm slot. Cluster meetings together to preserve focus blocks.",
+    "max_slot_duration_to_propose_minutes": 60,
+    "max_slot_duration_note": "Even if I have a 4-hour free block, only propose 30 or 60 min slots within it. Don't expose the whole block.",
+    "vip_override": "If user says someone is 'very important' or 'VIP', expand to all available times within working hours extended to 5pm, and remember that person as VIP for future requests."
+  },
+  "response_style": {
+    "default": "Propose 2-3 specific times. Short, professional. No 'hope this email finds you well.'",
+    "internal": "Colleagues: friendly but efficient.",
+    "external_academic": "Professional, slightly more formal. Include timezone.",
+    "program_officer": "Respectful, accommodating. Offer more options. Always include timezone.",
+    "student": "Warm, brief. Fine to suggest 'stop by office hours' as an option."
+  },
+  "vip_contacts": {
+    "note": "Populated automatically when user says someone is important in Slack. These contacts get extended hours (to 5pm) and more time options.",
+    "addresses": []
+  },
+  "_preferences_note": "Day/time scheduling preferences (working hours, no-meeting blocks, lunch, no-meeting Friday, morning preference) now live as tokened recurring events on the EA-Managed calendar, NOT here. See skills/scheduling-rules.md. Tokens: wh/nm/p0/p1/p2/wr.",
+  "family_calendars": [],
+  "family_calendars_note": "Optional, read by the family-sync skill: [{\"name\": \"School calendar\", \"id\": \"<google calendar id>\"}]. The ids come from `google_calendar_client.py list-calendars`."
+}

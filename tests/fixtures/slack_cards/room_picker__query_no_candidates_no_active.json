@@ -1,0 +1,55 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":file_folder: No project is called *brand new thing*.",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "block_id": "room-pick::{\"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}",
+      "elements": [
+        {
+          "action_id": "room_create_project",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": "Create \u201cbrand new thing\u201d",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"n\": \"brand new thing\", \"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}"
+        }
+      ],
+      "type": "actions"
+    },
+    {
+      "elements": [
+        {
+          "text": "Create hands this thread to the EA, who registers the project from what was discussed; the room opens right after. Or say `open a channel for <project id>`.",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "context"
+    }
+  ],
+  "calls": [],
+  "inputs": {
+    "args": {
+      "candidates": [],
+      "channel": "C_MAIN",
+      "query": "brand new thing",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "active": []
+    }
+  },
+  "kwargs": {},
+  "result": {
+    "ok": true,
+    "picker": true
+  },
+  "text": ":file_folder: No project is called *brand new thing*.\nSay `open a channel for <project id>`."
+}

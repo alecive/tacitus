@@ -1,0 +1,26 @@
+{
+  "id": "scheduling-005",
+  "name": "Pipeline: offered times outside working hours but free stay on the table, with a warning for the user",
+  "category": "regression",
+  "bug_ref": "2026-10-14 shadow: Oakley's offered times all failed validation and the pipeline stopped at no-options (5 of 13 scheduling turns); later, a working-hours preference warning was read as a conflict and drew a counter-offer",
+  "text": "Handle the scheduling request from Oakley",
+  "pipeline": {
+    "thread": [
+      {
+        "id": "m1",
+        "conversation_id": "rel-c1",
+        "from": {
+          "address": "drew.umberfield85@example.edu"
+        },
+        "sent": "{{-1d}}T13:00:00Z",
+        "subject": "Field-trial follow-up",
+        "text": "Kit, for the field-trial follow-up, could you do {{+12d:%A}} {{+12d:%B %-d}} at 6:00 AM or 9:30 PM your time (Mountain)? Those are the only openings I have that day; any other day that week or the next is fine too. 30 minutes is plenty."
+      }
+    ],
+    "expect": {
+      "status": "ok",
+      "counter": false,
+      "min_picks": 1
+    }
+  }
+}

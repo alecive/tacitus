@@ -1,0 +1,143 @@
+{
+  "_meta": {
+    "id": "regression-009",
+    "name": "Slack output must use correct formatting: mrkdwn bold, shortcodes, mandated header, no meta-commentary",
+    "category": "regression",
+    "bug_ref": "Slack formatting bugs (commits b2526a1, b6342ac)",
+    "description": "A normal morning briefing with 3 emails. The system's Slack output must use single-asterisk bold (*text*, not **text**), Slack emoji shortcodes (:sunny:, :email:, not unicode), must start with the header run-agent.sh:345-347 mandates, and must not contain the meta-commentary run-agent.sh:349-355 forbids. The em-dash clause that used to be here was removed 2026-08-27: run-agent.sh and skills/morning-briefing.md:339,363 MANDATE an em-dash in that header, and CLAUDE.md scopes the em-dash ban to content drafted in the user's voice, not assistant-voice briefings. The clause made this suite unwinnable (audit B9-02)."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T08:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 4,
+      "new_sent_messages": 1,
+      "total_delta_items": 3,
+      "total_inbox": 41,
+      "flagged_count": 0,
+      "events_next_14d": 9
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-fmt-email-001",
+        "subject": "Robotics capstone project proposals",
+        "from": {
+          "emailAddress": {
+            "name": "Gale Hargrove",
+            "address": "emerson.zielinski78@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-08T16:30:00Z",
+        "days_in_inbox": 1,
+        "bodyPreview": "Hey Kit, I've got three student teams wanting to work on autonomous navigation projects. Can we sync on which lab resources they can use? No rush, sometime this week is fine.",
+        "conversationId": "AAQk-fmt-conv-001",
+        "hasAttachments": false,
+        "response_signals": 3
+      },
+      {
+        "message_id": "AAMk-fmt-email-002",
+        "subject": "Guest lecture invitation - April 22",
+        "from": {
+          "emailAddress": {
+            "name": "Xan Larchmont",
+            "address": "reese.zielinski38@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-08T21:00:00Z",
+        "days_in_inbox": 1,
+        "bodyPreview": "Hi Kit, Would you be available to give a guest lecture in my HRI class on April 22? The topic would be perception for human-robot interaction. The class is 50 minutes, 11:00-11:50 AM.",
+        "conversationId": "AAQk-fmt-conv-002",
+        "hasAttachments": false,
+        "response_signals": 4
+      },
+      {
+        "message_id": "AAMk-fmt-email-003",
+        "subject": "Re: Lab equipment order status",
+        "from": {
+          "emailAddress": {
+            "name": "Jo Carrow",
+            "address": "ode.ellery60@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T07:15:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, the Ouster LiDAR sensors shipped yesterday. Tracking says delivery Thursday. Should I set up a time for calibration once they arrive?",
+        "conversationId": "AAQk-fmt-conv-003",
+        "hasAttachments": false,
+        "response_signals": 3
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "Department Colloquium",
+        "start": {"dateTime": "2026-04-09T15:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T16:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      },
+      {
+        "subject": "Lunch",
+        "start": {"dateTime": "2026-04-09T12:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T13:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [
+      {
+        "subject": "Lab Meeting",
+        "start": {"dateTime": "2026-04-10T14:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-10T15:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": []
+}

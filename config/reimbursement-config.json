@@ -1,0 +1,18 @@
+{
+  "form_url": "",
+  "submitter": {
+    "first_name": "Your First Name",
+    "last_name": "Your Last Name",
+    "email": "you@example.edu",
+    "affiliation": "Faculty / Staff"
+  },
+  "defaults": {
+    "meal_option": "full_per_diem",
+    "travel_card_used": false,
+    "official_function_meal": false
+  },
+  "receipts_dir": "~/.ea/receipts",
+  "two_captcha_api_key": "",
+  "two_captcha_api_key_note": "On-demand CAPTCHA-solving key (2captcha.com). No code path consumes it automatically today; it is kept as an available tool for form/portal workflows that hit a CAPTCHA. Live key lives in the deployed copy and as TWOCAPTCHA_API_KEY in ~/.ea/.env.",
+  "form_url_note": "The department's travel reimbursement form. An institution plugin may ship an adapter that files the trip packet on it (docs/ea/reimbursement.md); without one the EA prepares the packet and the user files it at this link."
+}

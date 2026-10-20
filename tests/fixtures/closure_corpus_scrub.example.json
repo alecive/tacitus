@@ -1,0 +1,8 @@
+{
+  "_": "Shape of the map scripts/build_closure_corpus.py --scrub takes: real string to stand-in, exact match, longest key first. The real map stays outside the repo (for example ~/.ea-private/closure-corpus-scrub.json).",
+  "Real Owner Name": "Kit Calloway",
+  "Real Owner": "Kit",
+  "real.owner@university.example": "wren.fairbanks84@example.edu",
+  "A Colleague": "Saoirse Kingsford",
+  "a.colleague@university.example": "gus.tremaine71@example.edu"
+}

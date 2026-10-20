@@ -1,0 +1,95 @@
+name: Install or first-week feedback
+description: Report a problem, a confusing step or a suggestion from your install or your first week.
+title: "[install] "
+labels: ["install-feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing. Please do not paste real names, email addresses,
+        mail text or tokens. Replace them with made-up values.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "Run `git -C <your checkout> describe --tags --always` and paste the result."
+      placeholder: v0.0.1
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Ubuntu or Debian
+        - Another Linux distribution
+        - macOS (Apple silicon)
+        - macOS (Intel)
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version and Python version
+      placeholder: "Ubuntu 24.04, Python 3.12.3"
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Install profile
+      options:
+        - email
+        - review-only
+        - assistant
+        - I did not get far enough to choose
+    validations:
+      required: true
+  - type: dropdown
+    id: accounts
+    attributes:
+      label: Accounts and chat platform
+      multiple: true
+      options:
+        - Outlook (Microsoft 365)
+        - Gmail or Google Calendar
+        - Zulip
+        - Slack
+        - No chat platform
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where it happened
+      options:
+        - install.sh
+        - /setup 1. Profile
+        - /setup 2. Identity or 2b. Institution
+        - /setup 3. Outlook (app registration or sign-in)
+        - /setup 4. Google Calendar
+        - /setup 5. Service account (setup-ea-user.sh, ea-bot login)
+        - /setup 6. Chat platform
+        - /setup 7. Claude Code connectors or 7b. Remote writer
+        - /setup 8. Acceptance (hardening, doctor)
+        - First week (briefings, drafts, chat, onboarding questions)
+        - Later use
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened. Paste the exact error text.
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Doctor output
+      description: |
+        Run `python3 scripts/ea-doctor.py --profile <your profile>` in your checkout and
+        paste the output. Remove your email address and any names before you paste.
+      render: text
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggestion
+      description: What would have made this step clearer or easier?

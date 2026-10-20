@@ -1,0 +1,38 @@
+{
+  "actions": [
+    {
+      "action_id": "approve_send",
+      "action_ts": "1700000700.000000",
+      "block_id": "confirm_send_1700000000.000100",
+      "text": {
+        "emoji": true,
+        "text": ":outbox_tray: Send",
+        "type": "plain_text"
+      },
+      "type": "button",
+      "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+    }
+  ],
+  "channel": {
+    "id": "D_OWNER",
+    "name": "directmessage"
+  },
+  "container": {
+    "channel_id": "D_OWNER",
+    "message_ts": "1700000001.000200",
+    "type": "message"
+  },
+  "message": {
+    "bot_id": "B_BOT",
+    "text": ":lock: *Confirm send*",
+    "ts": "1700000001.000200",
+    "type": "message",
+    "user": "U_BOT"
+  },
+  "trigger_id": "111.222.abc",
+  "type": "block_actions",
+  "user": {
+    "id": "U_OWNER",
+    "username": "owner"
+  }
+}

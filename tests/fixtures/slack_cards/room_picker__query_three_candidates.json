@@ -1,0 +1,167 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":file_folder: No project is called *wildfire sensor*. The closest ones:\n\u2022 *Wildfire Sensor Grid*  `wildfire-sensor-grid`\n\u2022 *Garage roof replacement*  `garage-roof-replacement`\n\u2022 *ROBO 5000 co-teach*  `robo5000-coteach`",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "block_id": "room-pick::{\"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}",
+      "elements": [
+        {
+          "action_id": "room_open_project",
+          "text": {
+            "emoji": true,
+            "text": "Open: Wildfire Sensor Grid",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"p\": \"wildfire-sensor-grid\", \"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}"
+        },
+        {
+          "action_id": "room_open_project",
+          "text": {
+            "emoji": true,
+            "text": "Open: Garage roof replacement",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"p\": \"garage-roof-replacement\", \"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}"
+        },
+        {
+          "action_id": "room_open_project",
+          "text": {
+            "emoji": true,
+            "text": "Open: ROBO 5000 co-teach",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"p\": \"robo5000-coteach\", \"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}"
+        },
+        {
+          "action_id": "room_pick_project",
+          "options": [
+            {
+              "text": {
+                "text": "Wildfire Sensor Grid",
+                "type": "plain_text"
+              },
+              "value": "wildfire-sensor-grid"
+            },
+            {
+              "text": {
+                "text": "Garage roof replacement",
+                "type": "plain_text"
+              },
+              "value": "garage-roof-replacement"
+            },
+            {
+              "text": {
+                "text": "ROBO 5000 co-teach",
+                "type": "plain_text"
+              },
+              "value": "robo5000-coteach"
+            },
+            {
+              "text": {
+                "text": "Budget plan 2027-28",
+                "type": "plain_text"
+              },
+              "value": "budget-plan-2027"
+            },
+            {
+              "text": {
+                "text": "unnamed-project",
+                "type": "plain_text"
+              },
+              "value": "unnamed-project"
+            }
+          ],
+          "placeholder": {
+            "text": "Another project\u2026",
+            "type": "plain_text"
+          },
+          "type": "static_select"
+        },
+        {
+          "action_id": "room_create_project",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": "Create \u201cwildfire sensor\u201d",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"n\": \"wildfire sensor\", \"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}"
+        }
+      ],
+      "type": "actions"
+    },
+    {
+      "elements": [
+        {
+          "text": "Create hands this thread to the EA, who registers the project from what was discussed; the room opens right after. Or say `open a channel for <project id>`.",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "context"
+    }
+  ],
+  "calls": [],
+  "inputs": {
+    "args": {
+      "candidates": [
+        {
+          "id": "wildfire-sensor-grid",
+          "name": "Wildfire Sensor Grid",
+          "score": 5
+        },
+        {
+          "id": "garage-roof-replacement",
+          "name": "Garage roof replacement",
+          "score": 3
+        },
+        {
+          "id": "robo5000-coteach",
+          "name": "ROBO 5000 co-teach",
+          "score": 2
+        }
+      ],
+      "channel": "C_MAIN",
+      "query": "wildfire sensor",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "active": [
+        {
+          "id": "wildfire-sensor-grid",
+          "name": "Wildfire Sensor Grid"
+        },
+        {
+          "id": "garage-roof-replacement",
+          "name": "Garage roof replacement"
+        },
+        {
+          "id": "robo5000-coteach",
+          "name": "ROBO 5000 co-teach"
+        },
+        {
+          "id": "budget-plan-2027",
+          "name": "Budget plan 2027-28"
+        },
+        {
+          "id": "unnamed-project",
+          "name": ""
+        }
+      ]
+    }
+  },
+  "kwargs": {},
+  "result": {
+    "ok": true,
+    "picker": true
+  },
+  "text": ":file_folder: No project is called *wildfire sensor*. The closest ones:\n\u2022 *Wildfire Sensor Grid*  `wildfire-sensor-grid`\n\u2022 *Garage roof replacement*  `garage-roof-replacement`\n\u2022 *ROBO 5000 co-teach*  `robo5000-coteach`\nSay `open a channel for <project id>`."
+}

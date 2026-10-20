@@ -1,0 +1,23 @@
+{
+  "trigger_id": "777.888.jkl",
+  "type": "view_submission",
+  "user": {
+    "id": "U_OWNER"
+  },
+  "view": {
+    "callback_id": "edit_draft_modal",
+    "id": "V0001",
+    "private_metadata": "{\"draft_id\": \"AAMkDRAFT1\", \"channel\": \"D_OWNER\", \"message_ts\": \"1700000001.000200\"}",
+    "state": {
+      "values": {
+        "body_block": {
+          "body": {
+            "type": "plain_text_input",
+            "value": "Hi Alex,\n\nThursday works.\n\nKit"
+          }
+        }
+      }
+    },
+    "type": "modal"
+  }
+}

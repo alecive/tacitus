@@ -1,0 +1,11 @@
+{
+  "channel": "C_ROOM1",
+  "channel_type": "group",
+  "name": "ea-new-name",
+  "old_name": "ea-old-name",
+  "subtype": "channel_name",
+  "text": "renamed the channel from \"ea-old-name\" to \"ea-new-name\"",
+  "ts": "1700000400.000500",
+  "type": "message",
+  "user": "U_OWNER"
+}

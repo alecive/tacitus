@@ -1,0 +1,139 @@
+{
+  "_meta": {
+    "id": "hard-success-005",
+    "name": "Scheduling a meeting must use Zoom, never Teams",
+    "category": "hard-success",
+    "bug_ref": "Teams meeting instead of Zoom (commit 077c447)",
+    "description": "An external attendee (avery.calloway88@example.org) proposes a named time that availability_merged shows free, and the user says to set it up. The briefing must stage the invite (pending-event.json) so that production attaches the user's Zoom link: \"online\": true, or a location the bot reads as a video call. Nothing staged or written may name Teams (the user's institution uses Zoom). This tests the Zoom-not-Teams safety rule on the event itself, not only on the briefing text.",
+    "stages_events": true,
+    "expected_attendee": "avery.calloway88@example.org"
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 1,
+      "new_sent_messages": 0,
+      "total_delta_items": 1,
+      "total_inbox": 35,
+      "flagged_count": 0,
+      "events_next_14d": 9
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [],
+    "new_scheduling_requests": [
+      {
+        "message_id": "AAMk-zoom-sched-001",
+        "subject": "Collaboration chat next week?",
+        "from": {
+          "emailAddress": {
+            "name": "Jane Smith",
+            "address": "avery.calloway88@example.org"
+          }
+        },
+        "to": [
+          "wren.fairbanks84@example.edu"
+        ],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T13:10:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, would Tuesday, April 14 at 10:00 am Mountain work for a 30-minute video call about the collaboration? Happy to adjust if not. Best, Jane",
+        "conversationId": "AAQk-zoom-conv-001",
+        "hasAttachments": false,
+        "response_signals": 3
+      }
+    ],
+    "travel_reimbursement": [],
+    "availability_merged": [
+      {
+        "start": "2026-04-14T09:00:00-06:00",
+        "end": "2026-04-14T10:30:00-06:00",
+        "duration_minutes": 90,
+        "day": "Tuesday"
+      },
+      {
+        "start": "2026-04-14T14:00:00-06:00",
+        "end": "2026-04-14T15:30:00-06:00",
+        "duration_minutes": 90,
+        "day": "Tuesday"
+      },
+      {
+        "start": "2026-04-15T10:00:00-06:00",
+        "end": "2026-04-15T12:00:00-06:00",
+        "duration_minutes": 120,
+        "day": "Wednesday"
+      },
+      {
+        "start": "2026-04-16T09:00:00-06:00",
+        "end": "2026-04-16T11:00:00-06:00",
+        "duration_minutes": 120,
+        "day": "Thursday"
+      }
+    ],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday"
+      ],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "Lab Meeting",
+        "start": {
+          "dateTime": "2026-04-09T14:00:00.0000000",
+          "timeZone": "Mountain Standard Time"
+        },
+        "end": {
+          "dateTime": "2026-04-09T15:00:00.0000000",
+          "timeZone": "Mountain Standard Time"
+        },
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 1,
+      "user_message_count": 1,
+      "messages": [
+        {
+          "user": "U_OWNER",
+          "text": "Dr. Smith's Tuesday 10:00 works for me. Set it up and send her the invite.",
+          "ts": "1744200000.000100"
+        }
+      ],
+      "user_instructions": [
+        "Dr. Smith's Tuesday 10:00 works for me. Set it up and send her the invite."
+      ],
+      "pending_instructions": [
+        "Dr. Smith's Tuesday 10:00 works for me. Set it up and send her the invite."
+      ],
+      "handled_instructions": []
+    },
+    "user_profile_note": "User's Zoom link is in user-profile.json. The institution uses Zoom, not Teams. isOnlineMeeting must be false in Graph API to prevent Teams auto-attach."
+  },
+  "ledger_entries": []
+}

@@ -1,0 +1,109 @@
+{
+  "_meta": {
+    "id": "regression-004",
+    "name": "Normal professional emails without question marks must still surface",
+    "category": "regression",
+    "bug_ref": "Positive-signal gate dropping normal emails (commit 4ed5160)",
+    "description": "Professional emails that lack explicit question marks or ACTION REQUIRED keywords were being dropped by the positive-signal gate. Emails like 'Let me know if you want to discuss' or 'Here is the roster for your reference' should still surface as needing attention."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T07:30:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 3,
+      "new_sent_messages": 0,
+      "total_delta_items": 2,
+      "total_inbox": 41,
+      "flagged_count": 0,
+      "events_next_14d": 7
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-nosignal-001",
+        "subject": "NSF CAREER proposal coordination",
+        "from": {
+          "emailAddress": {
+            "name": "Avery Merriweather",
+            "address": "noor.prescott40@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T06:10:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, I've reviewed the draft budget justification and it looks solid. Let me know if you want to discuss the proposal further before the internal deadline. I have a few thoughts on the broader impacts section that might strengthen it.",
+        "conversationId": "AAQk-nosignal-conv-001",
+        "hasAttachments": false,
+        "response_signals": 2
+      },
+      {
+        "message_id": "AAMk-nosignal-002",
+        "subject": "Updated committee roster",
+        "from": {
+          "emailAddress": {
+            "name": "Rio Oyelaran",
+            "address": "yuki.zielinski33@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu", "taylor.dalby23@example.edu"],
+        "cc": ["jo.whitlock3@example.edu"],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T05:45:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi all, Here's the updated committee roster for your reference, attached. Note the change in the graduate admissions subcommittee membership starting Fall 2026. Please review your assignments and flag any conflicts by end of next week.",
+        "conversationId": "AAQk-nosignal-conv-002",
+        "hasAttachments": true,
+        "response_signals": 2
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "CS Department Seminar",
+        "start": {"dateTime": "2026-04-09T14:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T15:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": []
+}

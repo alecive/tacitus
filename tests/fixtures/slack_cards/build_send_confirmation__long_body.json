@@ -1,0 +1,125 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm send*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "fields": [
+        {
+          "text": "*To:* Alex Rivera &lt;alex.rivera@example.edu&gt;",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*CC:* Sam Lee &lt;sam.lee@example.edu&gt;",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Subject:* Re: Long reply",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "Paragraph 000: the long body keeps going past the Slack cap. Paragraph 001: the long body keeps going past the Slack cap. Paragraph 002: the long body keeps going past the Slack cap. Paragraph 003: the long body keeps going past the Slack cap. Paragraph 004: the long body keeps going past the Slack cap. Paragraph 005: the long body keeps going past the Slack cap. Paragraph 006: the long body keeps going past the Slack cap. Paragraph 007: the long body keeps going past the Slack cap. Paragraph 008: the long body keeps going past the Slack cap. Paragraph 009: the long body keeps going past the Slack cap. Paragraph 010: the long body keeps going past the Slack cap. Paragraph 011: the long body keeps going past the Slack cap. Paragraph 012: the long body keeps going past the Slack cap. Paragraph 013: the long body keeps going past the Slack cap. Paragraph 014: the long body keeps going past the Slack cap. Paragraph 015: the long body keeps going past the Slack cap. Paragraph 016: the long body keeps going past the Slack cap. Paragraph 017: the long body keeps going past the Slack cap. Paragraph 018: the long body keeps going past the Slack cap. Paragraph 019: the long body keeps going past the Slack cap. Paragraph 020: the long body keeps going past the Slack cap. Paragraph 021: the long body keeps going past the Slack cap. Paragraph 022: the long body keeps going past the Slack cap. Paragraph 023: the long body keeps going past the Slack cap. Paragraph 024: the long body keeps going past the Slack cap. Paragraph 025: the long body keeps going past the Slack cap. Paragraph 026: the long body keeps going past the Slack cap. Paragraph 027: the long body keeps going past the Slack cap. Paragraph 028: the long body keeps going past the Slack cap. Paragraph 029: the long body keeps going past the Slack cap. Paragraph 030: the long body keeps going past the Slack cap. Paragraph 031: the long body keeps going past the Slack cap. Paragraph 032: the long body keeps going past the Slack cap. Paragraph 033: the long body keeps going past the Slack cap. Paragraph 034: the long body keeps going past the Slack cap. Paragraph 035: the long body keeps going past the Slack cap. Paragraph 036: the long body keeps going past the Slack cap. Paragraph 037: the long body keeps going past the Slack cap. Paragraph 038: the long body keeps going past the Slack cap. Paragraph 039: the long body keeps going past the Slack cap. Paragraph 040: the long body keeps going past the Slack cap. Paragraph 041: the long body keeps going past the Slack cap. Paragraph 042: the long body keeps going past the Slack cap. Paragraph 043: the long body keeps going past the Slack cap. Paragraph 044: the long body keeps going past the Slack cap. Paragraph 045: the long body keeps going past the Slack",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": " cap. Paragraph 046: the long body keeps going past the Slack cap. Paragraph 047: the long body keeps going past the Slack cap. Paragraph 048: the long body keeps going past the Slack cap. Paragraph 049: the long body keeps going past the Slack cap. Paragraph 050: the long body keeps going past the Slack cap. Paragraph 051: the long body keeps going past the Slack cap. Paragraph 052: the long body keeps going past the Slack cap. Paragraph 053: the long body keeps going past the Slack cap. Paragraph 054: the long body keeps going past the Slack cap. Paragraph 055: the long body keeps going past the Slack cap. Paragraph 056: the long body keeps going past the Slack cap. Paragraph 057: the long body keeps going past the Slack cap. Paragraph 058: the long body keeps going past the Slack cap. Paragraph 059: the long body keeps going past the Slack cap. ",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_send_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "approve_send",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": ":outbox_tray: Send",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "cancel_send",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": "Cancel",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "edit_draft",
+          "text": {
+            "emoji": true,
+            "text": ":pencil2: Edit",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "draft_handled",
+          "text": {
+            "emoji": true,
+            "text": ":white_check_mark: Handled",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "sent_myself",
+          "text": {
+            "emoji": true,
+            "text": ":incoming_envelope: Sent myself",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [],
+  "inputs": {
+    "args": {
+      "channel": "C_MAIN",
+      "draft_id": "AAMkDRAFT1",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "draft": {
+        "body": "Paragraph 000: the long body keeps going past the Slack cap. Paragraph 001: the long body keeps going past the Slack cap. Paragraph 002: the long body keeps going past the Slack cap. Paragraph 003: the long body keeps going past the Slack cap. Paragraph 004: the long body keeps going past the Slack cap. Paragraph 005: the long body keeps going past the Slack cap. Paragraph 006: the long body keeps going past the Slack cap. Paragraph 007: the long body keeps going past the Slack cap. Paragraph 008: the long body keeps going past the Slack cap. Paragraph 009: the long body keeps going past the Slack cap. Paragraph 010: the long body keeps going past the Slack cap. Paragraph 011: the long body keeps going past the Slack cap. Paragraph 012: the long body keeps going past the Slack cap. Paragraph 013: the long body keeps going past the Slack cap. Paragraph 014: the long body keeps going past the Slack cap. Paragraph 015: the long body keeps going past the Slack cap. Paragraph 016: the long body keeps going past the Slack cap. Paragraph 017: the long body keeps going past the Slack cap. Paragraph 018: the long body keeps going past the Slack cap. Paragraph 019: the long body keeps going past the Slack cap. Paragraph 020: the long body keeps going past the Slack cap. Paragraph 021: the long body keeps going past the Slack cap. Paragraph 022: the long body keeps going past the Slack cap. Paragraph 023: the long body keeps going past the Slack cap. Paragraph 024: the long body keeps going past the Slack cap. Paragraph 025: the long body keeps going past the Slack cap. Paragraph 026: the long body keeps going past the Slack cap. Paragraph 027: the long body keeps going past the Slack cap. Paragraph 028: the long body keeps going past the Slack cap. Paragraph 029: the long body keeps going past the Slack cap. Paragraph 030: the long body keeps going past the Slack cap. Paragraph 031: the long body keeps going past the Slack cap. Paragraph 032: the long body keeps going past the Slack cap. Paragraph 033: the long body keeps going past the Slack cap. Paragraph 034: the long body keeps going past the Slack cap. Paragraph 035: the long body keeps going past the Slack cap. Paragraph 036: the long body keeps going past the Slack cap. Paragraph 037: the long body keeps going past the Slack cap. Paragraph 038: the long body keeps going past the Slack cap. Paragraph 039: the long body keeps going past the Slack cap. Paragraph 040: the long body keeps going past the Slack cap. Paragraph 041: the long body keeps going past the Slack cap. Paragraph 042: the long body keeps going past the Slack cap. Paragraph 043: the long body keeps going past the Slack cap. Paragraph 044: the long body keeps going past the Slack cap. Paragraph 045: the long body keeps going past the Slack cap. Paragraph 046: the long body keeps going past the Slack cap. Paragraph 047: the long body keeps going past the Slack cap. Paragraph 048: the long body keeps going past the Slack cap. Paragraph 049: the long body keeps going past the Slack cap. Paragraph 050: the long body keeps going past the Slack cap. Paragraph 051: the long body keeps going past the Slack cap. Paragraph 052: the long body keeps going past the Slack cap. Paragraph 053: the long body keeps going past the Slack cap. Paragraph 054: the long body keeps going past the Slack cap. Paragraph 055: the long body keeps going past the Slack cap. Paragraph 056: the long body keeps going past the Slack cap. Paragraph 057: the long body keeps going past the Slack cap. Paragraph 058: the long body keeps going past the Slack cap. Paragraph 059: the long body keeps going past the Slack cap. ",
+        "cc": "Sam Lee <sam.lee@example.edu>",
+        "conversation_id": "AAQkCONV1",
+        "subject": "Re: Long reply",
+        "to": "Alex Rivera <alex.rivera@example.edu>"
+      }
+    }
+  },
+  "kwargs": {},
+  "text": ":lock: *Confirm send*\n*To:* Alex Rivera &lt;alex.rivera@example.edu&gt;\n*CC:* Sam Lee &lt;sam.lee@example.edu&gt;\n*Subject:* Re: Long reply\n\nParagraph 000: the long body keeps going past the Slack cap. Paragraph 001: the long body keeps going past the Slack cap. Paragraph 002: the long body keeps going past the Slack cap. Paragraph 003: the long body keeps going past the Slack cap. Paragraph 004: the long body keeps going past the Slack cap. Paragraph 005: the long body keeps going past the Slack cap. Paragraph 006: the long body keeps going past the Slack cap. Paragraph 007: the long body keeps going past the Slack cap. Paragraph 00"
+}

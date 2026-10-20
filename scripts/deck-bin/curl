@@ -1,0 +1,121 @@
+#!/usr/bin/env python3
+"""`curl` for the EA's deck builds: the deck check goes to the deck's own
+server on loopback, every other call is the real curl.
+
+build-deck.sh (the owner's script, read through the read-only mount) ends
+with `curl -sS -o /dev/null -m 20 -w '%{http_code}' https://<node>/<slug>/`
+and fails the build unless it prints 200. The resident's network policy
+(preprocessor/resident_netpolicy.py) refuses ea-bot every address of this
+host, the tailnet ones included: tcp 443 there fronts every `tailscale
+serve` route, the owner's own routes too, so it is no door to open for one
+check. Run as ea-bot with this directory first on PATH, the check becomes:
+
+  1. `deck_serve.py status --slug <slug>`, a mediated read: the owner side
+     asks tailscaled for the node's DNS name and the route at /<slug>, and
+     reads from /proc/net/tcp whose listener the route points at;
+  2. when the URL's host is that DNS name and the route is the resident's
+     (in the EA's port range, its listener ea-bot's), the real curl fetches
+     http://127.0.0.1:<port>/<slug>/ with the caller's options. That port
+     is on the policy's allowlist (decks).
+
+So the check still proves the route is on the node and the deck's server
+answers it; it does not go through tailscale's TLS front. Any other URL, or
+a route that is not the resident's, runs the real curl unchanged, which
+the policy refuses for a local address. The shim is not the gate: the
+network policy is.
+"""
+from __future__ import annotations
+
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+from urllib.parse import urlsplit
+
+HERE = Path(__file__).resolve().parent
+REPO = HERE.parent.parent
+DECK_SERVE = REPO / "preprocessor" / "deck_serve.py"
+SLUG_PATH_RE = re.compile(r"^/([a-z0-9](?:[a-z0-9-]{0,78}[a-z0-9])?)/?$")
+HOST_RE = re.compile(r"^[a-z0-9.-]+$")
+
+
+def real_binary() -> str:
+    """The first `curl` on PATH that is not this file."""
+    for d in os.environ.get("PATH", "").split(os.pathsep):
+        if not d:
+            continue
+        try:
+            if Path(d).resolve() == HERE:
+                continue
+        except OSError:
+            continue
+        cand = Path(d) / "curl"
+        if cand.is_file() and os.access(cand, os.X_OK):
+            return str(cand)
+    return "/usr/bin/curl"
+
+
+def deck_url(argv: list[str]) -> tuple[int, str, str] | None:
+    """(index, host, slug) when the only URL on the command line is
+    https://<host>/<slug>/ with no port, user, query or fragment."""
+    urls = [i for i, a in enumerate(argv) if "://" in a]
+    if len(urls) != 1:
+        return None
+    i = urls[0]
+    try:
+        u = urlsplit(argv[i])
+        port = u.port
+    except ValueError:
+        return None
+    host = (u.hostname or "").rstrip(".")
+    if (u.scheme != "https" or port not in (None, 443) or u.username or u.password
+            or u.query or u.fragment or not HOST_RE.match(host)):
+        return None
+    m = SLUG_PATH_RE.match(u.path)
+    return (i, host, m.group(1)) if m else None
+
+
+def plan(argv: list[str], status: dict | None) -> list[str]:
+    """The arguments for the real curl: argv with the deck URL replaced by
+    the loopback one when `status` (deck_serve.py status output) shows that
+    URL's route on this node is the resident's; argv unchanged otherwise.
+    Pure, so the mapping is unit-tested."""
+    hit = deck_url(argv)
+    if not hit or not isinstance(status, dict) or status.get("status") != "ok":
+        return list(argv)
+    i, host, slug = hit
+    if host != str(status.get("dns_name") or "").rstrip(".").lower():
+        return list(argv)
+    lo, hi = (status.get("port_range") or [0, -1])[:2]
+    for r in status.get("routes") or []:
+        if not isinstance(r, dict) or r.get("path") != f"/{slug}":
+            continue
+        port = r.get("port")
+        if r.get("resident") is True and isinstance(port, int) and lo <= port <= hi:
+            return argv[:i] + [f"http://127.0.0.1:{port}/{slug}/"] + argv[i + 1:]
+    return list(argv)
+
+
+def route_status(slug: str) -> dict | None:
+    try:
+        r = subprocess.run([sys.executable, str(DECK_SERVE), "status", "--slug", slug],
+                           capture_output=True, text=True, timeout=60)
+        out = json.loads(r.stdout) if r.returncode == 0 else None
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        return None
+    return out if isinstance(out, dict) else None
+
+
+def main() -> int:
+    argv = sys.argv[1:]
+    hit = deck_url(argv)
+    args = plan(argv, route_status(hit[2])) if hit else argv
+    real = real_binary()
+    os.execv(real, [real, *args])
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

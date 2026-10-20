@@ -1,0 +1,460 @@
+[External email - use caution]
+
+
+robotics-worldwide digest Tue, 01 Sep 2026
+
+Table of contents:
+
+* 1 - [robotics-worldwide] [Software] [Dataset] Release of Frosty Lanes - A
+  Multimodal Multitask Dataset Toward Winter-Ready Vehicles - Flo Prescott
+  <yuki.galloway82@example.com>
+* 2 - [robotics-worldwide] [Jobs] Robotics Engineer positions (learned
+  control, real-time control, perception) at Acme Motion - Noor Umberfield
+  <uli.pemberton32@example.com>
+* 3 - [robotics-worldwide] [jobs] Postdoctoral Researcher/Research Assistant -
+  AI & Robotics (Example Institute of Technology) - Oakley Lindqvist
+  <finley.whitlock51@example.com>
+* 4 - [robotics-worldwide] [Journals] Call for Papers - Research Topic on
+  AI-Enabled Robotics and Wireless Power Transfer - Kit Galloway
+  <cy.abernathy12@example.com>
+* 5 - [robotics-worldwide] [Meetings][CFP] HRI 2027 - Abstracts due Sept 11 -
+  Avery Hargrove <vale.fairbanks84@example.com>
+* 6 - [robotics-worldwide] [Meetings] IROS 2026 Workshop on Wearable Robots -
+  Call for Abstracts - Vale Marchetti <lior.zielinski32@example.com>
+* 7 - [robotics-worldwide] [Jobs] Teaching & Research Opportunities in
+  Robotics and A.I. at a new institute - Fern Corvino
+  <yael.umberfield35@example.edu>
+* 8 - [robotics-worldwide] [Meetings] [CFP] DEADLINE EXTENDED (Sep 10): IROS
+  2026 Workshop on Digital Twins for Surgery (DTS) - "Abernathy, Gray"
+  <bri.oyelaran53@example.edu>
+* 9 - [robotics-worldwide] [Journals] [CFP]: Special Issue Generative AI and
+  Robotics: Towards Intelligent and Adaptive Machines - Kit Isenberg
+  <morgan.isenberg34@example.com>
+* 10 - [robotics-worldwide] [Meetings] Deadline Extension - IROS 2026 Workshop
+  on Search Algorithms for Robot Learning - Lane Nakashima
+  <emerson.quillon57@example.edu>
+* 11 - [robotics-worldwide] [Jobs] Postdoctoral Research Positions in Aerial
+  Robotics and Intelligent Flight - Tam Hargrove <kai.quillon4@example.com>
+* 12 - [robotics-worldwide] [Jobs] Postdoctoral Researcher in Robotics,
+  Advanced Manufacturing, and Materials Innovation - Reese Jamison
+  <mika.underhill12@example.edu>
+* 13 - [robotics-worldwide] [Meetings] Deadline Extension - IROS 2026 workshop
+  on the Future of Surgical Robotics (FSR) - Jo Oyelaran
+  <lane.dalby19@example.com>
+* 14 - [robotics-worldwide] [Jobs] PostDoc position at Example Lab - ROVER
+  project - last call - Gray Hargrove <sol.corvino33@example.com>
+* 15 - [robotics-worldwide] [meetings] Deadline Extended! Submit to a robotics
+  conference by September 11 - Indra Fairbanks
+  <jules.umberfield30@example.com>
+* 16 - [robotics-worldwide] [Journals] Robotics Journal: Robot learns to stack
+  blocks like a toddler - Eli Everly <gale.ellery29@example.com>
+* 17 - [robotics-worldwide] [jobs] PhD/Master's Opportunities in Robotics at
+  Example University - October 2027 - Zev Corvino
+  <finley.yarborough75@example.com>
+
+----------------------------------------------------------------------
+
+ * 1
+Date: Mon, 31 Aug 2026 09:23:56 +0200
+From: Flo Prescott <yuki.galloway82@example.com>
+Subject: [robotics-worldwide] [Software] [Dataset] Release of Frosty Lanes - A
+ Multimodal Multitask Dataset Toward Winter-Ready Vehicles
+
+Dear  Colleagues,
+
+Driverless cars do well on dry, sunny roads, but heavy snow is still hard
+for them. Flakes scatter LiDAR returns, lane paint vanishes under slush,
+and phantom obstacles appear where nothing stands.
+
+We are happy to announce "*Frosty Lanes: A Multimodal *Multitask*
+Dataset Toward *Winter-Ready* Vehicles*" (accepted to a robotics journal,
+2026). Every sequence was recorded in real snowfall on public roads, and
+the release holds *22K multimodal *frames for robust perception in winter
+driving.
+Frosty Lanes carries hand labels for more than *5K sequential LiDAR
+sweeps*, including* 210K oriented bounding boxes* for detection,
+*per-point semantic classes*, and the* labeling of airborne snow.*
+
+Some highlights:
+- City streets and rural highways in steady snowfall
+- 64-beam LiDAR, RGB and thermal cameras, GNSS/IMU
+- 3D boxes and point-wise labels, including falling flakes
+- Joint training of snow removal, segmentation and detection
+
+Paper: https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdoi.example.org%2F10.0000%2Ffrosty-lanes&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000001%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00001%3D&reserved=0
+Code: https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fexample%2Ffrosty-lanes&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000002%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00002%3D&reserved=0
+Video: https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fvideo.example.org%2Ffrosty-lanes&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000003%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00003%3D&reserved=0
+
+Questions and feedback are welcome.
+Best
+Flo
+ ---
+Flo Prescott, Associate Professor
+Department of Computer Science, Example Institute of Technology
+
+
+------------------------------
+ * 2
+Date: Mon, 31 Aug 2026 00:50:30 -0700
+From: Noor Umberfield <uli.pemberton32@example.com>
+Subject: [robotics-worldwide] [Jobs] Robotics Engineer positions (learned
+ control, real-time control, perception) at Acme Motion
+
+Dear robotics-worldwide colleagues,
+
+Acme Motion is hiring robotics engineers who want to work where learned
+policies meet real-time control, on real robots.
+
+Who we are
+Acme Motion builds the control layer that turns policy outputs into joint
+torque commands inside a 1 ms loop, on embedded GPUs, on industrial arms
+and mobile bases at customer sites.
+
+Open roles
+- Learning-based control engineer
+- Real-time control engineer
+- Perception engineer
+
+Company:
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.google.com%2Furl%3Fq%3Dhttps%3A%2F%2Fwww.acmemotion.example%26source%3Dgmail%26ust%3D1700000000000000%26sa%3DE&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000004%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00004%3D&reserved=0
+(the careers page is in English and Korean)
+
+Noor Umberfield
+CEO, Acme Motion
+
+
+------------------------------
+ * 3
+Date: Mon, 31 Aug 2026 08:39:51 +0000
+From: Oakley Lindqvist <finley.whitlock51@example.com>
+Subject: [robotics-worldwide] [jobs] Postdoctoral Researcher/Research
+ Assistant - AI & Robotics (Example Institute of Technology)
+
+Hello everyone,
+
+We are looking for a postdoctoral researcher or research assistant to work
+on learning-based control for small aerial robots.
+
+You will be based at the Flight Lab
+<https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fflightlab.example.edu%2F&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000005%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00005%3D&reserved=0> and co-supervised by
+Oakley Lindqvist and a colleague in mechanical engineering.
+
+Start date is flexible. Send a CV and two references.
+
+
+------------------------------
+ * 4
+Date: Mon, 31 Aug 2026 12:00:23 +0000
+From: Kit Galloway <cy.abernathy12@example.com>
+Subject: [robotics-worldwide] [Journals] Call for Papers - Research Topic on
+ AI-Enabled Robotics and Wireless Power Transfer
+
+Dear colleagues,
+
+We invite submissions to a journal research topic on AI-enabled robotics
+and wireless power transfer.
+
+Topics include, but are not limited to:
+- Learning-based charging for mobile robots
+- Inductive and resonant power links for swarms
+- Energy-aware planning and scheduling
+- Hardware design for contactless power
+
+Manuscript summary deadline: 30 October 2026
+Manuscript deadline: 15 February 2027
+
+Details: https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjournal.example.org%2Fresearch-topics%2F80001&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000006%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00006%3D&reserved=0
+
+Topic editors
+Kit Galloway, Example Institute of Technology
+
+
+------------------------------
+ * 5
+Date: Mon, 31 Aug 2026 14:24:32 +0000
+From: Avery Hargrove <vale.fairbanks84@example.com>
+Subject: [robotics-worldwide] [Meetings][CFP] HRI 2027 - Abstracts due Sept 11
+
+Dear colleagues,
+
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fhri.example.org%2F2027%2F&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000007%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00007%3D&reserved=0
+
+The abstract deadline for full papers is September 11, and full papers are
+due September 25. HRI 2027 welcomes work on design, studies, systems and
+theory of human-robot interaction.
+
+Theme: Robots in Everyday Spaces
+
+Important dates
+- Abstracts: September 11, 2026
+- Full papers: September 25, 2026
+- Notification: December 1, 2026
+
+The program committee
+
+
+------------------------------
+ * 6
+Date: Mon, 31 Aug 2026 12:07:34 -0600
+From: Vale Marchetti <lior.zielinski32@example.com>
+Subject: [robotics-worldwide] [Meetings] IROS 2026 Workshop on Wearable Robots
+ - Call for Abstracts
+
+Hello all,
+
+We invite two-page abstracts for the IROS 2026 workshop on wearable robots.
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwearables.example.org%2Firos2026&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000008%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00008%3D&reserved=0
+Submission form:
+<https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.example.org%2Fwearables-abstract&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000009%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00009%3D&reserved=0>
+
+Abstracts are due September 14.
+
+
+------------------------------
+ * 7
+Date: Mon, 31 Aug 2026 14:27:36 -0400
+From: Fern Corvino <yael.umberfield35@example.edu>
+Subject: [robotics-worldwide] [Jobs] Teaching & Research Opportunities in
+ Robotics and A.I. at a new institute
+
+Dear colleagues,
+
+A new engineering institute is recruiting faculty to teach and do research
+in robotics and artificial intelligence. Visiting and permanent roles are
+open, with support for lab start-up.
+
+Please write to the address above with a CV and a short statement.
+
+
+------------------------------
+ * 8
+Date: Mon, 31 Aug 2026 20:57:29 +0000
+From: "Abernathy, Gray" <bri.oyelaran53@example.edu>
+Subject: [robotics-worldwide] [Meetings] [CFP] DEADLINE EXTENDED (Sep 10):
+ IROS 2026 Workshop on Digital Twins for Surgery (DTS)
+
+Dear colleagues,
+
+The submission deadline for the IROS 2026 workshop on digital twins for
+surgery is extended to September 10.
+
+Submission site:
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fopenreview.example.org%2Fgroup%3Fid%3DIROS%2F2026%2FWorkshop%2FDTS&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000010%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00010%3D&reserved=0
+
+We welcome short papers on simulation, registration, and learning for
+surgical robots. Accepted papers will be presented as posters.
+
+
+------------------------------
+ * 9
+Date: Tue, 1 Sep 2026 00:41:11 +0300
+From: Kit Isenberg <morgan.isenberg34@example.com>
+Subject: [robotics-worldwide] [Journals] [CFP]: Special Issue Generative AI
+ and Robotics: Towards Intelligent and Adaptive Machines
+
+Dear colleagues,
+
+We are guest editors of a journal special issue on generative AI and
+robotics.
+
+*https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjournal.example.org%2Fspecial-issues%2Fgenai-robotics&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000011%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00011%3D&reserved=0*
+<https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjournal.example.org%2Fspecial-issues%2Fgenai-robotics&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000012%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00012%3D&reserved=0>
+
+Topics include foundation models for manipulation, generative planning,
+learned world models, and safety of generative policies.
+
+Submission deadline: 31 January 2027
+
+Guest editors
+Kit Isenberg
+
+
+------------------------------
+ * 10
+Date: Mon, 31 Aug 2026 21:51:52 -0500
+From: Lane Nakashima <emerson.quillon57@example.edu>
+Subject: [robotics-worldwide] [Meetings] Deadline Extension - IROS 2026
+ Workshop on Search Algorithms for Robot Learning
+
+Hi all,
+
+The paper deadline for our IROS 2026 workshop on search algorithms for
+robot learning is extended to September 12.
+
+Workshop page:
+<https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fworkshop.example.org%2Fsearch-for-robot-learning-2026&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000013%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00013%3D&reserved=0>
+
+We invite papers on tree search, sampling-based planning, and search inside
+learned models for robotics. Papers may be up to four pages plus
+references and will be reviewed by the organizers.
+
+Topics of interest include:
+- Search in learned world models
+- Sampling-based planning with learned priors
+- Exploration and curiosity for manipulation
+- Test-time search for robot policies
+- Benchmarks and evaluation protocols
+
+Interest form:
+<https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.example.org%2Fsearch-workshop-interest&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000014%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00014%3D&reserved=0>
+
+Best,
+Lane Nakashima
+on behalf of the organizers
+*https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Flane.example.org%2F&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000015%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00015%3D&reserved=0*
+
+
+------------------------------
+ * 11
+Date: Tue, 1 Sep 2026 11:15:44 +0800
+From: Tam Hargrove <kai.quillon4@example.com>
+Subject: [robotics-worldwide] [Jobs] Postdoctoral Research Positions in Aerial
+ Robotics and Intelligent Flight
+
+Dear colleagues,
+
+Two postdoctoral research positions are open in aerial robotics and
+intelligent flight. Projects cover vision-based navigation and agile flight
+control.
+
+Send a CV, a research statement and two references.
+
+
+------------------------------
+ * 12
+Date: Tue, 1 Sep 2026 04:16:37 +0000
+From: Reese Jamison <mika.underhill12@example.edu>
+Subject: [robotics-worldwide] [Jobs] Postdoctoral Researcher in Robotics,
+ Advanced Manufacturing, and Materials Innovation
+
+Dear all,
+
+We seek a postdoctoral researcher in robotic fabrication and materials.
+
+Apply here:
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjobs.example.edu%2Fpostdoc-robotic-fabrication&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000016%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00016%3D&reserved=0
+
+
+------------------------------
+ * 13
+Date: Tue, 1 Sep 2026 17:24:07 +0800
+From: Jo Oyelaran <lane.dalby19@example.com>
+Subject: [robotics-worldwide] [Meetings] Deadline Extension - IROS 2026
+ workshop on the Future of Surgical Robotics (FSR)
+
+Dear colleagues,
+
+*Workshop Website*: https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fworkshop.example.org%2Firos-fsr-2026&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000017%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00017%3D&reserved=0
+
+The submission deadline for the IROS 2026 workshop on the future of
+surgical robotics is extended to September 12.
+
+We welcome extended abstracts on autonomy, perception, haptics and
+clinical translation of surgical robots. Accepted abstracts will be
+presented as short talks or posters, and the best abstract receives an
+award.
+
+How to submit
+   Fill in the form
+   <https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fforms.example.org%2Ffsr-abstract&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000018%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00018%3D&reserved=0>
+   or submit through the review site
+<https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fopenreview.example.org%2Fgroup%3Fid%3DIROS%2F2026%2FWorkshop%2FFSR&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000019%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00019%3D&reserved=0>
+   Templates are on the workshop website <https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fworkshop.example.org%2Firos-fsr-2026&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000020%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00020%3D&reserved=0>
+
+Organizers
+Jo Oyelaran and colleagues
+
+
+------------------------------
+ * 14
+Date: Tue, 1 Sep 2026 13:59:14 +0200
+From: Gray Hargrove <sol.corvino33@example.com>
+Subject: [robotics-worldwide] [Jobs] PostDoc position at Example Lab - ROVER
+ project - last call
+
+Dear colleagues,
+
+Last call for a postdoc position on the ROVER project at Example Lab:
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Flab.example.org%2Fteams%2Frover%2F&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000021%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00021%3D&reserved=0
+
+------------ SUPERVISORS ------------
+- Dr. Gray Hargrove
+
+------------ HOW TO APPLY ------------
+Send a CV and a cover letter to the address above.
+
+
+------------------------------
+ * 15
+Date: Tue, 1 Sep 2026 13:08:42 +0000
+From: Indra Fairbanks <jules.umberfield30@example.com>
+Subject: [robotics-worldwide] [meetings] Deadline Extended! Submit to a
+ robotics conference by September 11
+
+Dear colleagues,
+
+The paper deadline for our robotics conference is extended to
+September 11. Full papers and short papers are welcome.
+
+More information is available
+at: https://nam10.safelinks.protection.outlook.com/?url=http%3A%2F%2Fconference.example.org%2F&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000022%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00022%3D&reserved=0
+
+Kind regards,
+Indra Fairbanks
+
+
+------------------------------
+ * 16
+Date: Tue, 1 Sep 2026 15:29:19 +0200
+From: Eli Everly <gale.ellery29@example.com>
+Subject: [robotics-worldwide] [Journals] Robotics Journal: Robot learns to
+ stack blocks like a toddler
+
+Dear colleagues,
+
+Our new article shows a small robot that learns to stack blocks through
+play, the way toddlers do.
+
+Free access:
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjournal.example.org%2Feprint%2FABC123%2Ffull&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000023%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00023%3D&reserved=0
+<https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjournal.example.org%2Feprint%2FABC123%2Ffull&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000024%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00024%3D&reserved=0>
+
+Article:
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fjournal.example.org%2Fdoi%2F10.0000%2Frobot-blocks&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000025%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00025%3D&reserved=0
+
+best wishes
+
+----------------------------
+
+Eli Everly
+Knowledge Technology Group
+Example Institute of Technology
+
+
+------------------------------
+ * 17
+Date: Tue, 1 Sep 2026 15:19:45 +0100
+From: Zev Corvino <finley.yarborough75@example.com>
+Subject: [robotics-worldwide] [jobs] PhD/Master's Opportunities in Robotics at
+ Example University - October 2027
+
+Dear colleagues,
+
+Our lab invites applications for PhD and Master's study in robotics for
+October 2027 entry.
+
+Application opens: 1 September 2026
+Main application deadline: 14 October 2026
+
+Programme and application details:
+https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgraduate.example.edu%2Frobotics&data=05%7C02%7Cuser%40example.edu%7C0f1e2d3c4b5a69788796a5b4c3d2e1f0%7C00000000000000000000000000000000%7C1%7C0%7C639000000000000026%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ZXhhbXBsZS1zZGF0YS00026%3D&reserved=0
+
+Best regards,
+Zev Corvino
+
+
+------------------------------
+
+*********************************************
+
+End of robotics-worldwide Digest Tue, 01 Sep 2026

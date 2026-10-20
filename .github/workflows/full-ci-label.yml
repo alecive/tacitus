@@ -1,0 +1,28 @@
+# Adding the `full-ci` label to a pull request starts a full CI run on its
+# branch (ci.yml through Run workflow), so the label is the whole opt-in. A
+# label event cannot start ci.yml itself without also starting a run for
+# every other label, whose skipped checks would stand in for real ones.
+# The check runs land on the branch's head commit, which is the pull
+# request's. A pull request from a fork has a read-only token here; run
+# CI on its branch by hand instead.
+name: full-ci label
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  start-full-ci:
+    if: github.event.label.name == 'full-ci'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run CI on the branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.head_ref }}
+        run: gh workflow run ci.yml --repo "$REPO" --ref "$BRANCH"

@@ -1,0 +1,279 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm calendar invite*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": ":no_entry: The bot could not store this invite's text, so this card has no Create button. Ask the EA to stage it again.",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Invite text (every invitee gets it):*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "> Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "> . Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. ",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Subject:* Project sync",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "fields": [
+        {
+          "text": "*When:* 2026-10-06T14:00 to 2026-10-06T14:30",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*Attendees:* alex.rivera@example.edu",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_event_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "cancel_event",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": "Cancel",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "text": {
+              "text": ":lock: *Confirm calendar invite*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": ":no_entry: The bot could not store this invite's text, so this card has no Create button. Ask the EA to stage it again.",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Invite text (every invitee gets it):*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "> Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "> . Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. ",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Subject:* Project sync",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "fields": [
+              {
+                "text": "*When:* 2026-10-06T14:00 to 2026-10-06T14:30",
+                "type": "mrkdwn"
+              },
+              {
+                "text": "*Attendees:* alex.rivera@example.edu",
+                "type": "mrkdwn"
+              }
+            ],
+            "type": "section"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "block_id": "confirm_event_1700000000.000100",
+            "elements": [
+              {
+                "action_id": "cancel_event",
+                "style": "danger",
+                "text": {
+                  "emoji": true,
+                  "text": "Cancel",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"\"}"
+              }
+            ],
+            "type": "actions"
+          }
+        ],
+        "channel": "D_OWNER",
+        "text": ":lock: *Confirm calendar invite*\n*Subject:* Project sync\n*When:* 2026-10-06T14:00 to 2026-10-06T14:30\n*Attendees:* alex.rivera@example.edu"
+      },
+      "method": "chat_postMessage"
+    },
+    {
+      "kwargs": {
+        "channel": "D_OWNER",
+        "message_ts": "1700000001.000200"
+      },
+      "method": "chat_getPermalink"
+    },
+    {
+      "kwargs": {
+        "channel": "C_MAIN",
+        "text": ":lock: The Create button for this event is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>",
+        "thread_ts": "1700000000.000100",
+        "unfurl_links": false,
+        "unfurl_media": false
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "attendees": "alex.rivera@example.edu",
+      "body": "Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. ",
+      "channel": "C_MAIN",
+      "end": "2026-10-06T14:30",
+      "location": "",
+      "start": "2026-10-06T14:00",
+      "subject": "Project sync",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "stash_ref": ""
+    }
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "text": {
+          "text": ":lock: *Confirm calendar invite*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": ":no_entry: The bot could not store this invite's text, so this card has no Create button. Ask the EA to stage it again.",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Invite text (every invitee gets it):*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "> Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "> . Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. ",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Subject:* Project sync",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "fields": [
+          {
+            "text": "*When:* 2026-10-06T14:00 to 2026-10-06T14:30",
+            "type": "mrkdwn"
+          },
+          {
+            "text": "*Attendees:* alex.rivera@example.edu",
+            "type": "mrkdwn"
+          }
+        ],
+        "type": "section"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "block_id": "confirm_event_1700000000.000100",
+        "elements": [
+          {
+            "action_id": "cancel_event",
+            "style": "danger",
+            "text": {
+              "emoji": true,
+              "text": "Cancel",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"\"}"
+          }
+        ],
+        "type": "actions"
+      }
+    ],
+    "channel": "D_OWNER",
+    "text": ":lock: *Confirm calendar invite*\n*Subject:* Project sync\n*When:* 2026-10-06T14:00 to 2026-10-06T14:30\n*Attendees:* alex.rivera@example.edu"
+  },
+  "text": ":lock: *Confirm calendar invite*\n*Subject:* Project sync\n*When:* 2026-10-06T14:00 to 2026-10-06T14:30\n*Attendees:* alex.rivera@example.edu"
+}

@@ -1,0 +1,321 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm calendar invite*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Invite text (every invitee gets it):*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "> Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "> . Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. \n>\n> Join Zoom meeting\n> https://example.zoom.us/j/1234567890",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Subject:* Weekly group meeting",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "fields": [
+        {
+          "text": "*When:* 2026-10-06T14:00 to 2026-10-06T15:00",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*Attendees:* alex.rivera@example.edu",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*Location:* https://example.zoom.us/j/1234567890",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*Repeats:* weekly every 2 on TU,TH until 2026-12-03",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_event_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "approve_event",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": ":calendar: Create",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        },
+        {
+          "action_id": "cancel_event",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": "Cancel",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "text": {
+              "text": ":lock: *Confirm calendar invite*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Invite text (every invitee gets it):*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "> Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "> . Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. \n>\n> Join Zoom meeting\n> https://example.zoom.us/j/1234567890",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Subject:* Weekly group meeting",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "fields": [
+              {
+                "text": "*When:* 2026-10-06T14:00 to 2026-10-06T15:00",
+                "type": "mrkdwn"
+              },
+              {
+                "text": "*Attendees:* alex.rivera@example.edu",
+                "type": "mrkdwn"
+              },
+              {
+                "text": "*Location:* https://example.zoom.us/j/1234567890",
+                "type": "mrkdwn"
+              },
+              {
+                "text": "*Repeats:* weekly every 2 on TU,TH until 2026-12-03",
+                "type": "mrkdwn"
+              }
+            ],
+            "type": "section"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "block_id": "confirm_event_1700000000.000100",
+            "elements": [
+              {
+                "action_id": "approve_event",
+                "style": "primary",
+                "text": {
+                  "emoji": true,
+                  "text": ":calendar: Create",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              },
+              {
+                "action_id": "cancel_event",
+                "style": "danger",
+                "text": {
+                  "emoji": true,
+                  "text": "Cancel",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              }
+            ],
+            "type": "actions"
+          }
+        ],
+        "channel": "D_OWNER",
+        "text": ":lock: *Confirm calendar invite*\n*Subject:* Weekly group meeting\n*When:* 2026-10-06T14:00 to 2026-10-06T15:00\n*Attendees:* alex.rivera@example.edu\n*Location:* https://example.zoom.us/j/1234567890\n*Repeats:* weekly every 2 on TU,TH until 2026-12-03"
+      },
+      "method": "chat_postMessage"
+    },
+    {
+      "kwargs": {
+        "channel": "D_OWNER",
+        "message_ts": "1700000001.000200"
+      },
+      "method": "chat_getPermalink"
+    },
+    {
+      "kwargs": {
+        "channel": "C_MAIN",
+        "text": ":lock: The Create button for this event is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>",
+        "thread_ts": "1700000000.000100",
+        "unfurl_links": false,
+        "unfurl_media": false
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "attendees": "alex.rivera@example.edu",
+      "body": "Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. ",
+      "channel": "C_MAIN",
+      "end": "2026-10-06T15:00",
+      "hold": false,
+      "location": "Zoom",
+      "online": true,
+      "repeat": {
+        "repeat": "weekly",
+        "repeat_days": "TU,TH",
+        "repeat_interval": 2,
+        "repeat_until": "2026-12-03"
+      },
+      "start": "2026-10-06T14:00",
+      "subject": "Weekly group meeting",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {}
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "text": {
+          "text": ":lock: *Confirm calendar invite*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Invite text (every invitee gets it):*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "> Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "> . Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. Agenda item that runs long. \n>\n> Join Zoom meeting\n> https://example.zoom.us/j/1234567890",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Subject:* Weekly group meeting",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "fields": [
+          {
+            "text": "*When:* 2026-10-06T14:00 to 2026-10-06T15:00",
+            "type": "mrkdwn"
+          },
+          {
+            "text": "*Attendees:* alex.rivera@example.edu",
+            "type": "mrkdwn"
+          },
+          {
+            "text": "*Location:* https://example.zoom.us/j/1234567890",
+            "type": "mrkdwn"
+          },
+          {
+            "text": "*Repeats:* weekly every 2 on TU,TH until 2026-12-03",
+            "type": "mrkdwn"
+          }
+        ],
+        "type": "section"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "block_id": "confirm_event_1700000000.000100",
+        "elements": [
+          {
+            "action_id": "approve_event",
+            "style": "primary",
+            "text": {
+              "emoji": true,
+              "text": ":calendar: Create",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          },
+          {
+            "action_id": "cancel_event",
+            "style": "danger",
+            "text": {
+              "emoji": true,
+              "text": "Cancel",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          }
+        ],
+        "type": "actions"
+      }
+    ],
+    "channel": "D_OWNER",
+    "text": ":lock: *Confirm calendar invite*\n*Subject:* Weekly group meeting\n*When:* 2026-10-06T14:00 to 2026-10-06T15:00\n*Attendees:* alex.rivera@example.edu\n*Location:* https://example.zoom.us/j/1234567890\n*Repeats:* weekly every 2 on TU,TH until 2026-12-03"
+  },
+  "text": ":lock: *Confirm calendar invite*\n*Subject:* Weekly group meeting\n*When:* 2026-10-06T14:00 to 2026-10-06T15:00\n*Attendees:* alex.rivera@example.edu\n*Location:* https://example.zoom.us/j/1234567890\n*Repeats:* weekly every 2 on TU,TH until 2026-12-03"
+}

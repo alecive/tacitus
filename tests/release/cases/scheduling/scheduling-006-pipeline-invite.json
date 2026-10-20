@@ -1,0 +1,41 @@
+{
+  "id": "scheduling-006",
+  "name": "Pipeline: an agreed time and 'send the invite' stage the event, not a reply",
+  "category": "regression",
+  "bug_ref": "2026-10-14 to 10-16 shadow: four 'send the calendar invite with zoom' turns handed off as mode other",
+  "text": "Send the calendar invite with zoom to Avery",
+  "pipeline": {
+    "thread": [
+      {
+        "id": "m1",
+        "conversation_id": "rel-c1",
+        "from": {
+          "address": "wren.fairbanks84@example.edu"
+        },
+        "sent": "{{-2d}}T17:00:00Z",
+        "subject": "Seminar committee sync",
+        "text": "Avery, would {{+6d:%A}} {{+6d:%B %-d}} at 10:00 AM MT work for the seminar committee sync? 45 minutes."
+      },
+      {
+        "id": "m2",
+        "conversation_id": "rel-c1",
+        "from": {
+          "address": "eli.dalby4@example.edu"
+        },
+        "sent": "{{-1d}}T18:30:00Z",
+        "subject": "Re: Seminar committee sync",
+        "text": "{{+6d:%A}} at 10:00 AM MT works for me. Send the invite and I will be there."
+      }
+    ],
+    "expect": {
+      "status": "ok",
+      "kind": "invite",
+      "hold": false,
+      "attendees": [
+        "eli.dalby4@example.edu"
+      ],
+      "subject": "Seminar committee sync",
+      "starts_at": "{{+6d}}T10:00"
+    }
+  }
+}

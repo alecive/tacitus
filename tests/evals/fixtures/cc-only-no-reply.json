@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "id": "hard-success-001",
+    "name": "CC-only email should be FYI, not prompt a reply",
+    "category": "hard-success",
+    "description": "When the user is only CC'd on an email addressed to someone else, the briefing should present it as informational. It should NOT suggest drafting a reply or ask 'want to send a quick thanks?'. This tests the CC-awareness triage logic."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 3,
+      "new_sent_messages": 1,
+      "total_delta_items": 2,
+      "total_inbox": 40,
+      "flagged_count": 0,
+      "events_next_14d": 8
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-cc-only-001",
+        "subject": "Re: Faculty Senate Committee Nominations",
+        "from": {
+          "emailAddress": {
+            "name": "Harper Ashcombe",
+            "address": "ira.thornbury32@example.edu"
+          }
+        },
+        "to": ["sage.bellweather30@example.edu"],
+        "cc": ["wren.fairbanks84@example.edu", "emerson.zielinski78@example.edu"],
+        "user_is_direct_recipient": false,
+        "user_is_cc_only": true,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-08T22:15:00Z",
+        "days_in_inbox": 1,
+        "bodyPreview": "Dear Oakley, I'd be happy to serve on the curriculum committee for the upcoming year. Let me know what the next steps are. Best regards, Harper",
+        "conversationId": "AAQk-senate-conv-001",
+        "hasAttachments": false,
+        "response_signals": 1
+      },
+      {
+        "message_id": "AAMk-direct-001",
+        "subject": "Quick question about the lab GPU cluster",
+        "from": {
+          "emailAddress": {
+            "name": "Cy Rasmussen",
+            "address": "lior.corvino62@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T10:00:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hey Kit, do you know if the A100 in the lab cluster is available for student projects this semester? One of my students needs it for their thesis work. Thanks, Cy",
+        "conversationId": "AAQk-gpu-conv-001",
+        "hasAttachments": false,
+        "response_signals": 3
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": []
+}

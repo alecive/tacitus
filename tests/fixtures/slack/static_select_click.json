@@ -1,0 +1,36 @@
+{
+  "actions": [
+    {
+      "action_id": "room_pick_project",
+      "block_id": "room-pick::{\"c\": \"C_MAIN\", \"t\": \"1700000000.000100\"}",
+      "placeholder": {
+        "text": "Another project",
+        "type": "plain_text"
+      },
+      "selected_option": {
+        "text": {
+          "text": "Budget plan 2027-28",
+          "type": "plain_text"
+        },
+        "value": "budget-plan-2027"
+      },
+      "type": "static_select"
+    }
+  ],
+  "channel": {
+    "id": "C_MAIN"
+  },
+  "message": {
+    "bot_id": "B_BOT",
+    "text": ":file_folder: No project",
+    "thread_ts": "1700000000.000100",
+    "ts": "1700000003.000400",
+    "type": "message",
+    "user": "U_BOT"
+  },
+  "trigger_id": "555.666.ghi",
+  "type": "block_actions",
+  "user": {
+    "id": "U_OWNER"
+  }
+}

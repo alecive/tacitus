@@ -1,0 +1,99 @@
+{
+  "_meta": {
+    "id": "hard-success-006",
+    "name": "Scheduling poll reply must use --sender-only, not reply-all",
+    "category": "hard-success",
+    "bug_ref": "Scheduling poll reply-all (commit f52ff53)",
+    "description": "When responding to a scheduling poll email sent to multiple recipients, the reply should use --sender-only to avoid broadcasting availability to all poll recipients. Reply-all is the default, but scheduling poll responses are an explicit exception. This tests the sender-only override for poll replies."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 2,
+      "new_sent_messages": 0,
+      "total_delta_items": 1,
+      "total_inbox": 38,
+      "flagged_count": 0,
+      "events_next_14d": 11
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [],
+    "new_scheduling_requests": [
+      {
+        "message_id": "AAMk-poll-sched-001",
+        "subject": "Finding a time for the advisory board check-in",
+        "from": {
+          "emailAddress": {
+            "name": "Lane Brightwater",
+            "address": "avery.iverson34@example.edu"
+          }
+        },
+        "to": [
+          "wren.fairbanks84@example.edu",
+          "yuki.zielinski33@example.edu",
+          "emerson.zielinski78@example.edu",
+          "hollis.bellweather17@example.edu",
+          "indra.delacroix81@example.edu",
+          "ira.thornbury32@example.edu"
+        ],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T08:45:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi everyone, I'm trying to find a time for our advisory board check-in. Could you let me know your availability for the week of April 14? Ideally 60 minutes. Thanks! Lane",
+        "conversationId": "AAQk-poll-conv-001",
+        "hasAttachments": false,
+        "response_signals": 4
+      }
+    ],
+    "travel_reimbursement": [],
+    "availability_merged": [
+      {"start": "2026-04-14T09:00:00-06:00", "end": "2026-04-14T11:00:00-06:00", "duration_minutes": 120, "day": "Monday"},
+      {"start": "2026-04-15T13:00:00-06:00", "end": "2026-04-15T15:00:00-06:00", "duration_minutes": 120, "day": "Tuesday"},
+      {"start": "2026-04-16T09:00:00-06:00", "end": "2026-04-16T12:00:00-06:00", "duration_minutes": 180, "day": "Wednesday"}
+    ],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {
+        "avery.iverson34@example.edu": {
+          "greeting": "Hi Lane",
+          "closing": "Thanks,\nKit",
+          "avg_length_words": 50,
+          "tone": "collegial"
+        }
+      }
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": []
+}

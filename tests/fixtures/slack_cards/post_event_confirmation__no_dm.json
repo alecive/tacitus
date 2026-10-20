@@ -1,0 +1,211 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm calendar invite*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Subject:* Project sync",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "fields": [
+        {
+          "text": "*When:* 2026-10-06T14:00 to 2026-10-06T14:30",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*Attendees:* alex.rivera@example.edu",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_event_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "approve_event",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": ":calendar: Create",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        },
+        {
+          "action_id": "cancel_event",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": "Cancel",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "text": {
+              "text": ":lock: *Confirm calendar invite*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Subject:* Project sync",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "fields": [
+              {
+                "text": "*When:* 2026-10-06T14:00 to 2026-10-06T14:30",
+                "type": "mrkdwn"
+              },
+              {
+                "text": "*Attendees:* alex.rivera@example.edu",
+                "type": "mrkdwn"
+              }
+            ],
+            "type": "section"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "block_id": "confirm_event_1700000000.000100",
+            "elements": [
+              {
+                "action_id": "approve_event",
+                "style": "primary",
+                "text": {
+                  "emoji": true,
+                  "text": ":calendar: Create",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              },
+              {
+                "action_id": "cancel_event",
+                "style": "danger",
+                "text": {
+                  "emoji": true,
+                  "text": "Cancel",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              }
+            ],
+            "type": "actions"
+          }
+        ],
+        "channel": "C_MAIN",
+        "text": ":lock: *Confirm calendar invite*\n*Subject:* Project sync\n*When:* 2026-10-06T14:00 to 2026-10-06T14:30\n*Attendees:* alex.rivera@example.edu",
+        "thread_ts": "1700000000.000100"
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "attendees": "alex.rivera@example.edu",
+      "channel": "C_MAIN",
+      "end": "2026-10-06T14:30",
+      "start": "2026-10-06T14:00",
+      "subject": "Project sync",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "dm": null
+    }
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "text": {
+          "text": ":lock: *Confirm calendar invite*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Subject:* Project sync",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "fields": [
+          {
+            "text": "*When:* 2026-10-06T14:00 to 2026-10-06T14:30",
+            "type": "mrkdwn"
+          },
+          {
+            "text": "*Attendees:* alex.rivera@example.edu",
+            "type": "mrkdwn"
+          }
+        ],
+        "type": "section"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "block_id": "confirm_event_1700000000.000100",
+        "elements": [
+          {
+            "action_id": "approve_event",
+            "style": "primary",
+            "text": {
+              "emoji": true,
+              "text": ":calendar: Create",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          },
+          {
+            "action_id": "cancel_event",
+            "style": "danger",
+            "text": {
+              "emoji": true,
+              "text": "Cancel",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          }
+        ],
+        "type": "actions"
+      }
+    ],
+    "channel": "C_MAIN",
+    "text": ":lock: *Confirm calendar invite*\n*Subject:* Project sync\n*When:* 2026-10-06T14:00 to 2026-10-06T14:30\n*Attendees:* alex.rivera@example.edu",
+    "thread_ts": "1700000000.000100"
+  },
+  "text": ":lock: *Confirm calendar invite*\n*Subject:* Project sync\n*When:* 2026-10-06T14:00 to 2026-10-06T14:30\n*Attendees:* alex.rivera@example.edu"
+}

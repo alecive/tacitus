@@ -1,0 +1,217 @@
+# CI: the three tiers docs/install-testing.md describes.
+#
+#   lint-and-validate   the secrets lint, the config templates, the syntax
+#                       of the bot and the preprocessor (ubuntu, every run)
+#   wall                tier 1: the unit wall with no accounts, on
+#                       ubuntu-22.04 (Python 3.10, the floor), ubuntu-latest
+#                       and macos-latest (a macOS minute costs ten Linux
+#                       minutes on a private repo)
+#   wall-docker         the wall in the image, with the two-user layout
+#   bootstrap-linux     install.sh as a new user runs it
+#   install-smoke-linux tier 2: the install end to end on a fresh runner
+#                       with no accounts (tests/install/smoke.sh)
+#   install-smoke-macos tier 2 on macOS, and bootstrap-macos: tags and
+#                       Run workflow only
+#
+# A full run is opt-in. Every pull request and every push to main runs the
+# lint; the tiers above run only on a full run:
+#   - a pull request with the `full-ci` label (adding the label starts the
+#     run, through full-ci-label.yml);
+#   - Actions > CI > Run workflow on a branch;
+#   - a tag.
+# Without a full run the wall legs start, skip every step and report, so
+# the checks branch protection requires still arrive; the other jobs
+# report skipped, which counts as passed. The local post-commit hook runs
+# the wall on every commit to main in the deploying checkout. A draft runs
+# nothing, and a new push cancels the pull request's run in progress.
+#
+# Tier 3, the release suite, needs a login and runs on the owner's machine
+# (docs/EVAL.md, "Release tests"). Every action is pinned to a version.
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # One run per pull request: a new push cancels the run in progress. Every
+  # other run has a group of its own, so pushes to main never wait or cancel.
+  group: ci-${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-validate:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Secrets lint
+        run: ./tests/secrets_lint.sh
+
+      - name: Validate config templates
+        run: python3 tests/validate_config.py --ci
+
+      - name: Python syntax check
+        run: python3 -m py_compile ea-chat-bot.py && echo "ea-chat-bot.py OK"
+
+      - name: Check preprocessor imports
+        run: |
+          cd preprocessor
+          for f in *.py; do
+            python3 -c "import ast; ast.parse(open('$f').read())" && echo "$f OK"
+          done
+
+  wall:
+    name: wall (${{ matrix.os }})
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    strategy:
+      fail-fast: false
+      matrix:
+        # The macOS leg joins the matrix on pull requests, tags and runs by hand.
+        os: ${{ fromJSON((github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')) && '["ubuntu-22.04", "ubuntu-latest", "macos-latest"]' || '["ubuntu-22.04", "ubuntu-latest"]') }}
+    # Without a full run every leg runs on a Linux runner and skips every
+    # step, so its required check still reports (a leg left out of the
+    # matrix would never report, and a skipped matrix job reports under
+    # an unexpanded name).
+    runs-on: ${{ (contains(github.event.pull_request.labels.*.name, 'full-ci') || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')) && matrix.os || 'ubuntu-latest' }}
+    env:
+      LEG_TESTS: ${{ contains(github.event.pull_request.labels.*.name, 'full-ci') || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        if: env.LEG_TESTS == 'true'
+
+      - uses: actions/setup-python@v7.0.0
+        if: env.LEG_TESTS == 'true'
+        with:
+          # 3.10 is the floor SETUP.md states; the other legs take a current release.
+          python-version: ${{ matrix.os == 'ubuntu-22.04' && '3.10' || '3.12' }}
+
+      - name: Install dependencies
+        if: env.LEG_TESTS == 'true'
+        # requirements.txt is the runtime set; the wall also needs pytest and
+        # PyYAML (the container lock has it, the host file does not).
+        run: python3 -m pip install -r requirements.txt pytest pyyaml
+
+      - name: poppler (pdftotext) on Linux
+        if: env.LEG_TESTS == 'true' && runner.os == 'Linux'
+        run: sudo apt-get -qq install -y poppler-utils
+
+      - name: Point HOME and EA_DIR at empty directories
+        if: env.LEG_TESTS == 'true'
+        # Nothing the wall runs may read a real install, so HOME and EA_DIR
+        # are empty directories the tests may create under (a path that
+        # cannot be made fails the tests that build their own EA_DIR). The
+        # zone the suite states its clocks in is set by the suite itself
+        # (tests/conftest.py SUITE_TZ).
+        run: |
+          mkdir -p "$RUNNER_TEMP/home" "$RUNNER_TEMP/ea"
+          echo "HOME=$RUNNER_TEMP/home" >> "$GITHUB_ENV"
+          echo "EA_DIR=$RUNNER_TEMP/ea" >> "$GITHUB_ENV"
+
+      - name: Test wall
+        if: env.LEG_TESTS == 'true'
+        env:
+          WALL_VERBOSE: "1"
+        run: python3 tests/run_wall.py
+
+      - name: Secrets lint
+        if: env.LEG_TESTS == 'true'
+        run: bash tests/secrets_lint.sh
+
+      - name: Validate config templates
+        if: env.LEG_TESTS == 'true'
+        run: python3 tests/validate_config.py --ci
+
+  wall-docker:
+    # The whole wall on Linux with the two-user layout: the image holds the
+    # owner and ea-bot with the sudoers rule between them, so the tests of
+    # the owner-resident boundary run here for real (a bare runner skips
+    # them). The build is the same image Docker users run.
+    if: contains(github.event.pull_request.labels.*.name, 'full-ci') || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Build the image
+        run: docker build -t ea-system:ci .
+
+      - name: Test wall in the image
+        run: |
+          docker run --rm --user owner -e HOME=/home/owner -e WALL_VERBOSE=1 \
+            -e PIP_DISABLE_PIP_VERSION_CHECK=1 ea-system:ci \
+            sh -c 'python3 -m pip install -q --user pytest pyyaml && cd /opt/ea-system && python3 tests/run_wall.py'
+
+  bootstrap-linux:
+    # The one-command install as a new user runs it: the real Claude Code
+    # installer and pip, then the hand-off it prints. No login, no quota.
+    if: contains(github.event.pull_request.labels.*.name, 'full-ci') || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: install.sh --no-launch, twice
+        run: |
+          ./install.sh --no-launch
+          test -x "$HOME/.local/bin/claude"
+          "$HOME/.local/bin/claude" --version
+          ./install.sh --no-launch | tee second.txt
+          grep -q "already installed" second.txt
+
+  bootstrap-macos:
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: install.sh --no-launch
+        run: |
+          brew list python@3.12 >/dev/null 2>&1 || brew install python@3.12
+          ./install.sh --no-launch
+          "$HOME/.local/bin/claude" --version
+
+  install-smoke-linux:
+    if: contains(github.event.pull_request.labels.*.name, 'full-ci') || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Install smoke (email profile, no accounts)
+        # The runner's own python3 and passwordless sudo: the path a new
+        # user's machine takes. The job ends with the doctor's status.
+        run: bash tests/install/smoke.sh
+
+  install-smoke-macos:
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Homebrew python 3.12
+        # Apple's /usr/bin/python3 is 3.9; the smoke uses a Homebrew
+        # interpreter, which ea-bot can reach (the runner's home cannot be).
+        # 3.12, the version install.sh names: Homebrew's newest python3 can
+        # run ahead of the wheels some requirements publish.
+        run: brew list python@3.12 >/dev/null 2>&1 || brew install python@3.12
+
+      - name: Install smoke (email profile, no accounts)
+        env:
+          # libexec/bin holds an unversioned python3, so the directory
+          # the smoke puts first on PATH answers 3.12 to setup.sh's `python3`.
+          EA_SMOKE_PYTHON: /opt/homebrew/opt/python@3.12/libexec/bin/python3
+        run: bash tests/install/smoke.sh

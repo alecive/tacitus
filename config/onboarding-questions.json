@@ -1,0 +1,114 @@
+{
+  "_doc": "The first-week question bank (preprocessor/onboarding.py). The morning briefing asks one a day on a chat profile; the email profile answers them in one sitting (onboarding.py ask, user_init.py --phase preferences). An answer becomes a rule in ~/.ea/config/preferences.json: kind and scope come from the question, text is `topic: <the answer>`, quote is the answer, source is onboarding. Order is the order asked. No institution or personal names here: the user supplies those in the answers.",
+  "version": 1,
+  "questions": [
+    {
+      "id": "vip-senders",
+      "scope": "mail-triage",
+      "kind": "prefer",
+      "topic": "Senders never to bury",
+      "question": "Whose mail must never be buried, whatever else is going on?",
+      "why": "The briefing ranks these senders first and never folds them into a digest.",
+      "example": "My department chair, my program officers and my own students."
+    },
+    {
+      "id": "skip-lists",
+      "scope": "newsletters",
+      "kind": "avoid",
+      "topic": "Lists and newsletters to skip",
+      "question": "Which newsletters or mailing lists should the EA skip entirely?",
+      "why": "A skipped list is archived in code and never reaches a briefing.",
+      "example": "The campus events digest and every vendor newsletter."
+    },
+    {
+      "id": "urgent-means",
+      "scope": "briefing",
+      "kind": "instruction",
+      "topic": "What counts as urgent",
+      "question": "What makes an item urgent enough to lead your briefing?",
+      "why": "The briefing uses its URGENT framing only for what you call urgent.",
+      "example": "A grant deadline inside 48 hours or a student in trouble; a reminder is never urgent."
+    },
+    {
+      "id": "never-alone",
+      "scope": "*",
+      "kind": "avoid",
+      "topic": "Never done without asking",
+      "question": "What should the EA never do on its own, even where the autonomy tiers allow it?",
+      "why": "This rule is checked before any do-and-tell action.",
+      "example": "Never archive mail from students; never fill a poll for me."
+    },
+    {
+      "id": "protected-days",
+      "scope": "scheduling",
+      "kind": "avoid",
+      "topic": "Protected days and blocks",
+      "question": "Which days or blocks should stay free of meetings?",
+      "why": "A standing rule for the drafts and the briefing. The scheduler reads its rules only from the EA-Managed calendar, so to make a block hard, add an nm event there (SETUP.md 'The EA-Managed calendar').",
+      "example": "Tuesday mornings are writing time; the first week of a semester is off limits."
+    },
+    {
+      "id": "quiet-times",
+      "scope": "*",
+      "kind": "instruction",
+      "topic": "When not to interrupt",
+      "question": "When should the EA not interrupt you at all?",
+      "why": "Proactive posts and alerts wait until the window ends.",
+      "example": "Nothing between 21:00 and 07:30, and nothing on Sundays."
+    },
+    {
+      "id": "sign-off",
+      "scope": "drafting",
+      "kind": "instruction",
+      "topic": "Sign-off and tone in drafts",
+      "question": "How do you sign off, and what tone do you want in drafts written as you?",
+      "why": "The writer follows this before any style it infers from sent mail.",
+      "example": "Sign with my first name; short and warm with students, formal with sponsors."
+    },
+    {
+      "id": "never-draft-to",
+      "scope": "drafting",
+      "kind": "avoid",
+      "topic": "Never draft to without asking",
+      "question": "Who should the EA never draft to without asking you first?",
+      "why": "A reply to such a person is surfaced as a question, never staged as a draft.",
+      "example": "My dean, anyone at a funding agency, and journalists."
+    },
+    {
+      "id": "standing-facts",
+      "scope": "*",
+      "kind": "fact",
+      "topic": "Standing facts",
+      "question": "Which standing facts about your roles, grants or eligibility should the EA always know?",
+      "why": "A fact here corrects the briefing instead of being guessed again each day.",
+      "example": "I am not eligible for early-career awards; my lab is funded through 2028."
+    },
+    {
+      "id": "briefing-length",
+      "scope": "briefing",
+      "kind": "prefer",
+      "topic": "Briefing length",
+      "question": "Do you want a short briefing or a full one?",
+      "why": "Short keeps the do-list and one bookkeeping line; full keeps every section.",
+      "example": "Short on weekdays; full on Monday."
+    },
+    {
+      "id": "funding-skip",
+      "scope": "funding",
+      "kind": "avoid",
+      "topic": "Funding never worth showing",
+      "question": "Which funding opportunities are never worth showing you?",
+      "why": "The funding scan drops them before they reach a briefing or a digest.",
+      "example": "Standing BAAs, small internal seed grants and anything that needs industry match."
+    },
+    {
+      "id": "reviewing-asks",
+      "scope": "manuscripts",
+      "kind": "instruction",
+      "topic": "Reviewing and editorial requests",
+      "question": "How should the EA handle requests to review or edit?",
+      "why": "Review invitations are triaged on this rule before they reach you.",
+      "example": "Decline anything outside my field; accept at most one review a month."
+    }
+  ]
+}

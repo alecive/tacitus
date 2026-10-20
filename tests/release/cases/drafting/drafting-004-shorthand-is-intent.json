@@ -1,0 +1,19 @@
+{
+  "id": "drafting-004",
+  "name": "Chat shorthand becomes a proper email, not a transcription",
+  "category": "quality",
+  "bug_ref": "feedback_dont_literalize_chat_shorthand: his instructions are intent, not copy",
+  "to": "flo.ashcombe29@example.edu",
+  "brief": "tell Ari Ashcombe (flo.ashcombe29@example.edu) thx for the panel invite, can't make the 14th, suggest Morgan Tremaine (ash.westbrook58@example.edu) in my place, happy to help next time\n\nContext for the writer: the panel is the college research computing panel on November 14; Morgan Tremaine is a research scientist in my lab.\n\nNo style profile exists for this contact: greet with \"Hi Ari,\" and sign off with \"{{first_name}}\" on its own line.",
+  "must_include": [
+    "Morgan Tremaine",
+    "14"
+  ],
+  "must_not_include": [
+    "thx",
+    "can't make the 14th, suggest",
+    "in my place, happy"
+  ],
+  "max_words": 110,
+  "rubric": "The body reads as an email the professor would send: a thank-you, the regret for the 14th, Morgan Tremaine offered with the address, an open door for a future panel. Not a copy of the shorthand. Contractions are fine. No em-dash."
+}

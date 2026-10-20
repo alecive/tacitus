@@ -1,0 +1,59 @@
+{
+  "_doc": "Answers for user_init.py --answers: a complete email-profile install with no chat platform, no remote model, Outlook by device code and a phone push. Every value is made up. docs/install-testing.md lists the keys; a key left out takes the prompt's default.",
+
+  "full-name": "Pat Example",
+  "work-email": "pat.example@example.edu",
+  "role-description": "Associate professor of computer science; robotics and perception; two federal grants; four graduate students.",
+  "department": "Computer Science",
+  "university": "Example University",
+  "office": "ENG 412",
+  "slack-channel-name": "ea-pat",
+  "bio-blurb": "Pat Example is an associate professor of computer science at Example University.",
+  "calendar-accounts": ["pat.example.cal@gmail.com"],
+
+  "institution-name": "Example University",
+  "institution-domains": ["example.edu"],
+  "institution-related-domains": ["med.example.edu"],
+  "institution-safety-rail-domain": "example.edu",
+  "video-platform": "Zoom",
+  "video-link": "https://example.zoom.us/my/pat.example",
+
+  "timezone": "America/Chicago",
+  "cluster-meetings": true,
+  "default-duration-minutes": "30",
+  "vip-end-time": "17:30",
+  "google-calendars": ["pat.example.cal@gmail.com"],
+
+  "inbox-zero": true,
+  "archive-as-completion": true,
+  "stale-thread-days": "3",
+
+  "conservative-defaults": true,
+  "auto-promote-threshold": "5",
+
+  "groups-configure": false,
+  "deadlines-configure": true,
+  "deadline-domain": "nsf.gov",
+  "deadline-category": "grants",
+
+  "style-default": "Propose 2-3 specific times. Short, professional.",
+  "style-internal": "Friendly but efficient.",
+  "style-external-academic": "Professional, slightly more formal. Include timezone.",
+  "style-student": "Warm, brief.",
+
+  "graph-auth-method": "device_code",
+  "graph-client-id": "00000000-1111-2222-3333-444444444444",
+  "graph-tenant-id": "",
+  "graph-sign-in-now": false,
+  "google-calendar-now": false,
+
+  "style-analysis-now": false,
+  "reimbursement-configure": false,
+  "vip-addresses": ["dean@example.edu"],
+
+  "push-configure": true,
+  "push-ntfy-url": "https://ntfy.sh",
+  "push-topic": "ea-install-smoke-7f3a9c2e5b1d4860",
+  "push-include-text": false,
+  "push-click": ""
+}

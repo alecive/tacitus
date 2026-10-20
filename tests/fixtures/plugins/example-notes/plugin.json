@@ -1,0 +1,56 @@
+{
+  "manifest_version": 2,
+  "name": "example-notes",
+  "version": "0.1.0",
+  "description": "A made-up agent-zone plugin that uses every agent capability, for the tests.",
+  "zone": "agent",
+  "capabilities": {
+    "schedules": [
+      {"label": "daily", "cron": "0 9 * * 1-5", "llm": "remote-first", "model": "sonnet",
+       "timeout_seconds": 600, "skill": "skill.md"},
+      {"label": "sweep", "cron": "0 2 * * *", "args": ["--sweep"], "llm": "none"}
+    ],
+    "chat": {"skill": "chat_skill.md", "keywords": ["example note"], "patterns": ["\\bnote\\s+#\\d+\\b"]},
+    "skills": ["skill.md"],
+    "tools": ["Bash(python3 {plugin_dir}/*.py *)"],
+    "denied_tools": ["Bash(python3 *notes_tool.py publish *)"],
+    "cards": [
+      {
+        "id": "publish-note",
+        "pending_file": "pending-example-notes.json",
+        "title": ":lock: *Publish note* {title}",
+        "lines": ["_{summary}_"],
+        "approve_label": ":memo: Publish",
+        "approve_word": "publish",
+        "cancel_label": "Skip",
+        "cancel_word": "skip",
+        "button_noun": "The Publish button",
+        "busy_status": ":hourglass_flowing_sand: Publishing...",
+        "required": ["title"],
+        "missing_text": ":warning: The note card for {summary} needs a title.",
+        "key_fields": ["title"],
+        "variants": [
+          {"when": {"draft": true}, "title": ":lock: *Publish draft note* {title}",
+           "required": ["title", "summary"]}
+        ],
+        "approve": {"command": ["python3", "{plugin_dir}/card_exec.py", "approve"],
+                    "user": "resident", "timeout_seconds": 60},
+        "cancel": {"command": ["python3", "{plugin_dir}/card_exec.py", "cancel"],
+                   "user": "resident", "timeout_seconds": 30}
+      }
+    ],
+    "mail_rules": {
+      "closure_confirm_senders": ["noreply@notes.example.org"],
+      "closure_exclude_senders": ["robot@notes.example.org"],
+      "keep_from_anthropic_domains": ["notes.example.org"]
+    },
+    "network": {
+      "domains": ["api.notes.example.org"],
+      "local": [{"daddr": "127.0.0.1", "proto": "tcp", "ports": "9411", "reason": "the local notes index"}]
+    },
+    "secrets": ["EXAMPLE_NOTES_TOKEN"],
+    "claude_plugin": "."
+  },
+  "state_dirs": ["state"],
+  "output": {"channel_key": "ea", "format_anchors": [":memo:"]}
+}

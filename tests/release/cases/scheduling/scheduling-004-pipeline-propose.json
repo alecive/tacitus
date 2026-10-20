@@ -1,0 +1,36 @@
+{
+  "id": "scheduling-004",
+  "name": "Pipeline: a follow-up with times proposes two or three solver options",
+  "category": "regression",
+  "bug_ref": "sched_pipeline propose, the shape the pipeline shipped with (llm-lanes 2.17)",
+  "text": "Follow up with Bo with times that work next week",
+  "pipeline": {
+    "thread": [
+      {
+        "id": "m1",
+        "conversation_id": "rel-c1",
+        "from": {
+          "address": "indra.isenberg18@example.edu"
+        },
+        "sent": "{{-2d}}T15:10:00Z",
+        "subject": "Survey paper outline",
+        "text": "Hi Kit, could we find 30 minutes next week to go over the survey paper outline before it goes to the editors?"
+      },
+      {
+        "id": "m2",
+        "conversation_id": "rel-c1",
+        "from": {
+          "address": "wren.fairbanks84@example.edu"
+        },
+        "sent": "{{-1d}}T16:00:00Z",
+        "subject": "Re: Survey paper outline",
+        "text": "Yes, let's. I will send a few times."
+      }
+    ],
+    "expect": {
+      "status": "ok",
+      "min_picks": 2,
+      "counter": false
+    }
+  }
+}

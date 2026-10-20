@@ -1,0 +1,69 @@
+{
+  "profile": "assistant",
+  "profile_note": "email | review-only | assistant. email: no Slack, the EA drafts and holds and never sends, briefings go to the board and ~/.ea/state/reports/. review-only: email without drafting. assistant: Slack, channels, buttons, the resident and plugins. Set by /setup; read by setup.sh, run-agent.sh, the shells and ea-doctor.",
+  "_doc": "Operational configuration for the EA system. Controls master pause, eval toggles, log level, quiet hours and travel mode. Missing file = every key below at its default. Keys starting with '_' are stripped by preprocessor/ea_config.py load(); the *_note keys are ignored by the reader and kept as inline documentation.",
+  "ea_enabled": true,
+  "ea_enabled_note": "Master switch. When false, all cron agents (morning-briefing, afternoon-catchup, weekly-audit, scheduling-check, priority-check) exit immediately. The Slack bot stays running but responds with a paused status instead of invoking Claude. Background maintenance (token refresh, ledger sync, scheduled sends) continues regardless.",
+  "eval_postcommit_enabled": true,
+  "eval_postcommit_enabled_note": "Not read by the post-commit hook: this file is the resident's to write, so the hook takes its switch for the unit tests and prompt-only evals from EA_POSTCOMMIT_TESTS in the committer's environment or eval_postcommit_enabled in the owner's private evals.json (tests/evals/eval_gates.py). The nightly full-mode evals and the weekly release tests are not set here: they run a model as the owner, so their switches are eval_full_enabled and release_tests_enabled in the owner's private evals.json (tests/evals/eval_gates.py).",
+  "log_level": "INFO",
+  "log_level_note": "Controls log verbosity across components. Valid: DEBUG, INFO, WARNING, ERROR. The EA_DEBUG env var overrides this to DEBUG. Bot restart needed for log level changes (happens automatically on each commit via post-commit hook).",
+  "quiet_hours": {
+    "enabled": true,
+    "start": "22:00",
+    "end": "07:30",
+    "allow_urgent": false,
+    "only_when_traveling": true
+  },
+  "quiet_hours_note": "Timezone-aware quiet hours (preprocessor/quiet_hours.py). Proactive Slack posts that would land inside the local window are held and flushed as one digest when the window ends. The window is read in the ACTIVE timezone: travel_mode.timezone while travelling, else the home timezone from scheduling-preferences.json. allow_urgent lets sentinel-class alerts through the hold. only_when_traveling=true engages the hold ONLY while travel mode is active, so at home the 4am briefing still fires on time; set it false to also hold overnight at home. ea_config.get_quiet_hours() re-defaults every missing subkey, so a partial block here is safe.",
+  "travel_mode": {
+    "enabled": false,
+    "timezone": null,
+    "until": null
+  },
+  "travel_mode_note": "While enabled and on/before `until` (YYYY-MM-DD), the active timezone for quiet-hours math becomes `timezone` (an IANA name, e.g. 'America/Anchorage') instead of the home tz. It auto-reverts after `until` with no rewrite needed, so a stale block is harmless. Normally written by the set-travel flow rather than by hand. ea_config.get_travel_mode() re-defaults every missing subkey.",
+  "_not_read_by_ea_config": "mail_mediation lives in THIS file but is read by preprocessor/mail_mediation.py, not ea_config.py, so it is deliberately absent from this template. Never let a template copy overwrite the live value: on the deployed host it gates whether ea-bot can send mail at all. Merge this template into the live file key-by-key, never replace it.",
+  "models": {
+    "room_specialist": "claude-opus-5-5[1m]",
+    "scheduler": "claude-opus-5-5[1m]"
+  },
+  "models_note": "Per-lane model overrides read by the Slack bot (ea_config.get_models()). room_specialist: the persistent session each #ea-<project> room runs on, pinned when the room's session is minted. The resident's model is EA_RESIDENT_MODEL, the per-thread default is EA_MODEL, the cron agents choose per agent in run-agent.sh. Email and letter bodies are written by the email-author subagent (.claude/agents/email-author.md), which carries its own model.",
+  "efforts": {
+    "room_specialist": "high",
+    "scheduler": ""
+  },
+  "efforts_note": "Per-lane effort levels (low, medium, high, xhigh, max) read by ea_config.get_efforts() and passed as --effort beside the lane's model, so a model change never changes effort silently (the CLI's default effort differs by model). room_specialist is the default a new room's session is minted with; a room pins its own effort with `python3 preprocessor/ea_channels.py set-effort --channel <id|name> --effort <level>` (for example xhigh for a room that needs it). Empty means the CLI default for that model.",
+  "deck": {
+    "theme": "default"
+  },
+  "deck_note": "The Slidev theme preprocessor/deck_tools.py wires into every new deck (skills/deck-builder.md). default: Slidev's built-in theme, bundled with the CLI, no local package. Any other lowercase name: the package shared/theme-<name> in the owner's presentations tree, which deploy/enable-deck-builder.sh checks ea-bot can read. Missing block = default.",
+  "rooms": {
+    "rotate_bytes": 1000000
+  },
+  "rooms_note": "rotate_bytes: a project room's session starts fresh once its transcript passes this many bytes; the new session starts from the project pack and the room's recent history.",
+  "room_reply_check": true,
+  "room_reply_check_note": "Project rooms only. After a turn, a reply that states an item's status with no ledger or mail read behind it, or that says something does not exist, goes back to its own session once with the sentences to verify; the second pass returns the reply to post. Each bounce is logged to ~/.ea/logs/reply-check.jsonl. false switches the pass off.",
+  "chat": {
+    "frontend": "slack",
+    "zulip": {
+      "site": "",
+      "bot_email": "",
+      "owner_user_id": "",
+      "stream": "ea",
+      "sched_stream": "",
+      "dm_stream": "ea-dm",
+      "notify": {
+        "ea-assistant": {
+          "stream": "ea"
+        },
+        "scheduling": {
+          "stream": "ea"
+        },
+        "personal": {
+          "stream": "ea"
+        }
+      }
+    }
+  },
+  "chat_note": "Chat platform (ea_config.get_chat()): frontend is slack, zulip or memory (tests only). The zulip block names the server site, the bot's email, the owner's Zulip user id and the private streams (stream for the EA channel, sched_stream optional, dm_stream standing in for the DM); notify maps each notifier channel key to a stream and topic. The Zulip API key is ZULIP_API_KEY in .env.secrets, never here. get_chat() re-defaults every missing subkey, so a partial block is safe."
+}

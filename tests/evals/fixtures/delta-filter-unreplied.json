@@ -1,0 +1,173 @@
+{
+  "_meta": {
+    "id": "regression-003",
+    "name": "Delta filter must resurface unreplied emails from previous run",
+    "category": "regression",
+    "bug_ref": "Delta filter dropping unreplied emails (commit 75c2c00)",
+    "description": "Second preprocessor run. Emails surfaced yesterday still have no reply from the user. The delta filter must not drop them -- they must reappear in new_needs_response so the briefing includes them."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T07:30:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 0,
+      "new_sent_messages": 0,
+      "total_delta_items": 2,
+      "total_inbox": 38,
+      "flagged_count": 0,
+      "events_next_14d": 9
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-delta-unreplied-001",
+        "subject": "Revised timeline for sensor deployment",
+        "from": {
+          "emailAddress": {
+            "name": "Yael Calloway",
+            "address": "harper.abernathy52@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-08T10:15:00Z",
+        "days_in_inbox": 1,
+        "bodyPreview": "Hi Kit, Following up on our earlier conversation -- I've attached the revised deployment timeline. Could you review and let me know if the dates work for the field team? We need to lock this down by Friday.",
+        "conversationId": "AAQk-delta-unreplied-conv-001",
+        "hasAttachments": true,
+        "response_signals": 3
+      },
+      {
+        "message_id": "AAMk-delta-unreplied-002",
+        "subject": "Re: Guest lecture request for ROBO 5000",
+        "from": {
+          "emailAddress": {
+            "name": "Bo Northcott",
+            "address": "ira.underhill30@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": ["wren.hargrove34@example.edu"],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-08T14:42:00Z",
+        "days_in_inbox": 1,
+        "bodyPreview": "Hi Kit, Just wanted to check in on this -- would April 22 or 24 work for the guest lecture? Happy to adjust the topic if needed. Let me know when you have a chance.",
+        "conversationId": "AAQk-delta-unreplied-conv-002",
+        "hasAttachments": false,
+        "response_signals": 2
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [
+      {
+        "id": "response-yael-timeline-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Needs response: Revised timeline for sensor deployment",
+        "from_email": "harper.abernathy52@example.edu",
+        "date_identified": "2026-04-08T10:15:00Z",
+        "days_stale": 1
+      },
+      {
+        "id": "response-bo-guest-lecture-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Needs response: Re: Guest lecture request for ROBO 5000",
+        "from_email": "ira.underhill30@example.edu",
+        "date_identified": "2026-04-08T14:42:00Z",
+        "days_stale": 1
+      }
+    ],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "Lab Standup",
+        "start": {"dateTime": "2026-04-09T10:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T10:30:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": [
+    {
+      "id": "response-yael-timeline-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Needs response: Revised timeline for sensor deployment from Yael Calloway. He asks Kit to review the revised deployment dates and confirm they work for the field team. Deadline: Friday.",
+      "from_email": "harper.abernathy52@example.edu",
+      "from_name": "Yael Calloway",
+      "source_message_id": "AAMk-delta-unreplied-001",
+      "date_identified": "2026-04-08",
+      "deadline": "2026-04-10",
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "Surfaced in morning briefing 2026-04-08. No reply yet.",
+      "notes": "Attachment: revised-timeline.pdf. First surfaced in yesterday's run, still unanswered.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-08T14:00:00Z",
+      "updated_at": "2026-04-08T14:00:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-delta-unreplied-conv-001",
+      "email_archived": 0
+    },
+    {
+      "id": "response-bo-guest-lecture-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Needs response: Guest lecture request for ROBO 5000 from Bo Northcott. She proposes April 22 or 24 and is flexible on topic.",
+      "from_email": "ira.underhill30@example.edu",
+      "from_name": "Bo Northcott",
+      "source_message_id": "AAMk-delta-unreplied-002",
+      "date_identified": "2026-04-08",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "Surfaced in morning briefing 2026-04-08. No reply yet.",
+      "notes": "Follow-up on earlier guest lecture discussion. First surfaced yesterday, still unanswered.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-08T14:00:00Z",
+      "updated_at": "2026-04-08T14:00:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-delta-unreplied-conv-002",
+      "email_archived": 0
+    }
+  ]
+}

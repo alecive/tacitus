@@ -1,0 +1,33 @@
+{
+  "blocks": [],
+  "calls": [
+    {
+      "kwargs": {
+        "channel": "C_MAIN",
+        "text": ":lock: The Create button for this event is in your DM.",
+        "thread_ts": "1700000000.000100",
+        "unfurl_links": false,
+        "unfurl_media": false
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "dm_channel": "D_OWNER",
+      "dm_ts": null,
+      "ea_channel": "C_MAIN",
+      "thread_ts": "1700000000.000100",
+      "what": "The Create button for this event"
+    },
+    "stubs": {}
+  },
+  "kwargs": {
+    "channel": "C_MAIN",
+    "text": ":lock: The Create button for this event is in your DM.",
+    "thread_ts": "1700000000.000100",
+    "unfurl_links": false,
+    "unfurl_media": false
+  },
+  "text": ":lock: The Create button for this event is in your DM."
+}

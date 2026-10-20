@@ -1,0 +1,90 @@
+{
+  "_doc": "Controls how much autonomy the EA has for different task types. Four tiers: button-required (click Send/Create button in Slack, code-enforced), ask-first (post to Slack, wait for approval), do-and-tell (do it, then notify on Slack), fire-and-forget (do it silently, include in next briefing). User can promote tasks in Slack by saying e.g. 'for LoR uploads, just do it and tell me.'",
+  "task_tiers": {
+    "send_email": {
+      "tier": "button-required",
+      "note": "Sends email as the user. Requires clicking Send button in Slack. Code-enforced via confirmation token."
+    },
+    "send_calendar_invite": {
+      "tier": "button-required",
+      "note": "Creates calendar event with attendees (sends invite). Requires clicking Create button in Slack. Code-enforced."
+    },
+    "schedule_deferred_send": {
+      "tier": "button-required",
+      "note": "Schedules an email to send at a future date. Requires button approval. Code-enforced."
+    },
+    "delete_email": {
+      "tier": "button-required",
+      "note": "Permanently deletes an email (not archive). Requires button approval. Code-enforced."
+    },
+    "delete_calendar_event": {
+      "tier": "button-required",
+      "note": "Deletes a calendar event. Requires button approval. Code-enforced."
+    },
+    "draft_email_response": {
+      "tier": "ask-first",
+      "note": "Show draft in Slack, wait for 'send' or edits. Creating/editing drafts is safe -- no external effect."
+    },
+    "send_scheduling_availability": {
+      "tier": "ask-first",
+      "promotable_per_contact": true,
+      "note": "Can be promoted to do-and-tell for specific contacts."
+    },
+    "upload_letter_of_recommendation": {
+      "tier": "do-and-tell",
+      "note": "Match incoming LoR request against known letters. Upload and notify on Slack with the letter shown. User can undo."
+    },
+    "prep_reimbursement_email": {
+      "tier": "ask-first",
+      "note": "Compile receipts, draft the email to the department's reimbursement address, show in chat for approval."
+    },
+    "create_calendar_hold": {
+      "tier": "button-required",
+      "note": "Block focus time or travel time (no attendees). Button-gated like all event creation -- write pending-event.json with attendees='' and let the bot post a Create-button confirmation. Code-enforced."
+    },
+    "archive_email": {
+      "tier": "do-and-tell",
+      "note": "Move processed items to archive. Notify on Slack. Reversible -- does not delete."
+    },
+    "update_obligations_ledger": {
+      "tier": "fire-and-forget",
+      "note": "Internal bookkeeping. Always autonomous."
+    },
+    "post_slack_summary": {
+      "tier": "fire-and-forget",
+      "note": "Briefings and status updates. Always autonomous."
+    },
+    "fill_scheduling_poll": {
+      "tier": "ask-first",
+      "note": "Fill When2Meet/WhenIsGood/Doodle polls. Shows conflict summary and asks about standing meeting overbookings before filling. URL-locked to known poll domains."
+    },
+    "build_deck": {
+      "tier": "do-and-tell",
+      "note": "Draft a Slidev deck in the EA's own workspace, stage it on the tailnet (reachable by the user's tailscale devices only) and post the URL and PDF. No external effect: the route is made by the owner's mediator, which has no Funnel verb, so the deck cannot be made public by the EA."
+    }
+  },
+  "per_contact_overrides": {
+    "_doc": "When user says 'for Dr. Smith, just send scheduling' in Slack, add an entry here. The EA checks this before defaulting to the task tier.",
+    "example@mit.edu": {
+      "send_scheduling_availability": "do-and-tell"
+    }
+  },
+  "inbox_as_completion": {
+    "_doc": "When enabled, archiving an email from the inbox (via Outlook, mobile, etc.) automatically closes the corresponding ledger item. The inbox is treated as an alternate completion signal: if you moved it out, you handled it. Disable if you prefer to close ledger items only through the EA. This is an Inbox Zero pattern -- if you don't practice Inbox Zero, set enabled to false.",
+    "enabled": true,
+    "note": "Checked every 15 min by ledger_sync.py. Silent -- no Slack notification (user already knows, they archived it themselves)."
+  },
+  "escalation_rules": {
+    "never_autonomous": [
+      "Sending a first email to anyone outside the institution (institution.domains in user-profile.json)",
+      "Anything involving money, contracts, or legal commitments",
+      "Responding to program officers or deans",
+      "Declining invitations or requests",
+      "Exposing anything to the public internet (Tailscale Funnel). Decks are tailnet-only; sharing outside the tailnet means sending the PDF."
+    ],
+    "promote_after_n_successes": {
+      "note": "After the EA successfully handles N instances of a task type at ask-first without the user making changes, suggest promoting to do-and-tell.",
+      "threshold": 5
+    }
+  }
+}

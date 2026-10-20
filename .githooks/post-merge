@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# post-merge: pulls/merges move HEAD without firing post-commit, leaving
+# the deployed copy stale (2026-07-24 permafix). Reuse the same deploy.
+exec "$(git rev-parse --show-toplevel)/.githooks/post-commit"

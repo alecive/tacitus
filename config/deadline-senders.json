@@ -1,0 +1,8 @@
+{
+  "_doc": "Maps sender domains to deadline categories. When the preprocessor detects a deadline keyword in an email from one of these domains, it tags the deadline with this category for prioritization. Populate during user-init or add mappings manually.",
+  "_example": {
+    "example.edu": "university",
+    "nsf.gov": "grants",
+    "bank.example.com": "financial"
+  }
+}

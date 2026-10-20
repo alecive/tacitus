@@ -1,0 +1,409 @@
+#!/usr/bin/env bash
+# Post-commit hook: deploy to ea-bot's copy and the live tree, restart the bot
+#
+# On every commit in the owner's source checkout, this fetches the new commit
+# into /home/ea-bot/ea-system/ (the copy the ea-bot user reads), mirrors
+# the committed tree into /opt/ea-system (the code the owner's services
+# run) and restarts the Slack bot service.
+
+DEPLOY_DIR="/home/ea-bot/ea-system"
+LIVE_DIR="/opt/ea-system"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Only a commit in the main checkout on main deploys. A commit or merge in
+# a linked worktree (an agent's, for example) or on another branch leaves
+# the deployed copy, the live tree and the running bot alone.
+GIT_DIR_ABS="$(git rev-parse --absolute-git-dir 2>/dev/null)"
+GIT_COMMON_ABS="$(cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd -P)"
+BRANCH="$(git symbolic-ref --quiet --short HEAD 2>/dev/null)"
+if [ "$GIT_DIR_ABS" != "$GIT_COMMON_ABS" ] || [ "$BRANCH" != "main" ]; then
+    echo "[deploy] skipped: deploys only from the main checkout on main (here: ${BRANCH:-detached} in $REPO_ROOT)"
+    exit 0
+fi
+
+# macOS has launchd, not systemd, and its own paths: the macOS deploy does
+# the same work (ea-bot copy, /opt mirror, idle-wait, restart). See
+# docs/macos-services.md.
+if [ "$(uname -s)" = Darwin ]; then
+    exec bash "$REPO_ROOT/deploy/macos/deploy.sh"
+fi
+
+# The ea-bot copy sits in ea-bot's home, so ea-bot can rename it and put
+# its own tree, or a symlink, in its place. git run by the committer in a
+# tree ea-bot controls runs ea-bot's config and hooks as the committer, so
+# no git command runs there before this check passes. The check applies
+# to the directory the shell has entered, not to the name: after `cd -P`,
+# `pwd -P` proves no symlink led there, and the entered directory stays
+# the same one however the name is changed afterwards. The directory and
+# its .git must be real directories owned by the committer that no one
+# else can write.
+deploy_tree_ok() {
+    [ "$(pwd -P)" = "$DEPLOY_DIR" ] || return 1
+    local d mode
+    for d in . .git; do
+        [ -d "$d" ] && [ ! -L "$d" ] && [ -O "$d" ] || return 1
+        # GNU stat first, BSD stat (macOS) second
+        mode=$(stat -c %a "$d" 2>/dev/null || stat -f %Lp "$d" 2>/dev/null) || return 1
+        [ $(( 0$mode & 022 )) -eq 0 ] || return 1
+    done
+}
+# git in the ea-bot copy: in a subshell that has entered and checked it,
+# with every GIT_* variable of the hook cleared (the repository ones and
+# any inherited -c settings), so git works on that copy and nothing else.
+deploy_git() (
+    cd -P -- "$DEPLOY_DIR" 2>/dev/null && deploy_tree_ok || exit 97
+    for v in $(compgen -e); do
+        case "$v" in GIT_*) unset "$v" ;; esac
+    done
+    exec git --git-dir=.git --work-tree=. "$@"
+)
+
+if [ -d "$DEPLOY_DIR/.git" ]; then
+    echo "[deploy] Pulling to $DEPLOY_DIR..."
+    if ! ( cd -P -- "$DEPLOY_DIR" 2>/dev/null && deploy_tree_ok ); then
+        echo -e "\033[31m[deploy] ✗ UNSAFE DEPLOY TREE: $DEPLOY_DIR and its .git must be real directories (not symlinks), owned by $(id -un) and writable by no one else. NOT deploying, NOT restarting.\033[0m"
+        exit 1
+    fi
+    # Fetch from the working tree (works even before push to remote).
+    # Exit codes CHECKED (2026-07-24 permafix): a silently-failed fetch
+    # used to reset to a stale FETCH_HEAD and restart old code, no alarm.
+    if ! deploy_git fetch "$REPO_ROOT" HEAD; then
+        echo -e "\033[31m[deploy] ✗ FETCH FAILED — NOT deploying, NOT restarting (old code keeps running consistently).\033[0m"
+        exit 1
+    fi
+    if ! deploy_git reset --hard FETCH_HEAD; then
+        echo -e "\033[31m[deploy] ✗ RESET FAILED — deployed tree may be inconsistent. Fix manually before restarting.\033[0m"
+        exit 1
+    fi
+    # The developer guide stays out of ea-bot's tree: Claude Code would load
+    # .claude/CLAUDE.md into every EA turn. The setting persists, so later
+    # resets keep it out too.
+    deploy_git sparse-checkout set --no-cone '/*' '!/.claude/CLAUDE.md' >/dev/null 2>&1 \
+        || echo "[deploy] warning: .claude/CLAUDE.md may be in $DEPLOY_DIR (sparse-checkout failed)"
+    # Verify deployed HEAD == repo HEAD (the whole point of the deploy)
+    REPO_HEAD=$(git rev-parse HEAD)
+    DEPLOYED_HEAD=$(deploy_git rev-parse HEAD)
+    if [ "$REPO_HEAD" != "$DEPLOYED_HEAD" ]; then
+        echo -e "\033[31m[deploy] ✗ HEAD MISMATCH: repo $REPO_HEAD vs deployed $DEPLOYED_HEAD — NOT restarting.\033[0m"
+        exit 1
+    fi
+    # Restore read-only permissions for ea-bot
+    ( cd -P -- "$DEPLOY_DIR" 2>/dev/null && deploy_tree_ok && chmod -R g+rX,g-w . ) 2>/dev/null
+    # Mirror the SAME committed tree into the owner-owned code path the
+    # services run from (/opt/ea-system, parent /opt is root-owned so
+    # ea-bot cannot rename it). The tree comes from the committer's own
+    # repo, never from ea-bot's copy: `git archive` of the verified commit
+    # is unpacked into a private temp dir, and rsync copies that. A no-op
+    # until the harden step creates the live dir; runs as the owner, which owns
+    # it. The venv stays in the owner's home and is not copied. Failure here is
+    # fatal: a stale live tree runs old code.
+    if [ -d "$LIVE_DIR" ]; then
+        EXPORT_TMP=$(mktemp -d) || {
+            echo -e "\033[31m[deploy] ✗ NO TEMP DIR for the live export. NOT restarting.\033[0m"
+            exit 1
+        }
+        EXPORT_DIR="$EXPORT_TMP/tree"
+        if ! ( set -o pipefail; umask 022 && mkdir -m 755 "$EXPORT_DIR" \
+                && git -C "$REPO_ROOT" -c tar.umask=022 archive --format=tar "$REPO_HEAD" \
+                    | tar -x -C "$EXPORT_DIR" -f - ); then
+            rm -rf "$EXPORT_TMP"
+            echo -e "\033[31m[deploy] ✗ EXPORT FAILED (git archive $REPO_HEAD). NOT restarting.\033[0m"
+            exit 1
+        fi
+        if ! rsync -a --delete --exclude ".git" "$EXPORT_DIR/" "$LIVE_DIR/"; then
+            rm -rf "$EXPORT_TMP"
+            echo -e "\033[31m[deploy] \u2717 LIVE SYNC FAILED ($LIVE_DIR) — NOT restarting.\033[0m"
+            exit 1
+        fi
+        rm -rf "$EXPORT_TMP"
+        # The live tree has no .git; leave the commit beside the code so the
+        # bot can stamp itself and the sentinel's integrity check still works.
+        git -C "$REPO_ROOT" rev-parse --short HEAD > "$LIVE_DIR/.deployed-commit" 2>/dev/null || true
+    fi
+    # Restart only when code the running process holds in memory changed.
+    # Skills, docs, CLAUDE.md, config templates and the agent definitions
+    # are read per dispatch from the deployed tree, so they are live the
+    # moment the copy lands. A restart kills every per-thread run in
+    # flight, so it is not free.
+    RUNTIME_CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null \
+        | grep -E '^(ea-chat-bot\.py|preprocessor/.*\.py|scripts/disallowed-tools[^/]*\.txt|requirements\.txt)$' || true)
+    if [ -z "$RUNTIME_CHANGED" ]; then
+        echo "[deploy] No runtime code changed; the bot keeps running (skills, docs and config are read per dispatch)."
+    else
+        # Wait for the bot to be idle before restarting: the bot mirrors
+        # its in-flight per-thread runs to bot-inflight.json in the
+        # owner-private dir, and on SIGTERM it drains for up to 80 s and
+        # parks new work for the next instance. A room turn may run 20
+        # minutes (ROOM_TIMEOUT_SECONDS), so the wait is that long: a
+        # restart under a live turn kills it (systemd signals the whole
+        # cgroup) and the user gets "no output" for a request that was
+        # half done.
+        INFLIGHT_FILE="${EA_PRIVATE_DIR:-$HOME/.ea-private}/bot-inflight.json"
+        # The sentinel reads this stamp: while the hook waits, the running
+        # instance is behind the deployed tree on purpose, not stale.
+        PENDING_FILE="${EA_PRIVATE_DIR:-$HOME/.ea-private}/deploy-pending.json"
+        python3 -c "
+import json, time
+json.dump({'commit': '$(deploy_git rev-parse --short HEAD)', 'since': time.time()}, open('$PENDING_FILE', 'w'))" 2>/dev/null || true
+        for _i in $(seq 1 300); do
+            BUSY=$(python3 -c "
+import json
+d = json.load(open('$INFLIGHT_FILE'))
+print(sum(1 for v in d.values() if v.get('lane') not in ('resident', 'deferred')))" 2>/dev/null || echo 0)
+            [ "$BUSY" = "0" ] && break
+            [ $((_i % 15)) = 1 ] && echo "[deploy] waiting for $BUSY in-flight dispatch(es) to finish ($((_i * 4))s of 1200s)..."
+            sleep 4
+        done
+        # The live bot is the SYSTEM unit (/etc/systemd/system/ea-chat-bot.service;
+        # ea-slack-bot.service on a host where deploy/rename-chat-bot.sh has
+        # not run yet). Restart needs root; /etc/sudoers.d/ea-chat-bot grants
+        # the owner's passwordless restart of exactly this unit. Before that grant
+        # exists, sudo -n fails and we fall back to a manual-restart warning
+        # (never start the stale
+        # user-level unit — that's how the 2026-06-09 duplicate-bot incident
+        # happened: --user restart spawned a second Socket Mode consumer while
+        # the reaper killed the system unit's process).
+        BOT_UNIT=ea-chat-bot
+        systemctl cat ea-chat-bot.service >/dev/null 2>&1 || BOT_UNIT=ea-slack-bot
+        echo "[deploy] Restarting $BOT_UNIT..."
+        if ! sudo -n systemctl restart "$BOT_UNIT.service" 2>/dev/null; then
+            echo "[deploy] WARNING: restart failed (no sudoers grant?) — run manually:"
+            echo "[deploy]   sudo systemctl restart $BOT_UNIT"
+        fi
+        rm -f "$PENDING_FILE" 2>/dev/null || true
+        # Reap orphaned bot processes that escaped the service cgroup. The
+        # Slack Bolt Socket Mode client does not exit on SIGTERM cleanly, so a
+        # prior instance can reparent to init (PPID 1), survive the restart,
+        # and keep a socket connection open. Slack then delivers some messages
+        # to that orphan, which silently runs STALE code (this is how a
+        # 10-day-old process kept handling cleaner requests after deploys).
+        # Kill anything running ea-chat-bot.py that is not the live MainPID.
+        sleep 1
+        MAIN_PID=$(systemctl show -p MainPID --value "$BOT_UNIT" 2>/dev/null)
+
+        # This hook's own ancestors are NEVER reap candidates.
+        # 2026-08-04 permafix: the old matcher was `pgrep -f ea-chat-bot.py`,
+        # which matches ANY command line containing that string — including the
+        # shell running `git add ea-chat-bot.py && git commit ...`, i.e. this
+        # hook's own grandparent. The bot runs as User=<owner>, the same user as the
+        # hook, so the kill was permitted: the hook SIGTERMed the shell it was
+        # running under and the run died at exit 144, after [deploy] but before
+        # [tests] and [evals]. The deploy itself had already succeeded, so the
+        # failure looked cosmetic while silently skipping all verification.
+        HOOK_ANCESTRY=" $$ "
+        _walk=$$
+        while :; do
+            _walk=$(awk '/^PPid:/{print $2; exit}' "/proc/$_walk/status" 2>/dev/null)
+            [ -n "$_walk" ] && [ "$_walk" != "0" ] && [ "$_walk" != "1" ] || break
+            HOOK_ANCESTRY="$HOOK_ANCESTRY$_walk "
+        done
+
+        # A real bot process is a python interpreter holding the script path as
+        # one of its OWN argv entries. A command line that merely mentions the
+        # filename (git add, grep, an editor, this hook's parent shell) is not a
+        # bot. pgrep stays as a cheap prefilter; /proc/<pid>/cmdline is the
+        # authority, and it is NUL-separated so argv boundaries are unambiguous.
+        bot_orphans() {
+            local pid argv0
+            for pid in $(pgrep -f "ea-chat-bot\.py" 2>/dev/null); do
+                [ "$pid" = "$MAIN_PID" ] && continue
+                case "$HOOK_ANCESTRY" in *" $pid "*) continue ;; esac
+                [ -r "/proc/$pid/cmdline" ] || continue
+                argv0=$(tr '\0' '\n' < "/proc/$pid/cmdline" 2>/dev/null | head -1)
+                case "${argv0##*/}" in python*) ;; *) continue ;; esac
+                tr '\0' '\n' < "/proc/$pid/cmdline" 2>/dev/null \
+                    | grep -qxE '[^[:space:]]*/?ea-chat-bot\.py' || continue
+                echo "$pid"
+            done
+        }
+
+        if [ -n "$MAIN_PID" ] && [ "$MAIN_PID" != "0" ]; then
+            for pid in $(bot_orphans); do
+                echo "[deploy] reaping orphaned bot process $pid (stale code)"
+                kill "$pid" 2>/dev/null || true
+            done
+            # TERM -> KILL escalation: Bolt's Socket Mode client shrugs off
+            # SIGTERM; verify and escalate instead of hoping.
+            sleep 2
+            for pid in $(bot_orphans); do
+                echo "[deploy] orphan $pid survived TERM — sending KILL"
+                kill -9 "$pid" 2>/dev/null || true
+            done
+            # SIGKILL is not refusable, so anything still here is a matcher bug
+            # or an unkillable state. Say so instead of finishing green.
+            sleep 1
+            STILL=$(bot_orphans | tr '\n' ' ')
+            if [ -n "${STILL// /}" ]; then
+                echo -e "\033[31m[deploy] ⚠ orphan(s) survived SIGKILL: ${STILL}— a second Socket Mode consumer may still be live. Investigate.\033[0m"
+            fi
+        else
+            echo -e "\033[31m[deploy] ⚠ $BOT_UNIT has no MainPID (state: $(systemctl is-active "$BOT_UNIT" 2>/dev/null || echo unknown)) — the restart did not produce a running service. Skipping orphan reap.\033[0m"
+        fi
+        # Instance verification: wait for the restarted bot to stamp
+        # bot-instance.json and confirm it is running the just-deployed commit.
+        INSTANCE_FILE="/home/ea-bot/.ea/state/bot-instance.json"
+        DEPLOYED_SHORT=$(deploy_git rev-parse --short HEAD)
+        VERIFIED=""
+        for _ in 1 2 3 4 5 6 7 8 9 10; do
+            sleep 1
+            INSTANCE_COMMIT=$(python3 -c "
+    import json;print(json.load(open('$INSTANCE_FILE')).get('commit',''))" 2>/dev/null)
+            if [ "$INSTANCE_COMMIT" = "$DEPLOYED_SHORT" ]; then
+                VERIFIED=yes
+                break
+            fi
+        done
+        if [ "$VERIFIED" = "yes" ]; then
+            echo -e "[deploy] \033[32m✅ Running instance verified at $DEPLOYED_SHORT.\033[0m"
+        else
+            SVC_STATE=$(systemctl is-active "$BOT_UNIT" 2>/dev/null || echo unknown)
+            echo -e "\033[31m[deploy] ⚠ Running instance NOT verified at $DEPLOYED_SHORT (stamp: ${INSTANCE_COMMIT:-none}, service: $SVC_STATE) — check systemctl status $BOT_UNIT.\033[0m"
+            if [ "$SVC_STATE" != "active" ]; then
+                echo -e "\033[31m[deploy] ⚠ THE BOT IS DOWN — service is '$SVC_STATE'. Last log lines:\033[0m"
+                journalctl -u "$BOT_UNIT" -n 15 --no-pager 2>/dev/null \
+                    | while IFS= read -r l; do echo "[deploy]   $l"; done
+            fi
+        fi
+    fi
+    # ea-mail-mediator IMPORTS mail_mediation/mail_mediator once at startup, and
+    # mail_privacy/remote_llm (its shadow-run release note) on first use, so
+    # changes there run STALE until it restarts (the tool scripts it exec()s are
+    # fresh each call and don't need this). It runs as the owner with Restart=always,
+    # so kill it and let systemd respawn with the new code — no sudo needed.
+    # Only when those files changed, to avoid a needless mail blip per deploy.
+    # (2026-07-17: the Branch-B auto-hold was refused because the mediator held
+    # pre-change is_allowed() until manually restarted.)
+    if deploy_git diff --name-only 'HEAD@{1}' HEAD 2>/dev/null \
+         | grep -qE "preprocessor/(mail_mediat(ion|or)|mail_privacy|remote_llm)\.py"; then
+        echo "[deploy] mediation code changed — restarting ea-mail-mediator"
+        # Anchored at the interpreter, so it matches the mediator and never
+        # a shell whose command line merely names the file (a `git add` of it).
+        pkill -u "$(id -u)" -f '^[^ ]*/python3? [^ ]*/preprocessor/mail_mediator\.py' 2>/dev/null || true
+    fi
+    # Dashboard runs as an owner user unit off the source tree; restart so it
+    # serves the just-committed code. Best-effort (needs the user bus).
+    XDG_RUNTIME_DIR="/run/user/$(id -u)" systemctl --user restart ea-dashboard.service 2>/dev/null \
+        && echo "[deploy] Dashboard restarted." || true
+    echo "[deploy] Done."
+else
+    echo "[deploy] No deployed copy at $DEPLOY_DIR — skipping."
+fi
+
+# --- Run eval suite (prompt-only, fast) if prompt-affecting files changed ---
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+EVAL_RUNNER="$REPO_ROOT/tests/evals/run_evals.py"
+
+# git exports its repository variables (GIT_DIR, GIT_INDEX_FILE and the
+# rest) to a hook. The test wall and the evals build fixture git repos, and
+# a fixture's git commands with those set act on this repo, its index and
+# its config, which every worktree shares. So the test and eval runs get an
+# environment with no GIT_* variable at all (GIT_CONFIG* included), an
+# empty private global config and no system config: a fixture's git reaches
+# only the fixture. The hook's own git commands keep the hook environment.
+without_git_env() (
+    local v rc
+    for v in $(compgen -e); do
+        case "$v" in GIT_*) unset "$v" ;; esac
+    done
+    GIT_CONFIG_GLOBAL=$(mktemp) || exit 1
+    export GIT_CONFIG_GLOBAL GIT_CONFIG_NOSYSTEM=1
+    "$@"
+    rc=$?
+    rm -f "$GIT_CONFIG_GLOBAL"
+    exit "$rc"
+)
+
+# Failure detail for a captured runner's output. The per-runner blocks below
+# grep for the runner's own failure marker, which prints nothing at all when
+# the file never got as far as running tests (ImportError, SyntaxError), i.e.
+# the loudest possible breakage produced the quietest possible report. Fall
+# back to the tail of the output in that case.
+_fail_detail() {
+    local out="$1" pat="${2:-❌}"
+    if echo "$out" | grep -q -- "$pat"; then
+        echo "$out" | grep -- "$pat"
+    else
+        echo "$out" | tail -15
+    fi
+}
+
+# Are the post-commit tests on? The owner's switch only: EA_POSTCOMMIT_TESTS
+# in this environment, else eval_postcommit_enabled in the owner-private
+# evals.json (tests/evals/eval_gates.py). ~/.ea/config is ea-bot's to write,
+# so a value there never turns the owner's test wall off. Any error runs
+# the tests.
+POSTCOMMIT_ENABLED=$(without_git_env python3 -I "$REPO_ROOT/tests/evals/eval_gates.py" enabled postcommit 2>/dev/null || echo "True")
+[ "$POSTCOMMIT_ENABLED" = "False" ] || POSTCOMMIT_ENABLED="True"
+
+if [ "$POSTCOMMIT_ENABLED" != "False" ]; then
+        # THE WALL — discovery-based (2026-08-20). run_wall.py finds and
+        # runs EVERY tests/test_*.py (main-runner or pytest style),
+        # fails on dead zones (tests defined below a mid-file runner),
+        # and cannot skip a file that was never wired in — the two
+        # classes that let ~140 tests sit unexecuted while this hook
+        # maintained a hand-curated block list (and one block pointed
+        # at a file that no longer exists).
+        WALL_OUT=$(without_git_env timeout 900 python3 "$REPO_ROOT/tests/run_wall.py" 2>&1)
+        if [ $? -eq 0 ]; then
+            WALL_LINE=$(echo "$WALL_OUT" | grep -oP 'wall: \d+/\d+ files clean' | tail -1)
+            echo -e "[tests] \033[32m✅ Wall clean ($WALL_LINE).\033[0m"
+        else
+            echo ""
+            echo -e "\033[31m⚠  TEST WALL FAILURES!\033[0m"
+            echo "$WALL_OUT" | grep -E "❌|wall:" | while IFS= read -r l; do echo "[tests]   $l"; done
+            echo ""
+        fi
+fi
+
+if [ "$POSTCOMMIT_ENABLED" = "False" ]; then
+    echo "[tests] Post-commit tests disabled (EA_POSTCOMMIT_TESTS or eval_postcommit_enabled in the owner's evals.json). Skipping."
+elif [ -f "$EVAL_RUNNER" ]; then
+    CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null)
+    PROMPT_FILES="skills/ CLAUDE.md preprocessor/ ea-chat-bot.py run-agent.sh"
+    RUN_EVALS=false
+
+    for pattern in $PROMPT_FILES; do
+        if echo "$CHANGED" | grep -q "^$pattern"; then
+            RUN_EVALS=true
+            break
+        fi
+    done
+
+    if $RUN_EVALS; then
+        # Integration evals (prompt-only, fast, zero tokens)
+        echo "[evals] Prompt-affecting files changed — running eval suite..."
+        EVAL_ERR=$(mktemp)
+        RESULT=$(without_git_env python3 "$EVAL_RUNNER" --json 2>"$EVAL_ERR")
+        PASSED=$(echo "$RESULT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['passed'])" 2>/dev/null)
+        FAILED=$(echo "$RESULT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['failed'])" 2>/dev/null)
+        TOTAL=$(echo "$RESULT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['total'])" 2>/dev/null)
+
+        # A runner that dies before emitting JSON leaves FAILED empty, which
+        # used to print "EVAL FAILURES: / evals failed!" with the traceback
+        # discarded. Distinguish "evals failed" from "evals never ran".
+        if [ -z "$FAILED" ]; then
+            echo ""
+            echo -e "\033[31m⚠  EVAL RUNNER PRODUCED NO PARSEABLE JSON — the evals did NOT run.\033[0m"
+            tail -15 "$EVAL_ERR" 2>/dev/null | while IFS= read -r l; do echo "   $l"; done
+            echo ""
+            echo "   Run: python3 tests/evals/run_evals.py --verbose"
+            echo ""
+        elif [ "$FAILED" = "0" ]; then
+            echo -e "[evals] \033[32m✅ All $TOTAL evals pass.\033[0m"
+        else
+            echo ""
+            echo -e "\033[31m⚠  EVAL FAILURES: $FAILED/$TOTAL evals failed!\033[0m"
+            echo "$RESULT" | python3 -c "
+import json, sys
+d = json.load(sys.stdin)
+for r in d['results']:
+    if r['status'] != 'PASS':
+        print(f\"   ❌ [{r['fixture']['category']}] {r['fixture']['name']}: {r['status']}\")
+" 2>/dev/null
+            echo ""
+            echo "   Run: python3 tests/evals/run_evals.py --verbose"
+            echo ""
+        fi
+        rm -f "$EVAL_ERR"
+    fi
+fi

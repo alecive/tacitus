@@ -1,0 +1,19 @@
+{
+  "id": "drafting-003",
+  "name": "A question only the user can answer gets thanks and a follow-up date, not an answer",
+  "category": "regression",
+  "bug_ref": "feedback_no_answering_for_user: a reply never invents an answer from the sender's own words; remote_briefing.asks_for_facts",
+  "to": "lior.dunmore50@example.edu",
+  "brief": "Reply to Hale Carrow (lior.dunmore50@example.edu) in the department's grants office. Hale asked which speedtype the new GPU purchase (about $14,000) should be charged to, and whether it is the ARO award or the startup account.\n\nI do not know yet. The reply thanks Hale, says I will confirm the speedtype by Friday, and asks nothing else. It must not choose the ARO award or the startup account, and must not name any speedtype or number.\n\nNo style profile exists for this contact: greet with \"Hi Hale,\" and sign off with \"{{first_name}}\" on its own line.",
+  "must_include": [
+    "Friday"
+  ],
+  "must_not_include": [
+    "ARO",
+    "startup account",
+    "speedtype [0-9]",
+    "charge it to"
+  ],
+  "max_words": 90,
+  "rubric": "The body does not answer the question. It thanks Hale and promises the answer by Friday. It does not hedge at length or explain why the user does not know. Two to four sentences."
+}

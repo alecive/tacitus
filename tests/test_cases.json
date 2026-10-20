@@ -1,0 +1,2746 @@
+{
+  "version": 2,
+  "description": "Prompt logic test corpus for the EA chat bot. The message shapes follow real requests; every name, topic and place in them is invented. V2: tiered cases, context routing, honest expectations.",
+  "cases": [
+    {
+      "id": "thread-001",
+      "message": "send",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-25"
+    },
+    {
+      "id": "thread-002",
+      "message": "send it",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-26"
+    },
+    {
+      "id": "thread-003",
+      "message": "Send",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-25"
+    },
+    {
+      "id": "thread-004",
+      "message": "getem",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "thread-005",
+      "message": "send 1",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "thread-006",
+      "message": "Yes, draft the nomination letter.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "compose-letter"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "thread-007",
+      "message": "No again.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-24"
+    },
+    {
+      "id": "thread-008",
+      "message": "Good to send",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "thread-009",
+      "message": "RSVP no",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [
+          "rsvp-handler"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "scheduling",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-02"
+    },
+    {
+      "id": "thread-010",
+      "message": "send 1. send 2 but delete the April 6 availability paragraph from 2",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26",
+      "notes": "2 numbered sends with modification to second. Multi is correct — dispatching 2 separate drafts."
+    },
+    {
+      "id": "thread-011",
+      "message": "edit 1 to include appreciation for his interest in the MS program 2 pager.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "thread-approval",
+        "real",
+        "former-false-positive"
+      ],
+      "tier": "medium",
+      "source": "2026-03-31",
+      "notes": "Was classified multi (false positive). Now correctly single: 1 verb (edit), 16 words."
+    },
+    {
+      "id": "thread-012",
+      "message": "Write the follow up and send another email.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "thread-approval",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-04-02",
+      "notes": "Compound verb 'follow up...send' correctly collapsed. Single."
+    },
+    {
+      "id": "email-001",
+      "message": "Draft a reply to Gus saying thank you for the inputs and that we did apply to the pilot program.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-24"
+    },
+    {
+      "id": "email-002",
+      "message": "Could we send an email to Jules with appreciation for his research and that we'd love to collaborate.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-01"
+    },
+    {
+      "id": "email-003",
+      "message": "New email from Jules. Could you read it and draft a response? Or ask me questions if you need more context.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real",
+        "former-false-positive"
+      ],
+      "tier": "medium",
+      "source": "2026-04-02",
+      "notes": "Former false positive #3. Now correctly single via email-task pattern 3."
+    },
+    {
+      "id": "email-004",
+      "message": "Email from a program manager just now. Draft a response saying we could probably support a visit in mid-April.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26",
+      "notes": "No email pattern match (no 'to' after 'draft a response'). 1 verb, default single."
+    },
+    {
+      "id": "email-005",
+      "message": "I got another email from Program Manager Quinn. I need to respond to him. I think we can do the visit.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real",
+        "former-false-positive"
+      ],
+      "tier": "medium",
+      "source": "2026-04-02",
+      "notes": "Self-intent strips 'i need to respond' and 'i can'. 0 verbs, default single."
+    },
+    {
+      "id": "email-006",
+      "message": "Just got an email from Noor. Draft a reply and note that I have a student currently working on exactly this topic.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-30",
+      "notes": "Compound verb 'draft a reply' correctly collapsed. Single."
+    },
+    {
+      "id": "email-007",
+      "message": "send an email to owner@gmail.com asking how I'm doing",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting",
+          "gmail"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "email-008",
+      "message": "I have a draft in my mailbox to Ash and Cam. I want to make it more to the point and shorter.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-26",
+      "notes": "1 verb (draft). Default single."
+    },
+    {
+      "id": "email-009",
+      "message": "Can you browse my inbox and find the message related to the Northgate contract from Eli.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "triage"
+        ],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-25"
+    },
+    {
+      "id": "email-010",
+      "message": "Look up the email chain with Hale Ashcombe and others on the sensor networks workshop.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-27"
+    },
+    {
+      "id": "email-011",
+      "message": "Draft a note back to to Oakley with my scheduling availability, the advisory board is very important to me.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting",
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true,
+          "needs_poll_filler": false
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "email-reply",
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26",
+      "notes": "1 verb (draft). 'scheduling availability' triggers scheduling module."
+    },
+    {
+      "id": "email-012",
+      "message": "Gus - draft an email to Lior Okonkwo and Lior Quillon lquillon requesting what Gus asked about.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-31",
+      "notes": "email-task: 'draft an email to' matches pattern 2, 1 target found, no independent verbs."
+    },
+    {
+      "id": "email-013",
+      "message": "New ping from PM Quinn. Could you respond with my availability for a 30 minute video call next week?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "email-reply",
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-27",
+      "notes": "'my availability' triggers scheduling. 1 verb (respond). Default single."
+    },
+    {
+      "id": "email-014",
+      "message": "Just got an email from Noor. Draft a reply.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "synthetic"
+      ],
+      "tier": "hard",
+      "notes": "Compound verb 'draft a reply' correctly collapsed. Single."
+    },
+    {
+      "id": "email-015",
+      "message": "Read the university teaching award email and evaluate my work and responsibilities as well as my fitness for the award.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "email-reply",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31",
+      "notes": "No email patterns. 0 EA verbs. Default single."
+    },
+    {
+      "id": "close-001",
+      "message": "Close the Riverton reimbursement item. I did it myself today.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "reimbursement"
+        ],
+        "context": {
+          "needs_reimbursement_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-25",
+      "notes": "'close' is 1 EA verb, but 1 verb → single. 'reimburs' triggers reimbursement module."
+    },
+    {
+      "id": "close-002",
+      "message": "Archive the society email it's done.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "triage"
+        ],
+        "skills": [
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-24"
+    },
+    {
+      "id": "close-003",
+      "message": "Got the mail from the registrar, knock it off the list.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-02"
+    },
+    {
+      "id": "close-004",
+      "message": "Close out the workshop mentoring review, just completed.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "triage"
+        ],
+        "skills": [
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "close-005",
+      "message": "Just registered for ICRA, close that out.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "close-006",
+      "message": "Admissions task is done.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-26"
+    },
+    {
+      "id": "close-007",
+      "message": "Handled the center research and vision statement so close that item out.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-30",
+      "notes": "Word boundaries prevent 'search' matching in 'research'. 1 verb (close), single."
+    },
+    {
+      "id": "close-008",
+      "message": "I sent both manually, close out items.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "triage"
+        ],
+        "skills": [
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31",
+      "notes": "'sent' does not contain 'send'. 0 verbs."
+    },
+    {
+      "id": "close-009",
+      "message": "Mark the entire Wren Talbot ledger item as done.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-24"
+    },
+    {
+      "id": "close-010",
+      "message": "Decline Lakeside review.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "close",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-31",
+      "notes": "'decline the' does not match 'decline lakeside'. 1 verb (decline), single."
+    },
+    {
+      "id": "sched-001",
+      "message": "Schedule a meeting with Sage Westbrook in person Mon Apr 20 1:30-2:30 Room 210.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-30"
+    },
+    {
+      "id": "sched-002",
+      "message": "Accept the graduate committee meeting and the series of them.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26"
+    },
+    {
+      "id": "sched-003",
+      "message": "Do I have conflicts with that lab lunch",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-04-02"
+    },
+    {
+      "id": "sched-004",
+      "message": "can you check my availability for 2 again?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26"
+    },
+    {
+      "id": "sched-005",
+      "message": "Create a calendar event for myself for this meeting this week.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "context": {
+          "needs_scheduling_engine": false
+        },
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-31",
+      "notes": "'calendar' alone does NOT trigger scheduling module. 1 verb (create), single."
+    },
+    {
+      "id": "sched-006",
+      "message": "Schedule a meeting in my calendar and a Zoom meeting attachment if you can do that.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-30"
+    },
+    {
+      "id": "sched-007",
+      "message": "RSVP no",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [
+          "rsvp-handler"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-02"
+    },
+    {
+      "id": "sched-008",
+      "message": "put it on my calendar for Monday",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "context": {
+          "needs_scheduling_engine": false
+        },
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-04-02",
+      "notes": "'calendar' alone should NOT trigger scheduling module."
+    },
+    {
+      "id": "question-001",
+      "message": "What is the workshop involvement I would expect?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "question",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "question-002",
+      "message": "What does Ira need? Give me the scoop so I can help you draft an email.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "question",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-24",
+      "notes": "Self-intent stripping removes 'i can help you draft an email'. 0 verbs."
+    },
+    {
+      "id": "question-003",
+      "message": "Double check on the Hale Ashcombe thread - did I reply",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "question",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-04-02",
+      "notes": "'did I reply' stripped by past-question filter. 1 verb (check). Single."
+    },
+    {
+      "id": "question-004",
+      "message": "I am reading the chain from Uma. What exactly do I need to do here?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "question",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-01"
+    },
+    {
+      "id": "question-005",
+      "message": "What appointments are in my carol@gmail.com calendar?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "gmail"
+        ],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "question",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "usage-001",
+      "message": "usage",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "usage",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-31"
+    },
+    {
+      "id": "usage-002",
+      "message": "quota",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "usage",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "synthetic"
+    },
+    {
+      "id": "usage-003",
+      "message": "limits",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "usage",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "synthetic"
+    },
+    {
+      "id": "poll-001",
+      "message": "fill out the when2meet from Pip's defense email",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling",
+          "polls"
+        ],
+        "context": {
+          "needs_scheduling_engine": true,
+          "needs_poll_filler": true
+        },
+        "skills": [
+          "fill-poll"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "poll",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-04-01"
+    },
+    {
+      "id": "poll-002",
+      "message": "fill the poll from the committee email",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "polls"
+        ],
+        "context": {
+          "needs_poll_filler": true
+        },
+        "skills": [
+          "fill-poll"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "poll",
+        "synthetic"
+      ],
+      "tier": "medium",
+      "source": "synthetic"
+    },
+    {
+      "id": "reimb-001",
+      "message": "Can you draft an email with all of the receipts from my trip to Riverton attached to it?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting",
+          "reimbursement"
+        ],
+        "context": {
+          "needs_reimbursement_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "reimbursement",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-25",
+      "notes": ">2 targets blocks is_single_email. 1 verb (draft), single."
+    },
+    {
+      "id": "reimb-002",
+      "message": "Submit the Riverton travel reimbursement",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "reimbursement"
+        ],
+        "context": {
+          "needs_reimbursement_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "reimbursement",
+        "synthetic"
+      ],
+      "tier": "medium",
+      "source": "synthetic"
+    },
+    {
+      "id": "ledger-001",
+      "message": "add to my ledger a responsibility to call Zev Dunmore about the collaboration",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "ledger-admin",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-01"
+    },
+    {
+      "id": "ledger-002",
+      "message": "Add to my ledger action items from this meeting wherever I mention 'ledger'",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "ledger-admin",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-27"
+    },
+    {
+      "id": "ledger-003",
+      "message": "Ledger responsibility for getting back to Quinn about funding support by Friday.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "ledger-admin",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-30"
+    },
+    {
+      "id": "ledger-004",
+      "message": "Add an item to follow up with Reese the visiting fellow next month.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "recruiter-pipeline"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "ledger-admin",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-29",
+      "notes": "Content-of-task filter strips 'to follow up' after 'add'. 1 verb (add). Single."
+    },
+    {
+      "id": "ledger-005",
+      "message": "Add a ledger item to get the MS curriculum items submitted before the deadline.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "ledger-admin",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-27",
+      "notes": "Word-boundary prevents 'submitted' matching 'submit'. 1 verb (add). Single."
+    },
+    {
+      "id": "multi-001",
+      "message": "Archive all requests for reviewer recommendations for the editor, they're handled. Archive the old NSF email too.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting",
+          "triage"
+        ],
+        "skills": [
+          "reply",
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-03-24",
+      "notes": "Two archives in separate sentences targeting different items. Correctly ambiguous, triggers decomposition."
+    },
+    {
+      "id": "multi-002",
+      "message": "Pass on the conference trip for now. Also I sent my note for Lane so close it out. I manually sent the email to Parker too, close that.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-27",
+      "notes": "Three separate actions (decline, close Lane, close Parker) across sentences. Correctly ambiguous, triggers decomposition."
+    },
+    {
+      "id": "multi-003",
+      "message": "I am signed up for meeting with Flo already and I can't do the dinner - a conflict.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-01",
+      "notes": "Informational, no action. Self-intent strips 'i can't do'. 0 verbs."
+    },
+    {
+      "id": "multi-004",
+      "message": "Budget thread complete, I did it myself. Faculty lunch - I'm interested, what's the date?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "rsvp-handler"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "easy",
+      "source": "2026-04-01"
+    },
+    {
+      "id": "multi-005",
+      "message": "Floor plan doc - put it on my calendar for Monday. I emailed the vendor training contact about the workshop last night.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-04-02",
+      "notes": "Calendar action + informational. 0 EA verbs, single."
+    },
+    {
+      "id": "multi-006",
+      "message": "Archive all of the scheduling emails that are handled. Then draft a thank you to Professor Zion for the reference letter.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting",
+          "triage"
+        ],
+        "skills": [
+          "compose-letter",
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "synthetic"
+      ],
+      "tier": "hard",
+      "source": "synthetic",
+      "notes": "2 verbs (archive + draft) + sequencing ('then') = multi. Correctly detected."
+    },
+    {
+      "id": "multi-007",
+      "message": "1. Close the workshop mentoring item.\n2. Draft a reply to the NSF panel request declining politely.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "synthetic"
+      ],
+      "tier": "hard",
+      "source": "synthetic",
+      "notes": "Numbered-list check fires before email-task check. Multi."
+    },
+    {
+      "id": "multi-008",
+      "message": "Lior just replied in my box about next week. Follow up with a calendar invite for the meeting.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "skills": [
+          "recruiter-pipeline"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26",
+      "notes": "1 verb (follow up). 'reply' NOT in 'replied' (repli-e-d vs repl-y). Default single."
+    },
+    {
+      "id": "edge-001",
+      "message": "",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "edge-case",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "synthetic"
+    },
+    {
+      "id": "edge-002",
+      "message": "snooze the email from Eli until next Monday",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "snooze"
+        ],
+        "context": {
+          "needs_snooze_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "edge-case",
+        "snooze",
+        "synthetic"
+      ],
+      "tier": "medium",
+      "source": "synthetic"
+    },
+    {
+      "id": "edge-003",
+      "message": "remind me about this in two weeks",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "snooze"
+        ],
+        "context": {
+          "needs_snooze_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "edge-case",
+        "snooze",
+        "synthetic"
+      ],
+      "tier": "medium",
+      "source": "synthetic"
+    },
+    {
+      "id": "edge-004",
+      "message": "Upload the letter of recommendation for Lane to the portal",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "lor"
+        ],
+        "context": {
+          "needs_lor_workflow": true
+        },
+        "skills": [
+          "compose-letter"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "edge-case",
+        "lor",
+        "synthetic"
+      ],
+      "tier": "medium",
+      "source": "synthetic"
+    },
+    {
+      "id": "edge-005",
+      "message": "Cy just emailed about the visiting cadet. Could you respond to her with an overview of what we can offer?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "edge-case",
+        "email-reply",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-31",
+      "notes": "'respond...to her' matches email pattern."
+    },
+    {
+      "id": "hard-multi-001",
+      "message": "File Harper. Draft a note back to Oakley with my scheduling availability, the advisory board is very important to me.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "drafting",
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "multi-action",
+        "scheduling",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-26",
+      "notes": "2 verbs (file + draft), 2 distinct targets. Ambiguous triggers decomposition correctly."
+    },
+    {
+      "id": "hard-multi-002",
+      "message": "Archive the Ines Halloran email since we'll talk today. Draft a response to Lane thanking him for the opportunity.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "drafting",
+          "triage"
+        ],
+        "skills": [
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-26",
+      "notes": "2 verbs (archive + draft), 2 distinct targets. Ambiguous triggers decomposition correctly."
+    },
+    {
+      "id": "hard-multi-003",
+      "message": "Close the Riverton reimbursement item. I did it myself today. Also fill me in on what's new since I was out.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "reimbursement",
+          "triage"
+        ],
+        "context": {
+          "needs_reimbursement_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "multi-action",
+        "reimbursement",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-25",
+      "notes": "2 verbs (close + fill). Ambiguous triggers decomposition correctly."
+    },
+    {
+      "id": "hard-multi-004",
+      "message": "send the Ira email. Close out the RSVP to Lab Retreat, just handled it.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "scheduling",
+          "triage"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [
+          "triage",
+          "rsvp-handler"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "multi-action",
+        "scheduling",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26",
+      "notes": "2 verbs (send + close), 2 distinct actions (send email + close item). Ambiguous triggers decomposition, which handles both correctly."
+    },
+    {
+      "id": "hard-snooze-001",
+      "message": "Set a ledger reminder for following up with Eli per his most recent email, but wait 2 weeks.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "snooze"
+        ],
+        "context": {
+          "needs_snooze_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "snooze",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-27",
+      "notes": "'reminder' triggers snooze module. Thread <8 words check doesn't apply (14 words). Single."
+    },
+    {
+      "id": "hard-lor-001",
+      "message": "I have the attached recommendation letter already written for Pip Arden. Please upload it to the portal.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "lor"
+        ],
+        "context": {
+          "needs_lor_workflow": true
+        },
+        "skills": [
+          "compose-letter"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "lor",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26",
+      "notes": "'recommendation letter' triggers lor module. 0 EA verbs. Single."
+    },
+    {
+      "id": "hard-doodle-001",
+      "message": "I just got a response from Ash on the regional tech meeting. Draft an email for the group with a Doodle poll for early April.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting",
+          "polls",
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true,
+          "needs_poll_filler": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "poll",
+        "scheduling",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-30",
+      "notes": "'doodle' triggers both scheduling and polls modules. 1 verb (draft). Single."
+    },
+    {
+      "id": "hard-thread-001",
+      "message": "send 1. send 2 but delete the April 6 deadline being tight comment, and give my availability for those 3 time ranges.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "multi-action",
+        "scheduling",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-26",
+      "notes": "'send N...send N' pattern detected in thread. Multi."
+    },
+    {
+      "id": "hard-context-001",
+      "message": "Keep the Lior requirement on the ledger, add a deadline of tomorrow, and respond with the relevant section he wants me to fill out.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "multi-action",
+        "real"
+      ],
+      "tier": "hard",
+      "source": "2026-03-26",
+      "notes": "3 verbs (add, respond, fill) → multi. Correctly classifies 3 distinct actions."
+    },
+    {
+      "id": "hard-search-001",
+      "message": "Go through my owner@gmail.com and grab all of the travel receipts for the Riverton reimbursement.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "gmail",
+          "reimbursement"
+        ],
+        "context": {
+          "needs_reimbursement_workflow": true
+        },
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "reimbursement",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-31",
+      "notes": "'reimburs' triggers reimbursement module. 1 EA verb (grab), single."
+    },
+    {
+      "id": "hard-analysis-001",
+      "message": "Read Wynn's email approving the planning retreat and come up with action items for me based on the discussion.",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "analysis",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-30",
+      "notes": "0 EA verbs ('read' and 'come up with' not in set). Default single."
+    },
+    {
+      "id": "hard-email-001",
+      "message": "Can you check on this Jules Penrose email and give me the main points I need to know before responding?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "analysis",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-03-26",
+      "notes": "1 verb (check). 'responding' doesn't contain 'respond' (respond-ing vs respond). Single."
+    },
+    {
+      "id": "hard-multi-005",
+      "message": "Archive Ash's note, I don't have any accomplishments to bring before the board right now. Draft a bio and brief update response for the startup based on what they have written already. I don't have a deck, does she need a draft deck by today really or just the bio/topic? Acknowledge Quinn, offer a trip down sometime - would try and coordinate the timeline to visit with the partner lab (Casey Quillon, Bo) as well. Cy - draft a Teams message to Cam asking if he's interested (he's a phd student of mine). Give context and urge him to do this, I'll send it to him myself so one you draft you can snooze this until April 6. Fill out the When2Meet poll for Wynn - should be pretty available those weeks. Draft a reply to Zev. File the Gus item, I've already followed up saying he's handling it. What's the Cam item? File Vale Corvino email.  Yuki Merriweather equipment MOU is handled, so mark that completed and archive as necessary.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [
+          "drafting",
+          "polls",
+          "scheduling",
+          "snooze",
+          "triage"
+        ],
+        "context": {
+          "needs_poll_filler": true,
+          "needs_snooze_workflow": true,
+          "needs_scheduling_engine": true
+        },
+        "skills": [
+          "reply",
+          "triage",
+          "fill-poll"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "multi-action",
+        "real",
+        "batch-reply"
+      ],
+      "tier": "hard",
+      "source": "2026-04-03",
+      "notes": "Real morning briefing reply with ~10 distinct tasks: archive, draft (x3), acknowledge, snooze, fill poll, file (x2), question, mark complete. 6 verbs detected. Must always classify as multi."
+    },
+    {
+      "id": "sched-010",
+      "message": "Got a new email from Oakley about moving our 1:1, could you move the one instance of our Monday 1:1 to Thursday at 2pm",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "reschedule",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-04-03",
+      "notes": "Reschedule request, not an email task. 'move' triggers scheduling module. Single."
+    },
+    {
+      "id": "sched-011",
+      "message": "Cancel my 1:1 with Oakley on Monday",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "context": {
+          "needs_scheduling_engine": true
+        },
+        "skills": [],
+        "needs_mcp": false
+      },
+      "tags": [
+        "scheduling",
+        "delete-event",
+        "real"
+      ],
+      "tier": "medium",
+      "source": "2026-04-03",
+      "notes": "Event deletion request: user wants to delete/cancel a calendar event. EA should find the event, write pending-event-delete.json, and let the bot post a Delete button. Single verb (cancel), scheduling module triggers engine."
+    },
+    {
+      "id": "skill-letter-001",
+      "message": "Write a letter of recommendation for Eli",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "lor"
+        ],
+        "skills": [
+          "compose-letter"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "lor",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'letter' → compose-letter. 'lor' module. No MCP needed."
+    },
+    {
+      "id": "skill-letter-002",
+      "message": "Draft a formal letter of support for the NSF proposal on my letterhead",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "compose-letter"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'letter of support' and 'letterhead' → compose-letter. No module → needs MCP."
+    },
+    {
+      "id": "skill-reply-001",
+      "message": "Draft a reply to the NSF email declining the review",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'draft a reply' → reply skill."
+    },
+    {
+      "id": "skill-reply-002",
+      "message": "Respond to Lior about the meeting next week",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'respond to' → reply skill."
+    },
+    {
+      "id": "skill-triage-001",
+      "message": "Archive all the newsletters from this week",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "triage"
+        ],
+        "skills": [
+          "compose-letter",
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'archive' → triage skill."
+    },
+    {
+      "id": "skill-triage-002",
+      "message": "Mark the ICRA review as complete",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'mark complete' → triage skill. No triage keyword 'mark complete' (it's 'mark complete'). Let me check actual..."
+    },
+    {
+      "id": "skill-digest-001",
+      "message": "Give me a tldr of the faculty email thread",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "thread-digest"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'tldr' → thread-digest skill."
+    },
+    {
+      "id": "skill-digest-002",
+      "message": "Catch me up on the neighborhood thread",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "triage"
+        ],
+        "skills": [
+          "thread-digest"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'catch me up' and 'neighborhood thread' → thread-digest."
+    },
+    {
+      "id": "skill-rsvp-001",
+      "message": "RSVP yes to the department retreat",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling"
+        ],
+        "skills": [
+          "rsvp-handler"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'rsvp' → rsvp-handler. Also triggers scheduling module."
+    },
+    {
+      "id": "skill-deadline-001",
+      "message": "What's due this week?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "deadline-watchdog"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "\"what's due\" → deadline-watchdog."
+    },
+    {
+      "id": "skill-property-001",
+      "message": "What's the status on the storage unit insurance?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "Property moved to the ea-plugin-property interactive plugin; core no longer routes 'lake'/'condo' to a skill (plugin triggers are tested in the plugin repo)."
+    },
+    {
+      "id": "skill-pipeline-001",
+      "message": "What's active in my job pipeline right now?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "recruiter-pipeline"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'pipeline' and 'what\\'s active' → recruiter-pipeline."
+    },
+    {
+      "id": "skill-dispute-001",
+      "message": "File a dispute with the streaming service about the billing issue",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "dispute-tracker"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'dispute' and 'billing issue' → dispute-tracker."
+    },
+    {
+      "id": "skill-family-001",
+      "message": "What's on this weekend for the family?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "family-sync"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'what\\'s on this weekend' → family-sync."
+    },
+    {
+      "id": "skill-bridge-001",
+      "message": "Add the lab meeting to my Google calendar",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'add to google' → calendar-bridge."
+    },
+    {
+      "id": "skill-export-001",
+      "message": "Dump the context on the NSF email chain",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'dump the context' → context-export."
+    },
+    {
+      "id": "skill-export-002",
+      "message": "Dump this",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "regression",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "REGRESSION: plain 'dump this' in a thread must trigger context-export. Was missing from keyword list."
+    },
+    {
+      "id": "skill-export-003",
+      "message": "export this",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'export this' in thread → context-export."
+    },
+    {
+      "id": "skill-export-004",
+      "message": "Can you package this thread up for me?",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'package this' in thread → context-export."
+    },
+    {
+      "id": "skill-export-005",
+      "message": "dump this thread so I can share it with the dean",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'dump this thread' in thread → context-export."
+    },
+    {
+      "id": "skill-export-006",
+      "message": "Dump to markdown the whole email chain",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "regression",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "REGRESSION: 'dump to markdown' must trigger context-export. Real user message from dispatch log."
+    },
+    {
+      "id": "skill-export-007",
+      "message": "Dump this email thread.",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "regression",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "REGRESSION: 'dump this' prefix must trigger context-export. Real user message from dispatch log."
+    },
+    {
+      "id": "skill-export-008",
+      "message": "dump this into a markdown only",
+      "is_thread_reply": true,
+      "expected": {
+        "modules": [],
+        "skills": [
+          "context-export"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "regression",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "REGRESSION: 'dump this' prefix must trigger context-export. Real user message from dispatch log."
+    },
+    {
+      "id": "skill-poll-001",
+      "message": "Fill out the When2Meet for the committee meeting",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "scheduling",
+          "polls"
+        ],
+        "skills": [
+          "fill-poll"
+        ],
+        "needs_mcp": false,
+        "context": {
+          "needs_scheduling_engine": true,
+          "needs_poll_filler": true
+        }
+      },
+      "tags": [
+        "skill-detection",
+        "poll",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "'when2meet' → fill-poll + scheduling/polls modules. No MCP."
+    },
+    {
+      "id": "skill-multi-001",
+      "message": "Write a recommendation letter for Lane and email it to the portal",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "lor"
+        ],
+        "skills": [
+          "compose-letter"
+        ],
+        "needs_mcp": false
+      },
+      "tags": [
+        "skill-detection",
+        "multi-skill",
+        "synthetic"
+      ],
+      "tier": "medium",
+      "notes": "'letter' → compose-letter. 'email to' → reply. Both skills loaded."
+    },
+    {
+      "id": "skill-none-001",
+      "message": "What does this email say?",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "negative",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "General question — no skill signals."
+    },
+    {
+      "id": "skill-none-002",
+      "message": "Add a ledger item for the NSF deadline",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [],
+        "skills": [],
+        "needs_mcp": true
+      },
+      "tags": [
+        "skill-detection",
+        "negative",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "notes": "Ledger admin — no skill signal."
+    },
+    {
+      "id": "module-webfetch-001",
+      "message": "Check out https://nsf.gov/funding/opportunity/12345 and tell me if I am eligible",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "webfetch"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "module-detection",
+        "webfetch",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "synthetic",
+      "notes": "URL in message triggers webfetch module"
+    },
+    {
+      "id": "module-triage-001",
+      "message": "Triage my inbox and clear out anything older than a week",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "triage"
+        ],
+        "skills": [
+          "triage"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "module-detection",
+        "triage",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "synthetic",
+      "notes": "Triage keyword triggers triage module"
+    },
+    {
+      "id": "module-drafting-001",
+      "message": "Draft a reply to Sol saying we will have the results by Friday",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "drafting"
+        ],
+        "skills": [
+          "reply"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "module-detection",
+        "drafting",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "synthetic",
+      "notes": "Draft + reply to triggers drafting module"
+    },
+    {
+      "id": "module-gmail-001",
+      "message": "Send from Gmail to my insurance agent about the property claim",
+      "is_thread_reply": false,
+      "expected": {
+        "modules": [
+          "gmail"
+        ],
+        "needs_mcp": true
+      },
+      "tags": [
+        "module-detection",
+        "gmail",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "synthetic",
+      "notes": "Gmail keyword triggers gmail + drafting modules"
+    },
+    {
+      "id": "budget-justification-001",
+      "message": "Write a budget justification for the industry proposal",
+      "is_thread_reply": false,
+      "expected": {
+        "skills": []
+      },
+      "tags": [
+        "skill-routing",
+        "no-false-positive"
+      ],
+      "tier": "easy",
+      "notes": "a budget-justification template is an institution plugin's chat skill; no core skill routes it"
+    },
+    {
+      "id": "poll-route-fill-in",
+      "message": "fill in the when2meet from Eli",
+      "is_thread_reply": false,
+      "expected": {
+        "skills": [
+          "fill-poll"
+        ],
+        "modules": [
+          "polls",
+          "scheduling"
+        ]
+      },
+      "tags": [
+        "skill-routing",
+        "no-false-positive"
+      ],
+      "tier": "easy",
+      "notes": "'fill in' terminology routes to fill-poll (polls + scheduling both fire from the existing when2meet keyword)"
+    },
+    {
+      "id": "deck-001",
+      "message": "make a quick update deck for the dean on where the new minor stands, 4 slides",
+      "is_thread_reply": false,
+      "expected": {
+        "skills": [
+          "deck-builder"
+        ],
+        "modules": []
+      },
+      "tags": [
+        "deck",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "2026-09-10",
+      "notes": "update deck -> deck-builder"
+    },
+    {
+      "id": "deck-002",
+      "message": "can you put together a presentation for the curriculum meeting next week from the project notes?",
+      "is_thread_reply": false,
+      "expected": {
+        "skills": [
+          "deck-builder"
+        ],
+        "modules": []
+      },
+      "tags": [
+        "deck",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "2026-09-10",
+      "notes": "presentation for -> deck-builder"
+    },
+    {
+      "id": "deck-003",
+      "message": "take down the deck, the meeting is over",
+      "is_thread_reply": true,
+      "expected": {
+        "skills": [
+          "deck-builder"
+        ],
+        "modules": []
+      },
+      "tags": [
+        "deck",
+        "synthetic"
+      ],
+      "tier": "easy",
+      "source": "2026-09-10",
+      "notes": "teardown phrasing loads the same skill"
+    },
+    {
+      "id": "deck-004",
+      "message": "I don't have a deck, does she need a draft deck by today or just the bio?",
+      "is_thread_reply": false,
+      "expected": {
+        "skills": [],
+        "modules": [
+          "drafting"
+        ]
+      },
+      "tags": [
+        "deck",
+        "negative",
+        "synthetic"
+      ],
+      "tier": "medium",
+      "source": "2026-09-10",
+      "notes": "a bare 'deck' in mail talk is not a build request"
+    }
+  ],
+  "build_claude_md_cases": [
+    {
+      "id": "claude-md-001",
+      "needed_modules": [],
+      "assertions": {
+        "must_contain": [
+          "## Your role",
+          "## Communication style",
+          "## Safety rules",
+          "## Rules",
+          "RECORD THE WORK IN THE SAME TURN YOU DO IT"
+        ],
+        "must_not_contain": [
+          "### Letter of Recommendation uploads",
+          "### Travel reimbursement",
+          "## Scheduled sends",
+          "BJUST",
+          "budget justification",
+          "budget_justification.py",
+          "Budget Justification"
+        ],
+        "must_contain_replacements": [
+          "*LoR uploads*",
+          "*Poll filling*",
+          "*Reimbursement & receipts*",
+          "*Snooze / scheduled sends / follow-ups*"
+        ]
+      },
+      "notes": "No modules - all workflow sections replaced with summaries. Also asserts budget-justification content never bleeds into main CLAUDE.md (it lives in an institution plugin's chat skill)."
+    },
+    {
+      "id": "claude-md-002",
+      "needed_modules": [
+        "lor"
+      ],
+      "assertions": {
+        "must_contain": [
+          "### Letter of Recommendation uploads",
+          "## Your role"
+        ],
+        "must_not_contain": [
+          "### Travel reimbursement",
+          "## Scheduled sends"
+        ],
+        "must_contain_replacements": [
+          "*Poll filling*",
+          "*Reimbursement & receipts*",
+          "*Snooze / scheduled sends / follow-ups*"
+        ]
+      },
+      "notes": "Only LoR preserved"
+    },
+    {
+      "id": "claude-md-003",
+      "needed_modules": [
+        "scheduling",
+        "polls"
+      ],
+      "assertions": {
+        "must_contain": [
+          "### Scheduling poll filling (When2Meet, WhenIsGood, Doodle, Timeful)",
+          "## Your role"
+        ],
+        "must_not_contain": [
+          "### Letter of Recommendation uploads",
+          "## Scheduled sends"
+        ],
+        "must_contain_replacements": [
+          "*LoR uploads*",
+          "*Reimbursement & receipts*",
+          "*Snooze / scheduled sends / follow-ups*"
+        ]
+      },
+      "notes": "Polls section preserved"
+    },
+    {
+      "id": "claude-md-004",
+      "needed_modules": [
+        "lor",
+        "polls",
+        "reimbursement",
+        "snooze",
+        "scheduling",
+        "gmail",
+        "webfetch",
+        "triage",
+        "drafting"
+      ],
+      "assertions": {
+        "must_contain": [
+          "### Letter of Recommendation uploads",
+          "### Scheduling poll filling",
+          "### Travel reimbursement",
+          "## Scheduled sends"
+        ],
+        "must_not_contain": [
+          "## Usage tracking"
+        ],
+        "must_contain_replacements": []
+      },
+      "notes": "All modules - full text except _never sections (Usage tracking always stripped)"
+    },
+    {
+      "id": "claude-md-005",
+      "needed_modules": [
+        "reimbursement",
+        "snooze"
+      ],
+      "assertions": {
+        "must_contain": [
+          "### Travel reimbursement",
+          "## Scheduled sends",
+          "## Your role"
+        ],
+        "must_not_contain": [
+          "### Letter of Recommendation uploads"
+        ],
+        "must_contain_replacements": [
+          "*LoR uploads*",
+          "*Poll filling*"
+        ]
+      },
+      "notes": "Reimbursement + snooze preserved"
+    },
+    {
+      "id": "claude-md-006",
+      "needed_modules": [],
+      "assertions": {
+        "must_contain": [
+          "## Your role",
+          "## Safety rules",
+          "## Rules"
+        ],
+        "must_not_contain": [
+          "## Calendars and scheduling",
+          "## Web page reading",
+          "## Pre-send review (executive functioning check)",
+          "## Usage tracking",
+          "## Inbox as completion signal",
+          "### Gmail drafts and sending",
+          "### Letter of Recommendation uploads",
+          "### Travel reimbursement",
+          "## Scheduled sends"
+        ],
+        "must_contain_replacements": [
+          "*Calendars & scheduling*",
+          "*Web reading*",
+          "*Pre-send review*",
+          "*Inbox completion signal*",
+          "*Gmail drafts*",
+          "*LoR uploads*",
+          "*Poll filling*",
+          "*Reimbursement & receipts*",
+          "*Snooze / scheduled sends / follow-ups*"
+        ]
+      },
+      "notes": "Phase 2: no modules - all extractable sections stripped"
+    },
+    {
+      "id": "claude-md-007",
+      "needed_modules": [
+        "scheduling"
+      ],
+      "assertions": {
+        "must_contain": [
+          "## Calendars and scheduling",
+          "## Your role"
+        ],
+        "must_not_contain": [
+          "## Web page reading",
+          "## Pre-send review (executive functioning check)",
+          "## Usage tracking",
+          "## Inbox as completion signal"
+        ],
+        "must_contain_replacements": [
+          "*Web reading*",
+          "*Pre-send review*",
+          "*Inbox completion signal*"
+        ]
+      },
+      "notes": "Scheduling keeps calendars section, strips everything else"
+    },
+    {
+      "id": "claude-md-008",
+      "needed_modules": [
+        "drafting"
+      ],
+      "assertions": {
+        "must_contain": [
+          "## Pre-send review (executive functioning check)",
+          "## Your role"
+        ],
+        "must_not_contain": [
+          "## Calendars and scheduling",
+          "## Web page reading",
+          "## Usage tracking",
+          "## Inbox as completion signal"
+        ],
+        "must_contain_replacements": [
+          "*Calendars & scheduling*",
+          "*Web reading*",
+          "*Inbox completion signal*"
+        ]
+      },
+      "notes": "Drafting keeps pre-send review, strips scheduling/web/triage"
+    },
+    {
+      "id": "claude-md-009",
+      "needed_modules": [
+        "triage"
+      ],
+      "assertions": {
+        "must_contain": [
+          "## Inbox as completion signal",
+          "## Your role"
+        ],
+        "must_not_contain": [
+          "## Calendars and scheduling",
+          "## Web page reading",
+          "## Pre-send review (executive functioning check)",
+          "## Usage tracking"
+        ],
+        "must_contain_replacements": [
+          "*Calendars & scheduling*",
+          "*Web reading*",
+          "*Pre-send review*"
+        ]
+      },
+      "notes": "Triage keeps inbox completion, strips scheduling/web/drafting"
+    },
+    {
+      "id": "claude-md-010",
+      "needed_modules": [
+        "webfetch"
+      ],
+      "assertions": {
+        "must_contain": [
+          "## Web page reading",
+          "## Your role"
+        ],
+        "must_not_contain": [
+          "## Calendars and scheduling",
+          "## Pre-send review (executive functioning check)",
+          "## Usage tracking",
+          "## Inbox as completion signal"
+        ],
+        "must_contain_replacements": [
+          "*Calendars & scheduling*",
+          "*Pre-send review*",
+          "*Inbox completion signal*"
+        ]
+      },
+      "notes": "Webfetch keeps web reading section"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "channel": "C_MAIN",
+  "channel_type": "group",
+  "parent_user_id": "U_OWNER",
+  "text": "make it shorter",
+  "thread_ts": "1700000100.000200",
+  "ts": "1700000600.000700",
+  "type": "message",
+  "user": "U_OWNER"
+}

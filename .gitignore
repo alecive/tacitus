@@ -1,0 +1,32 @@
+__pycache__/
+.venv/
+venv/
+*.pyc
+*.pyo
+.env
+*.log
+*.bak
+.claude/*
+!.claude/agents/
+!.claude/agents/**
+!.claude/skills/
+!.claude/skills/**
+# The developer guide (the deploy keeps it out of the EA's tree).
+!.claude/CLAUDE.md
+
+# Local-only development artifacts (migration notes, scratch docs, etc.)
+# Personal/situational; not pushed to the EA repo.
+docs/_local/
+
+# Local secrets (open-webui key dropped in repo root)
+.webui_secret_key
+
+# The install overlay (preprocessor/install_overlay.py install): this
+# install's own facts, rendered from config.
+CLAUDE.local.md
+
+# The closure corpus rebuilt from the owner's own history
+# (scripts/build_closure_corpus.py). Owner-private: the builder writes it
+# to ~/.ea-private by default, and an in-repo copy is never tracked.
+tests/fixtures/closure_corpus.real.json
+*.real.json

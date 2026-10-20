@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "id": "hard-success-scheduling-defaults",
+    "name": "Scheduling uses 30-min default and invite-only (no redundant email)",
+    "category": "hard-success",
+    "bug_ref": "1-hour meeting + redundant email to Jules (2026-04-14)",
+    "description": "When the user asks to schedule a meeting without specifying duration, the system must default to 30 minutes (not 60). When creating a calendar invite, the system must NOT also send a confirmation email — the invite IS the notification. Tests both the duration default and the invite-vs-email rule."
+  },
+  "briefing": {
+    "generated_at": "2026-04-14T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 1,
+      "new_sent_messages": 0,
+      "total_delta_items": 1,
+      "total_inbox": 40,
+      "flagged_count": 0,
+      "events_next_14d": 8
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [
+      {"start": "2026-04-17T09:00:00-06:00", "end": "2026-04-17T11:00:00-06:00", "duration_minutes": 120, "day": "Thursday"},
+      {"start": "2026-04-17T14:00:00-06:00", "end": "2026-04-17T15:00:00-06:00", "duration_minutes": 60, "day": "Thursday"}
+    ],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "15:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 1,
+      "user_message_count": 1,
+      "messages": [
+        {
+          "user": "U_OWNER",
+          "text": "Schedule the Thursday time slot online with Jules (morgan.whitlock24@example.edu) pursuant to his recent email.",
+          "ts": "1744200000.000100"
+        }
+      ],
+      "user_instructions": [
+        "Schedule the Thursday time slot online with Jules (morgan.whitlock24@example.edu) pursuant to his recent email."
+      ],
+      "pending_instructions": [
+        "Schedule the Thursday time slot online with Jules (morgan.whitlock24@example.edu) pursuant to his recent email."
+      ],
+      "handled_instructions": []
+    },
+    "user_profile_note": "User's Zoom link is in user-profile.json. Default meeting duration is 30 minutes. Do NOT create 1-hour meetings unless explicitly requested."
+  },
+  "ledger_entries": []
+}

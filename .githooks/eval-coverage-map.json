@@ -1,0 +1,44 @@
+{
+  "_comment": "Maps file patterns to eval fixture IDs. Used by prepare-commit-msg to tag commits with eval coverage and by post-commit to run relevant evals.",
+  "skills/morning-briefing.md": [
+    "regression-001", "regression-002", "regression-003", "regression-004",
+    "regression-009", "hard-success-001", "hard-success-002", "hard-success-003"
+  ],
+  "skills/afternoon-catchup.md": [
+    "regression-001", "regression-003"
+  ],
+  "CLAUDE.md": [
+    "regression-002", "regression-006", "regression-007",
+    "hard-success-001", "hard-success-005", "hard-success-006", "hard-success-007"
+  ],
+  "preprocessor/preprocess.py": [
+    "regression-001", "regression-003", "regression-004"
+  ],
+  "preprocessor/prompt_logic.py": [
+    "regression-005", "hard-success-004"
+  ],
+  "preprocessor/context_export.py": [
+    "regression-001", "regression-002", "regression-003", "regression-004",
+    "hard-success-001", "hard-success-002"
+  ],
+  "preprocessor/ledger.py": [
+    "regression-001", "regression-008"
+  ],
+  "preprocessor/ledger_sync.py": [
+    "regression-008"
+  ],
+  "preprocessor/graph_actions.py": [
+    "regression-007", "hard-success-005", "hard-success-007"
+  ],
+  "preprocessor/poll_filler.py": [
+    "hard-success-006"
+  ],
+  "preprocessor/scheduled_sends.py": [],
+  "ea-chat-bot.py": [
+    "regression-007", "regression-009", "hard-success-007"
+  ],
+  "run-agent.sh": [
+    "regression-007", "regression-009"
+  ],
+  "preprocessor/opik_trace.py": []
+}

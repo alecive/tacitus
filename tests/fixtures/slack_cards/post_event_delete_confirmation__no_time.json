@@ -1,0 +1,324 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm event deletion*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": ":warning: The request named this event \u201cProject sync\u201d; the calendar has it as \u201cProject sync (moved)\u201d.",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Attendees (1):* Alex Rivera (alex.rivera@example.edu)",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "You do not organize this event. Deleting it removes it from your calendar.",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Event:* Project sync (moved)",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Organizer:* Alex Rivera (alex.rivera@example.edu)",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Series:* this one occurrence of a series",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_event_delete_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "approve_event_delete",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": ":wastebasket: Delete",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        },
+        {
+          "action_id": "cancel_event_delete",
+          "text": {
+            "emoji": true,
+            "text": "Keep",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "text": {
+              "text": ":lock: *Confirm event deletion*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": ":warning: The request named this event \u201cProject sync\u201d; the calendar has it as \u201cProject sync (moved)\u201d.",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Attendees (1):* Alex Rivera (alex.rivera@example.edu)",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "You do not organize this event. Deleting it removes it from your calendar.",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Event:* Project sync (moved)",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Organizer:* Alex Rivera (alex.rivera@example.edu)",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Series:* this one occurrence of a series",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "block_id": "confirm_event_delete_1700000000.000100",
+            "elements": [
+              {
+                "action_id": "approve_event_delete",
+                "style": "danger",
+                "text": {
+                  "emoji": true,
+                  "text": ":wastebasket: Delete",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              },
+              {
+                "action_id": "cancel_event_delete",
+                "text": {
+                  "emoji": true,
+                  "text": "Keep",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              }
+            ],
+            "type": "actions"
+          }
+        ],
+        "channel": "D_OWNER",
+        "text": ":lock: *Confirm event deletion*\n*Event:* Project sync (moved)\n*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT\n*Organizer:* Alex Rivera (alex.rivera@example.edu)\n*Series:* this one occurrence of a series"
+      },
+      "method": "chat_postMessage"
+    },
+    {
+      "kwargs": {
+        "channel": "D_OWNER",
+        "message_ts": "1700000001.000200"
+      },
+      "method": "chat_getPermalink"
+    },
+    {
+      "kwargs": {
+        "channel": "C_MAIN",
+        "text": ":lock: The Delete button for this event is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>",
+        "thread_ts": "1700000000.000100",
+        "unfurl_links": false,
+        "unfurl_media": false
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "channel": "C_MAIN",
+      "event_id": "AAMkEVENT1",
+      "subject": "Project sync",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "event": {
+        "attendees": [
+          {
+            "address": "alex.rivera@example.edu",
+            "name": "Alex Rivera",
+            "type": "required"
+          }
+        ],
+        "cancelled": false,
+        "fingerprint": "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "is_organizer": false,
+        "location": "",
+        "organizer": "Alex Rivera (alex.rivera@example.edu)",
+        "series": "occurrence",
+        "subject": "Project sync (moved)",
+        "when": "Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT"
+      }
+    }
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "text": {
+          "text": ":lock: *Confirm event deletion*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": ":warning: The request named this event \u201cProject sync\u201d; the calendar has it as \u201cProject sync (moved)\u201d.",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Attendees (1):* Alex Rivera (alex.rivera@example.edu)",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "You do not organize this event. Deleting it removes it from your calendar.",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Event:* Project sync (moved)",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Organizer:* Alex Rivera (alex.rivera@example.edu)",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Series:* this one occurrence of a series",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "block_id": "confirm_event_delete_1700000000.000100",
+        "elements": [
+          {
+            "action_id": "approve_event_delete",
+            "style": "danger",
+            "text": {
+              "emoji": true,
+              "text": ":wastebasket: Delete",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          },
+          {
+            "action_id": "cancel_event_delete",
+            "text": {
+              "emoji": true,
+              "text": "Keep",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          }
+        ],
+        "type": "actions"
+      }
+    ],
+    "channel": "D_OWNER",
+    "text": ":lock: *Confirm event deletion*\n*Event:* Project sync (moved)\n*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT\n*Organizer:* Alex Rivera (alex.rivera@example.edu)\n*Series:* this one occurrence of a series"
+  },
+  "text": ":lock: *Confirm event deletion*\n*Event:* Project sync (moved)\n*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT\n*Organizer:* Alex Rivera (alex.rivera@example.edu)\n*Series:* this one occurrence of a series"
+}

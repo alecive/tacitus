@@ -1,0 +1,8 @@
+{
+ "email": "ea-bot@example.org",
+ "full_name": "EA",
+ "is_bot": true,
+ "msg": "",
+ "result": "success",
+ "user_id": 50
+}

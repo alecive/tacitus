@@ -1,0 +1,4736 @@
+{
+ "schema": 1,
+ "generated_at": "2030-03-31T00:00:00Z",
+ "built_by": "tests/fixtures/closure_corpus_synthetic.py",
+ "profile": {
+  "name": "Avery Quill",
+  "email": "avery.quill@example.edu",
+  "gmail_accounts": [
+   "avery.quill.home@example.com"
+  ]
+ },
+ "caveats": [
+  "Every person, subject, address and id in this corpus is invented. Nothing in it is read from a mailbox, a ledger or a log.",
+  "Each case reproduces the condition a signal tests: the timestamps, recipients, subjects and token overlaps the scrubber reads, and nothing else.",
+  "This corpus scores closure_scrubber's signals. It does NOT score ledger_sync (inbox-as-completion) nor the briefing's LLM closeability pass.",
+  "Signal 8 (project_member_completion) reads the project store, which the harness sandbox does not seed, so no case exercises it.",
+  "`unactionable` and `contested` entries are recorded and NOT scored.",
+  "`discriminating` is false when no scored scrubber build closes the case, so holding it proves nothing (closure_harness.py audit)."
+ ],
+ "ballast": [
+  {
+   "id": "ballast-syn-01",
+   "type": "task",
+   "description": "Halcyon testbed: order replacement batteries",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-02",
+   "type": "task",
+   "description": "Halcyon testbed safety checklist for the spring",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-03",
+   "type": "task",
+   "description": "Halcyon testbed network upgrade quote",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-04",
+   "type": "task",
+   "description": "Write the Halcyon testbed user guide",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-05",
+   "type": "task",
+   "description": "Halcyon testbed access list for new students",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-06",
+   "type": "task",
+   "description": "Halcyon testbed: fix the charging dock",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-07",
+   "type": "task",
+   "description": "Review the Marrow lab rotation proposals",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-08",
+   "type": "task",
+   "description": "Update the Fernhill arm firmware notes",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-09",
+   "type": "task",
+   "description": "Order lab coats for the Bramble room",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-10",
+   "type": "task",
+   "description": "Draft the Tessellate seminar poster",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-11",
+   "type": "task",
+   "description": "Collect travel receipts from the Driftwood trip",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-12",
+   "type": "task",
+   "description": "Renew the Cinderford equipment insurance",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-13",
+   "type": "task",
+   "description": "Write the Sunfield seed grant final summary",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-14",
+   "type": "task",
+   "description": "Plan the summer outreach camp",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-15",
+   "type": "task",
+   "description": "Check the Lattice cluster storage quota",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-16",
+   "type": "task",
+   "description": "Answer the alumni newsletter questionnaire",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-17",
+   "type": "task",
+   "description": "Archive the old Quillon dataset mirrors",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-18",
+   "type": "task",
+   "description": "Prepare the annual safety training slides",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-19",
+   "type": "task",
+   "description": "Sort the shared drive for the Orchard workshop",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  },
+  {
+   "id": "ballast-syn-20",
+   "type": "task",
+   "description": "Inventory the spare lidar units",
+   "from_email": "",
+   "from_name": "",
+   "conversation_id": "",
+   "source_message_id": "",
+   "gmail_thread_id": "",
+   "date_identified": "2030-02-20T12:00:00Z",
+   "deadline": "",
+   "notes": "",
+   "last_action": "",
+   "priority": "",
+   "status": "open"
+  }
+ ],
+ "cases": [
+  {
+   "case_id": "tp-user_replied_outlook-r001",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r001",
+    "type": "response_needed",
+    "description": "Needs response: Loaner lidar for the Quarry field days",
+    "from_email": "hollis.brandt@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r001",
+    "source_message_id": "msg-syn-r001",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-01T14:00:00Z",
+    "deadline": "",
+    "notes": "Hollis wrote about: loaner lidar for the quarry field days.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r001",
+      "subject": "RE: Loaner lidar for the Quarry field days",
+      "sentDateTime": "2030-03-02T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Hollis Brandt",
+         "address": "hollis.brandt@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r002",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r002",
+    "type": "response_needed",
+    "description": "Needs response: Guest slot in the Tessellate seminar series",
+    "from_email": "mirela.ostrova@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r002",
+    "source_message_id": "msg-syn-r002",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-02T14:00:00Z",
+    "deadline": "",
+    "notes": "Mirela wrote about: guest slot in the tessellate seminar series.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r002",
+      "subject": "RE: Guest slot in the Tessellate seminar series",
+      "sentDateTime": "2030-03-03T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r003",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r003",
+    "type": "response_needed",
+    "description": "Needs response: Co-advising question for the Marrow lab rotation",
+    "from_email": "tobin.achterberg@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r003",
+    "source_message_id": "msg-syn-r003",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-03T14:00:00Z",
+    "deadline": "",
+    "notes": "Tobin wrote about: co-advising question for the marrow lab rotation.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r003",
+      "subject": "RE: Co-advising question for the Marrow lab rotation",
+      "sentDateTime": "2030-03-04T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Tobin Achterberg",
+         "address": "tobin.achterberg@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r004",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r004",
+    "type": "response_needed",
+    "description": "Needs response: Letter for the Pellam fellowship application",
+    "from_email": "selma.ravensworth@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r004",
+    "source_message_id": "msg-syn-r004",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-04T14:00:00Z",
+    "deadline": "",
+    "notes": "Selma wrote about: letter for the pellam fellowship application.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r004",
+      "subject": "RE: Letter for the Pellam fellowship application",
+      "sentDateTime": "2030-03-05T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r005",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r005",
+    "type": "response_needed",
+    "description": "Needs response: Travel dates for the Driftwood symposium",
+    "from_email": "idris.mallory@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r005",
+    "source_message_id": "msg-syn-r005",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T14:00:00Z",
+    "deadline": "",
+    "notes": "Idris wrote about: travel dates for the driftwood symposium.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r005",
+      "subject": "RE: Travel dates for the Driftwood symposium",
+      "sentDateTime": "2030-03-06T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Idris Mallory",
+         "address": "idris.mallory@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r006",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r006",
+    "type": "response_needed",
+    "description": "Needs response: Calibration data request for the Fernhill arm",
+    "from_email": "petra.lindgren@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r006",
+    "source_message_id": "msg-syn-r006",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-06T14:00:00Z",
+    "deadline": "",
+    "notes": "Petra wrote about: calibration data request for the fernhill arm.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r006",
+      "subject": "RE: Calibration data request for the Fernhill arm",
+      "sentDateTime": "2030-03-07T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r007",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r007",
+    "type": "response_needed",
+    "description": "Needs response: Shared GPU allocation on the Lattice cluster",
+    "from_email": "caspian.wole@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r007",
+    "source_message_id": "msg-syn-r007",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-07T14:00:00Z",
+    "deadline": "",
+    "notes": "Caspian wrote about: shared gpu allocation on the lattice cluster.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r007",
+      "subject": "RE: Shared GPU allocation on the Lattice cluster",
+      "sentDateTime": "2030-03-08T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Caspian Wole",
+         "address": "caspian.wole@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r008",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r008",
+    "type": "response_needed",
+    "description": "Needs response: Visiting scholar paperwork for the autumn term",
+    "from_email": "noor.haddington@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r008",
+    "source_message_id": "msg-syn-r008",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-08T14:00:00Z",
+    "deadline": "",
+    "notes": "Noor wrote about: visiting scholar paperwork for the autumn term.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r008",
+      "subject": "RE: Visiting scholar paperwork for the autumn term",
+      "sentDateTime": "2030-03-09T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r009",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r009",
+    "type": "response_needed",
+    "description": "Needs response: Joining the Sunfield consortium call list",
+    "from_email": "ottilie.brack@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r009",
+    "source_message_id": "msg-syn-r009",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-09T14:00:00Z",
+    "deadline": "",
+    "notes": "Ottilie wrote about: joining the sunfield consortium call list.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r009",
+      "subject": "RE: Joining the Sunfield consortium call list",
+      "sentDateTime": "2030-03-10T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Ottilie Brack",
+         "address": "ottilie.brack@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r010",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r010",
+    "type": "response_needed",
+    "description": "Needs response: Draft charter for the student robotics club",
+    "from_email": "desmond.farrow@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r010",
+    "source_message_id": "msg-syn-r010",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-10T14:00:00Z",
+    "deadline": "",
+    "notes": "Desmond wrote about: draft charter for the student robotics club.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r010",
+      "subject": "RE: Draft charter for the student robotics club",
+      "sentDateTime": "2030-03-11T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r011",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r011",
+    "type": "response_needed",
+    "description": "Needs response: License question for the Quillon dataset",
+    "from_email": "yara.pellam@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r011",
+    "source_message_id": "msg-syn-r011",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-11T14:00:00Z",
+    "deadline": "",
+    "notes": "Yara wrote about: license question for the quillon dataset.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r011",
+      "subject": "RE: License question for the Quillon dataset",
+      "sentDateTime": "2030-03-12T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Yara Pellam",
+         "address": "yara.pellam@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r012",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r012",
+    "type": "response_needed",
+    "description": "Needs response: Booking the Bramble motion-capture room",
+    "from_email": "ingrid.solvang@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r012",
+    "source_message_id": "msg-syn-r012",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-12T14:00:00Z",
+    "deadline": "",
+    "notes": "Ingrid wrote about: booking the bramble motion-capture room.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r012",
+      "subject": "RE: Booking the Bramble motion-capture room",
+      "sentDateTime": "2030-03-13T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r013",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r013",
+    "type": "response_needed",
+    "description": "Needs response: Committee membership for a master's thesis",
+    "from_email": "bastian.crewe@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r013",
+    "source_message_id": "msg-syn-r013",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-13T14:00:00Z",
+    "deadline": "",
+    "notes": "Bastian wrote about: committee membership for a master's thesis.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r013",
+      "subject": "RE: Committee membership for a master's thesis",
+      "sentDateTime": "2030-03-14T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Bastian Crewe",
+         "address": "bastian.crewe@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r014",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r014",
+    "type": "response_needed",
+    "description": "Needs response: Subaward budget question for the Cinderford project",
+    "from_email": "lucinda.marsh@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r014",
+    "source_message_id": "msg-syn-r014",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-14T14:00:00Z",
+    "deadline": "",
+    "notes": "Lucinda wrote about: subaward budget question for the cinderford project.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r014",
+      "subject": "RE: Subaward budget question for the Cinderford project",
+      "sentDateTime": "2030-03-15T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r015",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r015",
+    "type": "response_needed",
+    "description": "Needs response: Equipment transfer from the Wrenfield lab",
+    "from_email": "ewan.tavistock@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r015",
+    "source_message_id": "msg-syn-r015",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-15T14:00:00Z",
+    "deadline": "",
+    "notes": "Ewan wrote about: equipment transfer from the wrenfield lab.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r015",
+      "subject": "RE: Equipment transfer from the Wrenfield lab",
+      "sentDateTime": "2030-03-16T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Ewan Tavistock",
+         "address": "ewan.tavistock@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r016",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row; the user's reply in its conversation is the deliverable, so it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-r016",
+    "type": "response_needed",
+    "description": "Needs response: Panelist availability for the Orchard workshop",
+    "from_email": "rafferty.dunmore@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r016",
+    "source_message_id": "msg-syn-r016",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-16T14:00:00Z",
+    "deadline": "",
+    "notes": "Rafferty wrote about: panelist availability for the orchard workshop.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r016",
+      "subject": "RE: Panelist availability for the Orchard workshop",
+      "sentDateTime": "2030-03-17T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r017",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a reply row by type or by closes_on=reply; the reply closes it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "followup-syn-r017",
+    "type": "follow_up",
+    "description": "Recommendation for the summer internship program (Celeste Abara)",
+    "from_email": "celeste.abara@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r017",
+    "source_message_id": "msg-syn-r017",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-17T14:00:00Z",
+    "deadline": "",
+    "notes": "Celeste wrote about: recommendation for the summer internship program.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r017",
+      "subject": "RE: Recommendation for the summer internship program",
+      "sentDateTime": "2030-03-18T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Celeste Abara",
+         "address": "celeste.abara@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r018",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a reply row by type or by closes_on=reply; the reply closes it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "followup-syn-r018",
+    "type": "follow_up",
+    "description": "Renewal of the Mosaic CAD site license (Magnus Hollow)",
+    "from_email": "magnus.hollow@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r018",
+    "source_message_id": "msg-syn-r018",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-18T14:00:00Z",
+    "deadline": "",
+    "notes": "Magnus wrote about: renewal of the mosaic cad site license.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r018",
+      "subject": "RE: Renewal of the Mosaic CAD site license",
+      "sentDateTime": "2030-03-19T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r019",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a reply row by type or by closes_on=reply; the reply closes it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-r019",
+    "type": "task",
+    "description": "Reviewer for the Copperline special issue (Zinnia Prower)",
+    "from_email": "zinnia.prower@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r019",
+    "source_message_id": "msg-syn-r019",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-19T14:00:00Z",
+    "deadline": "",
+    "notes": "Zinnia wrote about: reviewer for the copperline special issue.",
+    "last_action": "",
+    "priority": "",
+    "status": "open",
+    "closes_on": "reply"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r019",
+      "subject": "RE: Reviewer for the Copperline special issue",
+      "sentDateTime": "2030-03-20T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Zinnia Prower",
+         "address": "zinnia.prower@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r020",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a task row: a reply in its thread proposes the close, since the reply may be about something else.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-r020",
+    "type": "task",
+    "description": "Undergraduate research credit form (Oren Valcourt)",
+    "from_email": "oren.valcourt@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r020",
+    "source_message_id": "msg-syn-r020",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T14:00:00Z",
+    "deadline": "",
+    "notes": "Oren wrote about: undergraduate research credit form.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r020",
+      "subject": "RE: Undergraduate research credit form",
+      "sentDateTime": "2030-03-21T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r021",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a scheduling row: a reply in its thread proposes the close, since the reply may be about something else.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-r021",
+    "type": "scheduling",
+    "description": "Speaker gift for the Fenwick lecture (Tamsin Greaves)",
+    "from_email": "tamsin.greaves@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r021",
+    "source_message_id": "msg-syn-r021",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-01T14:00:00Z",
+    "deadline": "",
+    "notes": "Tamsin wrote about: speaker gift for the fenwick lecture.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r021",
+      "subject": "RE: Speaker gift for the Fenwick lecture",
+      "sentDateTime": "2030-03-02T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Tamsin Greaves",
+         "address": "tamsin.greaves@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r022",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a dispute row: a reply in its thread proposes the close, since the reply may be about something else.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "dispute-syn-r022",
+    "type": "dispute",
+    "description": "Data sharing agreement with Tidepool Labs (Emeric Sallow)",
+    "from_email": "emeric.sallow@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r022",
+    "source_message_id": "msg-syn-r022",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-02T14:00:00Z",
+    "deadline": "",
+    "notes": "Emeric wrote about: data sharing agreement with tidepool labs.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r022",
+      "subject": "RE: Data sharing agreement with Tidepool Labs",
+      "sentDateTime": "2030-03-03T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r023",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a reimbursement row: a reply in its thread proposes the close, since the reply may be about something else.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "reimb-syn-r023",
+    "type": "reimbursement",
+    "description": "Robot demo for the open house (Wilhelmina Torr)",
+    "from_email": "wilhelmina.torr@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r023",
+    "source_message_id": "msg-syn-r023",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-03T14:00:00Z",
+    "deadline": "",
+    "notes": "Wilhelmina wrote about: robot demo for the open house.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r023",
+      "subject": "RE: Robot demo for the open house",
+      "sentDateTime": "2030-03-04T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Wilhelmina Torr",
+         "address": "wilhelmina.torr@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r024",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a task row: a reply in its thread proposes the close, since the reply may be about something else.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-r024",
+    "type": "task",
+    "description": "Office move logistics for the third floor (Jasper Quenby)",
+    "from_email": "jasper.quenby@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-r024",
+    "source_message_id": "msg-syn-r024",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-04T14:00:00Z",
+    "deadline": "",
+    "notes": "Jasper wrote about: office move logistics for the third floor.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r024",
+      "subject": "RE: Office move logistics for the third floor",
+      "sentDateTime": "2030-03-05T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-user_replied_outlook-r025",
+   "label": "should_close",
+   "cohort": "user_replied_outlook_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a scheduling row: a reply in its thread proposes the close, since the reply may be about something else.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-r025",
+    "type": "scheduling",
+    "description": "Conference room for the Glasswing review (Nell Arkwright)",
+    "from_email": "nell.arkwright@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-r025",
+    "source_message_id": "msg-syn-r025",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T14:00:00Z",
+    "deadline": "",
+    "notes": "Nell wrote about: conference room for the glasswing review.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-r025",
+      "subject": "RE: Conference room for the Glasswing review",
+      "sentDateTime": "2030-03-06T16:30:00Z",
+      "bodyPreview": "Thanks, that works for me.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Nell Arkwright",
+         "address": "nell.arkwright@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-user_replied_outlook-forward-only",
+   "label": "must_not_close",
+   "cohort": "user_replied_outlook_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the only sent message in the correspondent's conversation forwards her instructions to three students; she is not a recipient, so nothing was answered.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-fwd-01",
+    "type": "response_needed",
+    "description": "Needs response: Access to the Glasswing simulation repository",
+    "from_email": "selma.ravensworth@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-fwd-01",
+    "source_message_id": "msg-syn-fwd-01",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-12T15:00:00Z",
+    "deadline": "",
+    "notes": "Step 1: request an account on the Glasswing code host.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-fwd-01",
+      "subject": "Re: Access to the Glasswing simulation repository",
+      "sentDateTime": "2030-03-12T16:10:00Z",
+      "bodyPreview": "Team, please follow these steps.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Rafferty Dunmore",
+         "address": "rafferty.dunmore@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Zinnia Prower",
+         "address": "zinnia.prower@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Oren Valcourt",
+         "address": "oren.valcourt@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-user_replied_outlook-waiting-orchard-agenda",
+   "label": "must_not_close",
+   "cohort": "user_replied_outlook_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a waiting row: Desmond owes the agenda. The user's nudge in the thread does not deliver it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "waiting-syn-orchard-agenda",
+    "type": "waiting",
+    "description": "Waiting on Desmond Farrow for the Orchard workshop agenda",
+    "from_email": "desmond.farrow@example.edu",
+    "from_name": "Desmond Farrow",
+    "conversation_id": "conv-syn-wait-01",
+    "source_message_id": "msg-syn-wait-01",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-wait-01",
+      "subject": "Re: Orchard workshop agenda",
+      "sentDateTime": "2030-03-09T17:00:00Z",
+      "bodyPreview": "Any news on the agenda draft?",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Desmond Farrow",
+         "address": "desmond.farrow@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-user_replied_outlook-reopened-tidepool-whitepaper",
+   "label": "must_not_close",
+   "cohort": "user_replied_outlook_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_outlook",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the user reopened this row after the reply that first closed it; evidence older than the reopen never closes it again.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "followup-syn-tidepool-whitepaper",
+    "type": "follow_up",
+    "description": "Send Noor the Tidepool white paper outline",
+    "from_email": "noor.haddington@example.org",
+    "from_name": "Noor Haddington",
+    "conversation_id": "conv-syn-reopen-01",
+    "source_message_id": "msg-syn-reopen-01",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-03T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "2030-03-08: reopened by the user; the reply did not include the outline.",
+    "priority": "",
+    "status": "open",
+    "reopened_at": "2030-03-08T09:00:00Z"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-reopen-01",
+      "subject": "Re: Tidepool white paper",
+      "sentDateTime": "2030-03-04T18:00:00Z",
+      "bodyPreview": "Will send the outline soon.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Noor Haddington",
+         "address": "noor.haddington@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "miss-user_stated-01",
+   "label": "should_close",
+   "cohort": "user_stated_miss",
+   "linkage": "email_linked",
+   "signal_under_test": null,
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the user had to say this was done ('replied to Ingrid already, clear it') while the reply sat in the mailbox.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-said-01",
+    "type": "response_needed",
+    "description": "Needs response: Re: Hosting a visiting term at the Fernhill lab",
+    "from_email": "ingrid.solvang@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-said-01",
+    "source_message_id": "msg-syn-said-01",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-11T09:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-said-01",
+      "subject": "RE: Hosting a visiting term at the Fernhill lab",
+      "sentDateTime": "2030-03-11T17:45:00Z",
+      "bodyPreview": "Thanks, all settled.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Ingrid Solvang",
+         "address": "ingrid.solvang@example.com"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "miss-user_stated-02",
+   "label": "should_close",
+   "cohort": "user_stated_miss",
+   "linkage": "email_linked",
+   "signal_under_test": null,
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the user had to say this was done ('sent Jasper the times, done') while the reply sat in the mailbox.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-said-02",
+    "type": "response_needed",
+    "description": "Needs response: Re: Shuttle schedule for the Driftwood visit",
+    "from_email": "jasper.quenby@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-said-02",
+    "source_message_id": "msg-syn-said-02",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-12T09:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-said-02",
+      "subject": "RE: Shuttle schedule for the Driftwood visit",
+      "sentDateTime": "2030-03-12T17:45:00Z",
+      "bodyPreview": "Thanks, all settled.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Jasper Quenby",
+         "address": "jasper.quenby@example.com"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-user_replied_gmail-outreach-draft-pinned",
+   "label": "must_not_close",
+   "cohort": "gmail_outreach_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_gmail",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the user's own outreach: the sent id differs from the thread id because Gmail pins the thread id to the saved draft, and the thread holds only the user's message. Sending the first mail is the obligation starting.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-capture-quote",
+    "type": "task",
+    "description": "Get a vendor quote to recalibrate the Bramble motion-capture cameras",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "synthread-00a1",
+    "date_identified": "2030-03-14T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {},
+    "gmail_sent": {
+     "avery.quill.home@example.com": [
+      {
+       "id": "synmsg-00a2",
+       "thread_id": "synthread-00a1",
+       "subject": "Quote request: camera recalibration",
+       "date": "Thu, 14 Mar 2030 16:00:00 +0000"
+      }
+     ]
+    },
+    "gmail_threads": {
+     "avery.quill.home@example.com": {
+      "synthread-00a1": [
+       {
+        "id": "synmsg-00a2",
+        "thread_id": "synthread-00a1",
+        "from": "Avery Quill <avery.quill.home@example.com>",
+        "subject": "Quote request: camera recalibration",
+        "date": "Thu, 14 Mar 2030 16:00:00 +0000"
+       }
+      ]
+     }
+    }
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-user_replied_gmail-outreach-thread-start",
+   "label": "must_not_close",
+   "cohort": "gmail_outreach_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_gmail",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the sent message id equals the thread id: the user started the thread, so it never enters the reply index.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-crate-quote",
+    "type": "task",
+    "description": "Get a freight quote for shipping the Juniper rover crate",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "synthread-00b1",
+    "date_identified": "2030-03-15T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {},
+    "gmail_sent": {
+     "avery.quill.home@example.com": [
+      {
+       "id": "synthread-00b1",
+       "thread_id": "synthread-00b1",
+       "subject": "Freight quote: one rover crate",
+       "date": "Fri, 15 Mar 2030 16:00:00 +0000"
+      }
+     ]
+    },
+    "gmail_threads": {
+     "avery.quill.home@example.com": {
+      "synthread-00b1": [
+       {
+        "id": "synthread-00b1",
+        "thread_id": "synthread-00b1",
+        "from": "Avery Quill <avery.quill.home@example.com>",
+        "subject": "Freight quote: one rover crate",
+        "date": "Fri, 15 Mar 2030 16:00:00 +0000"
+       }
+      ]
+     }
+    }
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "tp-user_replied_gmail-reply",
+   "label": "should_close",
+   "cohort": "gmail_reply_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "user_replied_gmail",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "someone else started the thread and the user's reply postdates the entry, so the reply index closes it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-gmail-01",
+    "type": "response_needed",
+    "description": "Needs response: which delivery window for the rover crate",
+    "from_email": "dispatch@example.com",
+    "from_name": "Freight Desk",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "synthread-00c1",
+    "date_identified": "2030-03-16T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {},
+    "gmail_sent": {
+     "avery.quill.home@example.com": [
+      {
+       "id": "synmsg-00c2",
+       "thread_id": "synthread-00c1",
+       "subject": "Re: delivery window",
+       "date": "Sun, 17 Mar 2030 15:12:00 +0000"
+      }
+     ]
+    },
+    "gmail_threads": {
+     "avery.quill.home@example.com": {
+      "synthread-00c1": [
+       {
+        "id": "synthread-00c1",
+        "thread_id": "synthread-00c1",
+        "from": "Freight Desk <dispatch@example.com>",
+        "subject": "delivery window",
+        "date": "Sat, 16 Mar 2030 14:30:00 +0000"
+       },
+       {
+        "id": "synmsg-00c2",
+        "thread_id": "synthread-00c1",
+        "from": "Avery Quill <avery.quill.home@example.com>",
+        "subject": "Re: delivery window",
+        "date": "Sun, 17 Mar 2030 15:12:00 +0000"
+       }
+      ]
+     }
+    }
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-inbound_ack-submission",
+   "label": "should_close",
+   "cohort": "inbound_ack_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "inbound_ack",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the latest message in its thread thanks the user for the submission; it proposes the close.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-ack-01",
+    "type": "response_needed",
+    "description": "Needs response: Abstract submission for the Driftwood symposium",
+    "from_email": "symposium.office@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-ack-01",
+    "source_message_id": "msg-syn-ack-01",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-01T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-ack-01",
+      "subject": "Re: Abstract submission for the Driftwood symposium",
+      "bodyPreview": "Thank you for your submission. The program committee reviews abstracts in April.",
+      "from": {
+       "emailAddress": {
+        "name": "Symposium Office",
+        "address": "symposium.office@example.org"
+       }
+      },
+      "receivedDateTime": "2030-03-11T10:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-inbound_ack-receipt",
+   "label": "should_close",
+   "cohort": "inbound_ack_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "inbound_ack",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a receipt in the row's thread; it proposes the close.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-ack-02",
+    "type": "response_needed",
+    "description": "Needs response: Pellam fellowship nomination packet",
+    "from_email": "symposium.office@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-ack-02",
+    "source_message_id": "msg-syn-ack-02",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-02T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-ack-02",
+      "subject": "Re: Pellam fellowship nomination packet",
+      "bodyPreview": "We have received your application materials for the Pellam fellowship. The committee meets in April.",
+      "from": {
+       "emailAddress": {
+        "name": "Symposium Office",
+        "address": "symposium.office@example.org"
+       }
+      },
+      "receivedDateTime": "2030-03-12T10:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-inbound_ack-portal",
+   "label": "should_close",
+   "cohort": "inbound_ack_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "inbound_ack",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a portal receipt in the row's thread; it proposes the close.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-ack-03",
+    "type": "response_needed",
+    "description": "Needs response: Orchard workshop attendee details",
+    "from_email": "symposium.office@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-ack-03",
+    "source_message_id": "msg-syn-ack-03",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-03T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-ack-03",
+      "subject": "Re: Orchard workshop attendee details",
+      "bodyPreview": "Your registration has been confirmed for the Orchard workshop.",
+      "from": {
+       "emailAddress": {
+        "name": "Symposium Office",
+        "address": "symposium.office@example.org"
+       }
+      },
+      "receivedDateTime": "2030-03-13T10:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-inbound_ack-closes-on-submission",
+   "label": "should_close",
+   "cohort": "inbound_ack_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "inbound_ack",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a row declared to close on a submission ack, and the ack is in its thread: it closes with no click.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "deadline-syn-sunfield-report",
+    "type": "deadline",
+    "description": "Sunfield seed grant: final report due Mar 25",
+    "from_email": "symposium.office@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-ack-04",
+    "source_message_id": "msg-syn-ack-04",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-04T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open",
+    "closes_on": "submission"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-ack-04",
+      "subject": "Re: final report due Mar 25",
+      "bodyPreview": "Thanks for submitting your final report for the Sunfield seed grant.",
+      "from": {
+       "emailAddress": {
+        "name": "Symposium Office",
+        "address": "symposium.office@example.org"
+       }
+      },
+      "receivedDateTime": "2030-03-14T10:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-inbound_ack-out-of-office",
+   "label": "must_not_close",
+   "cohort": "inbound_ack_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "inbound_ack",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "an out-of-office reply says nothing about the work.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-ack-05",
+    "type": "response_needed",
+    "description": "Needs response: Lattice cluster maintenance window",
+    "from_email": "symposium.office@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-ack-05",
+    "source_message_id": "msg-syn-ack-05",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-ack-05",
+      "subject": "Re: Lattice cluster maintenance window",
+      "bodyPreview": "I am currently out of the office until March 20 with limited access to email.",
+      "from": {
+       "emailAddress": {
+        "name": "Symposium Office",
+        "address": "symposium.office@example.org"
+       }
+      },
+      "receivedDateTime": "2030-03-15T10:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-inbound_ack-new-ask",
+   "label": "must_not_close",
+   "cohort": "inbound_ack_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "inbound_ack",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a polite opener followed by a new ask is not an acknowledgement.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-ack-06",
+    "type": "response_needed",
+    "description": "Needs response: Cinderford subaward budget pages",
+    "from_email": "symposium.office@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-ack-06",
+    "source_message_id": "msg-syn-ack-06",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-06T15:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-ack-06",
+      "subject": "Re: Cinderford subaward budget pages",
+      "bodyPreview": "Thanks for your email. Could you also send the signed budget page?",
+      "from": {
+       "emailAddress": {
+        "name": "Symposium Office",
+        "address": "symposium.office@example.org"
+       }
+      },
+      "receivedDateTime": "2030-03-16T10:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-confirmation_email-banner-linked",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the only overlap is the external-sender banner both texts carry.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-cf-01",
+    "type": "response_needed",
+    "description": "Needs response: Annual progress report for the Sunfield seed grant",
+    "from_email": "mirela.ostrova@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-cf-01",
+    "source_message_id": "msg-syn-cf-01",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-01T12:00:00Z",
+    "deadline": "",
+    "notes": "[External email - use caution]\r\n\r\nCAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.\r\n\r\nYour annual report is past its due date.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Registration confirmed: Coastal Robotics Mixer",
+      "bodyPreview": "[External email - use caution] CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe. Your registration is confirmed.",
+      "from": {
+       "emailAddress": {
+        "name": "Eventbrite",
+        "address": "noreply@eventbrite.com"
+       }
+      },
+      "receivedDateTime": "2030-03-11T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-confirmation_email-banner-orphan",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the only overlap is the external-sender banner.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-cf-02",
+    "type": "task",
+    "description": "Follow up with Oren Valcourt about the Wrenfield sensor loan",
+    "from_email": "tobin.achterberg@example.com",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-02T12:00:00Z",
+    "deadline": "",
+    "notes": "[External email - use caution]\r\n\r\nCAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.\r\n\r\nOren offered two sensors for the summer.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Registration confirmed: Tessellate seminar webinar",
+      "bodyPreview": "CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe. You are registered for the webinar.",
+      "from": {
+       "emailAddress": {
+        "name": "Zoom",
+        "address": "no-reply@zoom.us"
+       }
+      },
+      "receivedDateTime": "2030-03-12T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-confirmation_email-banner-message-id-only",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "message_id_only",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the only overlap is the external-sender banner.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "priority-syn-cf-03",
+    "type": "priority_alert",
+    "description": "Priority email: RE: Quick cost estimate for the Fernhill arm",
+    "from_email": "selma.ravensworth@example.com",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "msg-syn-cf-03",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-03T12:00:00Z",
+    "deadline": "",
+    "notes": "[External email - use caution]\r\n\r\nCAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.\r\n\r\nNeeds a cost estimate with two students.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Submission complete: Orchard workshop paper 77",
+      "bodyPreview": "CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe. Your submission has been recorded.",
+      "from": {
+       "emailAddress": {
+        "name": "HotCRP",
+        "address": "noreply@hotcrp.com"
+       }
+      },
+      "receivedDateTime": "2030-03-13T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-confirmation_email-banner-short",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the only overlap is a shorter external-sender banner.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-cf-04",
+    "type": "response_needed",
+    "description": "Needs response: Mosaic CAD seat count",
+    "from_email": "idris.mallory@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-cf-04",
+    "source_message_id": "msg-syn-cf-04",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-04T12:00:00Z",
+    "deadline": "",
+    "notes": "CAUTION: External sender. Do not click links or open attachments unless you know the content is safe. How many seats do you need this year?",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Order #4410 confirmed: Driftwood film night",
+      "bodyPreview": "CAUTION: External sender. Do not click links or open attachments unless you know the content is safe. Order confirmed.",
+      "from": {
+       "emailAddress": {
+        "name": "Eventbrite",
+        "address": "noreply@eventbrite.com"
+       }
+      },
+      "receivedDateTime": "2030-03-14T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-confirmation_email-generic-vocabulary",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the overlap is registration and calendar vocabulary that recurs across unrelated mail.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-cf-05",
+    "type": "task",
+    "description": "Register for the June review panel meeting",
+    "from_email": "petra.lindgren@example.com",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T12:00:00Z",
+    "deadline": "",
+    "notes": "Registration form for the June panel.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Registration confirmed: June panel meeting review",
+      "bodyPreview": "You are registered for the June panel meeting review.",
+      "from": {
+       "emailAddress": {
+        "name": "Zoom",
+        "address": "no-reply@zoom.us"
+       }
+      },
+      "receivedDateTime": "2030-03-15T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-confirmation_email-generic-feedback",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the overlap is generic vocabulary only.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-cf-06",
+    "type": "response_needed",
+    "description": "Needs response: Committee feedback form reminder",
+    "from_email": "caspian.wole@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-cf-06",
+    "source_message_id": "msg-syn-cf-06",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-06T12:00:00Z",
+    "deadline": "",
+    "notes": "Feedback form for the committee is open.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Thank you for your registration: committee feedback session",
+      "bodyPreview": "Thank you for your registration. Feedback form attached.",
+      "from": {
+       "emailAddress": {
+        "name": "Eventbrite",
+        "address": "noreply@eventbrite.com"
+       }
+      },
+      "receivedDateTime": "2030-03-16T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-confirmation_email-one-token",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "one shared content word is not evidence.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-cf-07",
+    "type": "task",
+    "description": "Book travel for the Driftwood symposium",
+    "from_email": "noor.haddington@example.com",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-07T12:00:00Z",
+    "deadline": "",
+    "notes": "Hotel block closes soon.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Registration confirmed: Driftwood film night",
+      "bodyPreview": "You are registered for Driftwood film night.",
+      "from": {
+       "emailAddress": {
+        "name": "Eventbrite",
+        "address": "noreply@eventbrite.com"
+       }
+      },
+      "receivedDateTime": "2030-03-17T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-confirmation_email-not-ack-shaped",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a confirmation system's reminder that asks for work is not a confirmation.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-cf-08",
+    "type": "task",
+    "description": "Lattice gripper calibration paper: finish the camera-ready revision",
+    "from_email": "ottilie.brack@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-cf-08",
+    "source_message_id": "msg-syn-cf-08",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-08T12:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Action required: Lattice gripper calibration paper reviews",
+      "bodyPreview": "Reviews for the Lattice gripper calibration paper are available.",
+      "from": {
+       "emailAddress": {
+        "name": "HotCRP",
+        "address": "noreply@hotcrp.com"
+       }
+      },
+      "receivedDateTime": "2030-03-18T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-confirmation_email-reconstruction-lost-sender",
+   "label": "must_not_close",
+   "cohort": "confirmation_email_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "kept as the shape a rebuild produces when the original sender is gone: no build closes it, so it counts as a vacuous hold.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-cf-09",
+    "type": "response_needed",
+    "description": "Needs response: Quillon dataset annual usage report",
+    "from_email": "desmond.farrow@example.com",
+    "from_name": "",
+    "conversation_id": "conv-syn-cf-09",
+    "source_message_id": "msg-syn-cf-09",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-09T12:00:00Z",
+    "deadline": "",
+    "notes": "[External email - use caution]\r\n\r\nCAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.\r\n\r\nThe usage report is due.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "",
+      "subject": "Reminder: register for the Quillon users meeting",
+      "bodyPreview": "[External email - use caution] CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe. Reminder: register.",
+      "from": {
+       "emailAddress": {
+        "name": "Updates",
+        "address": "updates@example.com"
+       }
+      },
+      "receivedDateTime": "2030-03-19T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "tp-confirmation_email-paper-submitted",
+   "label": "should_close",
+   "cohort": "confirmation_email_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a confirmation system acknowledged exactly this work in a thread of its own; it proposes the close.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-cf-tp1",
+    "type": "task",
+    "description": "Submit the Lattice gripper calibration paper to the Orchard workshop",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "conv-syn-cf-tp1",
+    "source_message_id": "msg-syn-cf-tp1",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-10T12:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-vendor",
+      "subject": "Orchard 2030 submission 318 received",
+      "bodyPreview": "Thank you for your submission to Orchard 2030. Submission 318: Lattice gripper calibration under load.",
+      "from": {
+       "emailAddress": {
+        "name": "Orchard 2030",
+        "address": "orchard2030@easychair.org"
+       }
+      },
+      "receivedDateTime": "2030-03-12T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-confirmation_email-registration",
+   "label": "should_close",
+   "cohort": "confirmation_email_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "confirmation_email",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a confirmation system acknowledged exactly this work in a thread of its own; it proposes the close.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "deadline-syn-cf-tp2",
+    "type": "deadline",
+    "description": "Register for the Coastal Robotics Mixer before early-bird pricing ends",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "conv-syn-cf-tp2",
+    "source_message_id": "msg-syn-cf-tp2",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-10T12:00:00Z",
+    "deadline": "2030-03-20",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-vendor",
+      "subject": "Registration confirmed: Coastal Robotics Mixer",
+      "bodyPreview": "You are registered for the Coastal Robotics Mixer.",
+      "from": {
+       "emailAddress": {
+        "name": "Eventbrite",
+        "address": "noreply@eventbrite.com"
+       }
+      },
+      "receivedDateTime": "2030-03-12T12:00:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-deliverable-person",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a deliverable: a 1:1 with the person who asked is not the slides.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "slides-syn-odile-recap",
+    "type": "deadline",
+    "description": "Send Odile Fenwick two recap slides for the faculty meeting",
+    "from_email": "odile.fenwick@example.edu",
+    "from_name": "Odile Fenwick",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "2030-03-27",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Odile / Avery",
+      "start": {
+       "dateTime": "2030-03-21T17:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Odile Fenwick",
+         "address": "odile.fenwick@example.edu"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-furniture-token",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [
+    "lecture"
+   ],
+   "rationale": "the overlap is calendar furniture ('lecture').",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "talk-syn-driftwood",
+    "type": "deadline",
+    "description": "Driftwood symposium meeting: send the invited talk title and abstract",
+    "from_email": "jasper.quenby@example.org",
+    "from_name": "",
+    "conversation_id": "conv-syn-cal-02",
+    "source_message_id": "msg-syn-cal-02",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "2030-03-31",
+    "notes": "Unrelated calendar overlap. lecture",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Avery lecture",
+      "start": {
+       "dateTime": "2030-03-21T19:30:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": []
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-one-of-many",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the correspondent is one attendee among nine on somebody else's meeting; a shared name is not the obligation met.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-cal-03",
+    "type": "response_needed",
+    "description": "Needs response: Discuss the rover budget split with Ravi Okonjo",
+    "from_email": "ravi.okonjo@example.edu",
+    "from_name": "Ravi Okonjo",
+    "conversation_id": "conv-syn-cal-03",
+    "source_message_id": "msg-syn-cal-03",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Department faculty meeting",
+      "start": {
+       "dateTime": "2030-03-24T16:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Chair Office",
+        "address": "chair.office@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Hollis Brandt",
+         "address": "hollis.brandt@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Mirela Ostrova",
+         "address": "mirela.ostrova@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Tobin Achterberg",
+         "address": "tobin.achterberg@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Idris Mallory",
+         "address": "idris.mallory@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Caspian Wole",
+         "address": "caspian.wole@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Ottilie Brack",
+         "address": "ottilie.brack@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Yara Pellam",
+         "address": "yara.pellam@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Bastian Crewe",
+         "address": "bastian.crewe@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Ravi Okonjo",
+         "address": "ravi.okonjo@example.edu"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-keyword-false-friend",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "scheduling-shaped only by the word 'appointment'; a 1:1 with the person is not the form.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "followup-syn-barsby-form",
+    "type": "follow_up",
+    "description": "Lior Barsby: appointment request form for the spring term",
+    "from_email": "lior.barsby@example.edu",
+    "from_name": "Lior Barsby",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Lior / Avery",
+      "start": {
+       "dateTime": "2030-03-22T15:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Lior Barsby",
+         "address": "lior.barsby@example.edu"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-event-predates-entry",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the event was on the calendar before the row existed.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-juniper-demo",
+    "type": "scheduling",
+    "description": "Schedule a Juniper rover demo for Celeste Abara's visitors",
+    "from_email": "celeste.abara@example.edu",
+    "from_name": "Celeste Abara",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-10T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Juniper rover demo: Celeste Abara",
+      "start": {
+       "dateTime": "2030-03-05T17:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Celeste Abara",
+         "address": "celeste.abara@example.edu"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-calendar_event_match-note-event",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a [note] event records a window and claims no time.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-glasswing-review",
+    "type": "scheduling",
+    "description": "Set up the Glasswing design review with Magnus Hollow",
+    "from_email": "magnus.hollow@example.edu",
+    "from_name": "Magnus Hollow",
+    "conversation_id": "conv-syn-cal-06",
+    "source_message_id": "msg-syn-cal-06",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "[note] Glasswing design review window",
+      "start": {
+       "dateTime": "2030-03-25T15:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Magnus Hollow",
+         "address": "magnus.hollow@example.edu"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-solver-token",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a solver preference event is not a meeting.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-mosaic-training",
+    "type": "scheduling",
+    "description": "Find a time for the Mosaic CAD training",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "conv-syn-cal-07",
+    "source_message_id": "msg-syn-cal-07",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "p1 Mosaic CAD training",
+      "start": {
+       "dateTime": "2030-03-26T15:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": []
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-common-tokens",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "both shared words recur across the open ledger, so neither identifies this row.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-halcyon-walkthrough",
+    "type": "scheduling",
+    "description": "Halcyon testbed walkthrough for the new students",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "conv-syn-cal-08",
+    "source_message_id": "msg-syn-cal-08",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Halcyon testbed maintenance",
+      "start": {
+       "dateTime": "2030-03-26T18:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": []
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-numbers-only",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a date, a clock time and calendar furniture leave one usable word.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-poster-slot",
+    "type": "scheduling",
+    "description": "Confirm the 0915 slot on 2030-04-02 for the poster session",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "2030-04-02 0915 poster session",
+      "start": {
+       "dateTime": "2030-04-02T15:15:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": []
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-history-veto",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a human reopened a calendar close on this row: a standing veto.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-bramble-tour",
+    "type": "scheduling",
+    "description": "Set up the Bramble capture-room tour with Tamsin Greaves",
+    "from_email": "tamsin.greaves@example.edu",
+    "from_name": "Tamsin Greaves",
+    "conversation_id": "conv-syn-cal-10",
+    "source_message_id": "msg-syn-cal-10",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "Reopened after a false closure by calendar_event_match.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Bramble capture-room tour: Tamsin Greaves",
+      "start": {
+       "dateTime": "2030-03-27T16:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Tamsin Greaves",
+         "address": "tamsin.greaves@example.edu"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-scheduling-with-deadline",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a hard deadline makes the row a deliverable; a meeting about it is not it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-copperline-board",
+    "type": "scheduling",
+    "description": "Schedule the Copperline special-issue editorial meeting with Emeric Sallow",
+    "from_email": "emeric.sallow@example.org",
+    "from_name": "Emeric Sallow",
+    "conversation_id": "conv-syn-cal-11",
+    "source_message_id": "msg-syn-cal-11",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "2030-04-15",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Copperline editorial board: Emeric Sallow",
+      "start": {
+       "dateTime": "2030-03-28T16:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Emeric Sallow",
+         "address": "emeric.sallow@example.org"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-calendar_event_match-single-token",
+   "label": "must_not_close",
+   "cohort": "calendar_event_match_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "one shared word is below the two-token floor.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "meet-syn-wrenfield-pickup",
+    "type": "scheduling",
+    "description": "Arrange the Wrenfield equipment pickup",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Wrenfield alumni reception",
+      "start": {
+       "dateTime": "2030-03-29T23:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": []
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-calendar_event_match-defense-on-calendar",
+   "label": "should_close",
+   "cohort": "calendar_event_match_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "calendar_event_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a scheduling row and an event whose own subject names the person: the meeting the row asked for is on the calendar. It proposes.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "sched-syn-ashby-defense",
+    "type": "scheduling",
+    "description": "Schedule the thesis defense for Marisol Ashby",
+    "from_email": "marisol.ashby@example.edu",
+    "from_name": "Marisol Ashby",
+    "conversation_id": "conv-syn-cal-tp1",
+    "source_message_id": "msg-syn-cal-tp1",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-20T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [
+     {
+      "subject": "Marisol Ashby thesis defense",
+      "start": {
+       "dateTime": "2030-04-10T16:00:00",
+       "timeZone": "UTC"
+      },
+      "isAllDay": false,
+      "showAs": "busy",
+      "organizer": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "attendees": [
+       {
+        "emailAddress": {
+         "name": "Marisol Ashby",
+         "address": "marisol.ashby@example.edu"
+        }
+       }
+      ]
+     }
+    ],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "tp-closed_sibling-detector-row",
+   "label": "should_close",
+   "cohort": "closed_sibling_true_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "closed_sibling",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a detector row whose sibling row on the same thread closed after it existed: two rows for one ask, so the survivor goes with it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "response-syn-sib-01",
+    "type": "response_needed",
+    "description": "Needs response: Re: Fernhill and Wrenfield joint talks",
+    "from_email": "caspian.wole@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-sib-01",
+    "source_message_id": "msg-syn-sib-01",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-18T18:00:00Z",
+    "deadline": "",
+    "notes": "Talks spreadsheet",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {
+     "conv-syn-sib-01": "2030-03-18T21:00:00Z"
+    }
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-closed_sibling-task-from-thread",
+   "label": "must_not_close",
+   "cohort": "closed_sibling_false_positive",
+   "linkage": "email_linked",
+   "signal_under_test": "closed_sibling",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a task the EA logged from a call thread is its own obligation; the thread's reply row closing says nothing about it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "task-syn-journal-first-pass",
+    "type": "task",
+    "description": "Turn the Lattice workshop paper into a journal manuscript (first pass)",
+    "from_email": "caspian.wole@example.edu",
+    "from_name": "Caspian Wole",
+    "conversation_id": "conv-syn-sib-02",
+    "source_message_id": "msg-syn-sib-02",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-11",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "high",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {
+     "conv-syn-sib-02": "2030-03-11T20:45:00Z"
+    }
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "orphan-syn-sunfield-application",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_orphan",
+   "signal_under_test": null,
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the grant analyst wrote 'we are submitted!' and the user answered in that thread, but the row carries no conversation id, so no email signal can see it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-sunfield-application",
+    "type": "deadline",
+    "description": "Sunfield seed grant application due Mar 20; the internal routing form goes in first",
+    "from_email": "petra.lindgren@example.edu",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T17:00:00Z",
+    "deadline": "2030-03-20",
+    "notes": "",
+    "last_action": "",
+    "priority": "high",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-hand-sunfield",
+      "subject": "Re: submitted!",
+      "sentDateTime": "2030-03-19T19:00:00Z",
+      "bodyPreview": "Thank you for all the help!",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-hand-sunfield",
+      "subject": "submitted!",
+      "bodyPreview": "The routing form is approved and we are submitted!",
+      "from": {
+       "emailAddress": {
+        "name": "Petra Lindgren",
+        "address": "petra.lindgren@example.edu"
+       }
+      },
+      "receivedDateTime": "2030-03-19T18:57:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "repaired-syn-sunfield-application",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_repaired",
+   "signal_under_test": null,
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the same row with the ids it should have captured: if this closes and its orphan twin does not, the defect is id capture.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-sunfield-application--id-repaired",
+    "type": "deadline",
+    "description": "Sunfield seed grant application due Mar 20; the internal routing form goes in first",
+    "from_email": "petra.lindgren@example.edu",
+    "from_name": "",
+    "conversation_id": "conv-syn-hand-sunfield",
+    "source_message_id": "msg-syn-hand-sunfield",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T17:00:00Z",
+    "deadline": "2030-03-20",
+    "notes": "",
+    "last_action": "",
+    "priority": "high",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-hand-sunfield",
+      "subject": "Re: submitted!",
+      "sentDateTime": "2030-03-19T19:00:00Z",
+      "bodyPreview": "Thank you for all the help!",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      }
+     }
+    ],
+    "inbox": [
+     {
+      "conversationId": "conv-syn-hand-sunfield",
+      "subject": "submitted!",
+      "bodyPreview": "The routing form is approved and we are submitted!",
+      "from": {
+       "emailAddress": {
+        "name": "Petra Lindgren",
+        "address": "petra.lindgren@example.edu"
+       }
+      },
+      "receivedDateTime": "2030-03-19T18:57:00Z"
+     }
+    ],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "orphan-syn-poster-judging",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_orphan",
+   "signal_under_test": null,
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the user answered the scheduling ask in its thread; the row has no ids and names nobody, so nothing reaches it.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-poster-judging",
+    "type": "scheduling",
+    "description": "Poster judging for the undergraduate showcase: pick a time block",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-12T17:00:00Z",
+    "deadline": "2030-03-18",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-hand-poster",
+      "subject": "RE: Poster judging for the undergraduate showcase",
+      "sentDateTime": "2030-03-16T15:00:00Z",
+      "bodyPreview": "The 10:00 block works.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Lucinda Marsh",
+         "address": "lucinda.marsh@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "repaired-syn-poster-judging",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_repaired",
+   "signal_under_test": null,
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the same row with the ids it should have captured: if this closes and its orphan twin does not, the defect is id capture.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-poster-judging--id-repaired",
+    "type": "scheduling",
+    "description": "Poster judging for the undergraduate showcase: pick a time block",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "conv-syn-hand-poster",
+    "source_message_id": "msg-syn-hand-poster",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-12T17:00:00Z",
+    "deadline": "2030-03-18",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-hand-poster",
+      "subject": "RE: Poster judging for the undergraduate showcase",
+      "sentDateTime": "2030-03-16T15:00:00Z",
+      "bodyPreview": "The 10:00 block works.",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Lucinda Marsh",
+         "address": "lucinda.marsh@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "orphan-syn-harborview-rsvp",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_orphan",
+   "signal_under_test": "meeting_response_sent",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a row made from a calendar query asks for an RSVP and quotes the invite; the user declined that invite the next morning.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-harborview-rsvp",
+    "type": "task",
+    "description": "RSVP to the 'Harborview Autonomy Roundtable' invite on Mon Mar 24 (the calendar shows my_response=notResponded)",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-17T15:00:00Z",
+    "deadline": "2030-03-24",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-hand-rsvp",
+      "subject": "Declined: Harborview Autonomy Roundtable",
+      "sentDateTime": "2030-03-18T16:04:00Z",
+      "bodyPreview": "",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Organizer, Harborview",
+         "address": "roundtable@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "orphan-syn-kestrel-committee",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_orphan",
+   "signal_under_test": "sender_reply_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the row names Teodor Brask but carries no address; the welcome mail went To him by display name.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-kestrel-committee",
+    "type": "follow_up",
+    "description": "Kestrel search committee: confirm Teodor Brask's participation and fix the misspelled name in the plan",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-14T02:00:00Z",
+    "deadline": "2030-03-20",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-hand-welcome",
+      "subject": "Welcome to the Kestrel faculty search committee",
+      "sentDateTime": "2030-03-19T17:24:00Z",
+      "bodyPreview": "",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Ewan Tavistock",
+         "address": "ewan.tavistock@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Wilhelmina Torr",
+         "address": "wilhelmina.torr@example.edu"
+        }
+       },
+       {
+        "emailAddress": {
+         "name": "Teodor Brask",
+         "address": "teodor.brask@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "orphan-syn-quarry-loan",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_orphan",
+   "signal_under_test": "sender_reply_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a reply row with an address and no conversation id; the user wrote to that address about the loan.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-quarry-loan",
+    "type": "response_needed",
+    "description": "Hollis Brandt asked whether the Quarry lidar loan can extend through April",
+    "from_email": "hollis.brandt@example.org",
+    "from_name": "Hollis Brandt",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-14T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-hand-quarry",
+      "subject": "Re: Quarry lidar loan extension",
+      "sentDateTime": "2030-03-15T17:00:00Z",
+      "bodyPreview": "",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Hollis Brandt",
+         "address": "hollis.brandt@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "orphan-syn-exj-reviews",
+   "label": "should_close",
+   "cohort": "hand_confirmed_miss",
+   "linkage": "id_orphan",
+   "signal_under_test": "identifier_siblings_closed",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the umbrella names three manuscripts and no conversation; the user archived each per-manuscript reminder and those rows closed.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-exj-reviews",
+    "type": "deadline",
+    "description": "3 EXJ manuscript reviews now due at once: 9101, 9102, 9103",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-10T10:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {},
+    "closed_entries": [
+     {
+      "id": "closed-syn-exj-9101",
+      "type": "response_needed",
+      "description": "Needs response: Reviewer Assignments for Manuscript ID EXJ-2030-9101 are now due",
+      "notes": "",
+      "last_action": "2030-03-15: Auto-closed: email archived from inbox by user.",
+      "conversation_id": "conv-syn-exj-9101",
+      "created_at": "2030-03-14T10:00:00Z",
+      "closed_at": "2030-03-15T13:00:00Z"
+     },
+     {
+      "id": "closed-syn-exj-9102",
+      "type": "response_needed",
+      "description": "Needs response: Reviewer Assignments for Manuscript ID EXJ-2030-9102 are now due",
+      "notes": "",
+      "last_action": "2030-03-15: Auto-closed: email archived from inbox by user.",
+      "conversation_id": "conv-syn-exj-9102",
+      "created_at": "2030-03-14T10:00:00Z",
+      "closed_at": "2030-03-15T13:00:00Z"
+     },
+     {
+      "id": "closed-syn-exj-9103",
+      "type": "response_needed",
+      "description": "Needs response: Reviewer Assignments for Manuscript ID EXJ-2030-9103 are now due",
+      "notes": "",
+      "last_action": "2030-03-15: Auto-closed: email archived from inbox by user.",
+      "conversation_id": "conv-syn-exj-9103",
+      "created_at": "2030-03-14T10:00:00Z",
+      "closed_at": "2030-03-15T13:00:00Z"
+     }
+    ]
+   },
+   "discriminating": true
+  },
+  {
+   "case_id": "fp-meeting_response-tag-up-not-the-visit",
+   "label": "must_not_close",
+   "cohort": "meeting_response_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "meeting_response_sent",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the row asks for an RSVP to a lab visit; accepting a tag-up that shares three words with it answers nothing. A meeting response closes an RSVP row only when the row quotes the invite.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-harbor-visit-rsvp",
+    "type": "task",
+    "description": "Ilsa Morrow: RSVP for the Harbor Sensing Lab visit on Tue Mar 25, and pick a Harbor Sensing Program strategy slot",
+    "from_email": "ilsa.morrow@example.edu",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-17T14:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-tagup",
+      "subject": "Accepted: Ilsa-Avery Tag Up - Harbor Sensing Program",
+      "sentDateTime": "2030-03-17T18:44:00Z",
+      "bodyPreview": "",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Ilsa Morrow",
+         "address": "ilsa.morrow@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-identifier_siblings-standing-pipeline",
+   "label": "must_not_close",
+   "cohort": "identifier_siblings_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "identifier_siblings_closed",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "a standing process row: its notes name a manuscript id, and a closed row's notes name the same id. Ids count only in descriptions, and a standing process never closes this way.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-exj-pipeline",
+    "type": "task",
+    "description": "EXJ reviewer pipeline: monitor invites and top up per coverage policy",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-01T16:00:00Z",
+    "deadline": "",
+    "notes": "Bounce notice for 'Invitation reminder - EXJ-2030-9105'.",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {},
+    "closed_entries": [
+     {
+      "id": "closed-syn-unavailable",
+      "type": "response_needed",
+      "description": "Needs response: Reviewer Unavailable",
+      "notes": "Reviewers invited to review EXJ-2030-9105 have declined.",
+      "last_action": "2030-03-15: Auto-closed: email archived from inbox by user.",
+      "conversation_id": "conv-syn-unavail",
+      "created_at": "2030-03-14T16:00:00Z",
+      "closed_at": "2030-03-15T17:00:00Z"
+     }
+    ]
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-identifier_siblings-scrubber-closed",
+   "label": "must_not_close",
+   "cohort": "identifier_siblings_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "identifier_siblings_closed",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the only sibling carrying the id was closed by the scrubber itself; a fuzzy close must not cascade.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-exj-9301",
+    "type": "deadline",
+    "description": "Review EXJ-2030-9301 revision before the editor's deadline",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T10:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {},
+    "closed_entries": [
+     {
+      "id": "closed-syn-exj-9301",
+      "type": "response_needed",
+      "description": "Needs response: Manuscript EXJ-2030-9301 decision",
+      "notes": "",
+      "last_action": "Auto-closed by closure_scrubber: calendar_event_match (subject='EXJ board')",
+      "conversation_id": "conv-syn-exj-9301",
+      "created_at": "2030-03-06T10:00:00Z",
+      "closed_at": "2030-03-07T10:00:00Z"
+     }
+    ]
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-identifier_siblings-partly-covered",
+   "label": "must_not_close",
+   "cohort": "identifier_siblings_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "identifier_siblings_closed",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the row names two manuscripts and only one of them closed.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-exj-two-due",
+    "type": "deadline",
+    "description": "2 EXJ reviews still due: 9201, 9202",
+    "from_email": "",
+    "from_name": "",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-05T10:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {},
+    "closed_entries": [
+     {
+      "id": "closed-syn-exj-9201",
+      "type": "response_needed",
+      "description": "Needs response: Reviewer Assignments for Manuscript ID EXJ-2030-9201 are now due",
+      "notes": "",
+      "last_action": "2030-03-15: Auto-closed: email archived from inbox by user.",
+      "conversation_id": "conv-syn-exj-9201",
+      "created_at": "2030-03-14T10:00:00Z",
+      "closed_at": "2030-03-15T13:00:00Z"
+     }
+    ]
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-sender_reply-meeting-button",
+   "label": "must_not_close",
+   "cohort": "sender_reply_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "sender_reply_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the only mail to the correspondent is an Outlook meeting response, which the user did not write.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-glasswing-comments",
+    "type": "response_needed",
+    "description": "Bastian Crewe asked for comments on the Glasswing safety case draft",
+    "from_email": "bastian.crewe@example.edu",
+    "from_name": "Bastian Crewe",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-14T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-accept",
+      "subject": "Accepted: Glasswing safety case review",
+      "sentDateTime": "2030-03-15T17:00:00Z",
+      "bodyPreview": "",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Bastian Crewe",
+         "address": "bastian.crewe@example.edu"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  },
+  {
+   "case_id": "fp-sender_reply-name-only",
+   "label": "must_not_close",
+   "cohort": "sender_reply_false_positive",
+   "linkage": "id_orphan",
+   "signal_under_test": "sender_reply_match",
+   "provenance": "synthetic: tests/fixtures/closure_corpus_synthetic.py",
+   "world_fidelity": "synthetic",
+   "notes_topup": [],
+   "rationale": "the user wrote to the correspondent, but the subject shares only her name with the row.",
+   "as_of": "2030-03-30T10:00:00Z",
+   "entry": {
+    "id": "syn-copperline-reviewers",
+    "type": "response_needed",
+    "description": "Nell Arkwright wants feedback on the Copperline reviewer list",
+    "from_email": "nell.arkwright@example.org",
+    "from_name": "Nell Arkwright",
+    "conversation_id": "",
+    "source_message_id": "",
+    "gmail_thread_id": "",
+    "date_identified": "2030-03-14T02:00:00Z",
+    "deadline": "",
+    "notes": "",
+    "last_action": "",
+    "priority": "",
+    "status": "open"
+   },
+   "world": {
+    "sent": [
+     {
+      "conversationId": "conv-syn-catchup",
+      "subject": "Nell Arkwright / Avery: catching up",
+      "sentDateTime": "2030-03-15T17:00:00Z",
+      "bodyPreview": "",
+      "from": {
+       "emailAddress": {
+        "name": "Avery Quill",
+        "address": "avery.quill@example.edu"
+       }
+      },
+      "toRecipients": [
+       {
+        "emailAddress": {
+         "name": "Nell Arkwright",
+         "address": "nell.arkwright@example.org"
+        }
+       }
+      ],
+      "ccRecipients": []
+     }
+    ],
+    "inbox": [],
+    "events": [],
+    "closed_conversations": {}
+   },
+   "discriminating": false
+  }
+ ],
+ "unactionable": [
+  {
+   "ledger_id": "response-syn-un-01",
+   "user_message": "handled the Orchard catering in person",
+   "ts": "2030-03-11T17:00:00Z",
+   "linkage": "email_linked",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-02",
+   "user_message": "talked to Ravi at lunch, done",
+   "ts": "2030-03-12T17:00:00Z",
+   "linkage": "id_orphan",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-03",
+   "user_message": "signed the form at the front desk",
+   "ts": "2030-03-13T17:00:00Z",
+   "linkage": "email_linked",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-04",
+   "user_message": "dropped the badge off myself",
+   "ts": "2030-03-14T17:00:00Z",
+   "linkage": "id_orphan",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-05",
+   "user_message": "settled it on the phone",
+   "ts": "2030-03-15T17:00:00Z",
+   "linkage": "email_linked",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-06",
+   "user_message": "Petra and I sorted it in the hallway",
+   "ts": "2030-03-16T17:00:00Z",
+   "linkage": "id_orphan",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-07",
+   "user_message": "paid the fee at the counter",
+   "ts": "2030-03-17T17:00:00Z",
+   "linkage": "email_linked",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-08",
+   "user_message": "that one is moot now",
+   "ts": "2030-03-18T17:00:00Z",
+   "linkage": "id_orphan",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-09",
+   "user_message": "already did it on the portal last week",
+   "ts": "2030-03-19T17:00:00Z",
+   "linkage": "email_linked",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-10",
+   "user_message": "covered it in group meeting",
+   "ts": "2030-03-20T17:00:00Z",
+   "linkage": "id_orphan",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-11",
+   "user_message": "Mirela said not needed anymore",
+   "ts": "2030-03-21T17:00:00Z",
+   "linkage": "email_linked",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  },
+  {
+   "ledger_id": "response-syn-un-12",
+   "user_message": "finished it on paper",
+   "ts": "2030-03-22T17:00:00Z",
+   "linkage": "id_orphan",
+   "why": "no sent or inbound artifact exists between the entry's creation and the moment the user said it was done"
+  }
+ ],
+ "contested": [
+  {
+   "ledger_id": "response-syn-ct-01",
+   "ts": "2030-03-12T10:00:00Z",
+   "signal": "inbound_ack",
+   "ack_label": "no-action-ack",
+   "description": "Needs response: Checking in on the Tidepool interview",
+   "why": "the ack label says something about the conversation, not about the obligation"
+  },
+  {
+   "ledger_id": "response-syn-ct-02",
+   "ts": "2030-03-13T10:00:00Z",
+   "signal": "inbound_ack",
+   "ack_label": "ooo",
+   "description": "Needs response: Orchard workshop room booking",
+   "why": "an out-of-office reply is not completion evidence"
+  }
+ ],
+ "discriminating_audit": {
+  "revisions": [
+   "a96d962",
+   "9120f65",
+   "bb95ac1",
+   "9ca265c",
+   "9c50a5b",
+   "7e0601f",
+   "b1fe734",
+   "49c8bd7",
+   "db19c7b",
+   "701f945",
+   "dc7a125",
+   "32c5a42",
+   "7aa4d69",
+   "468ae2b",
+   "WORKTREE"
+  ],
+  "note": "a case is discriminating when at least one scored scrubber build closes it. A must_not_close case no build closes proves nothing and must not be counted as a caught bug."
+ }
+}

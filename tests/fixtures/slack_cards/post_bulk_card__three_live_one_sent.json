@@ -1,0 +1,152 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":outbox_tray: *3 drafts are ready.* Send all of them at once, or work through the blocks above one by one.",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "block_id": "bulk_send_b0b0b0b0b0b0",
+      "elements": [
+        {
+          "action_id": "approve_bulk_send",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": ":outbox_tray: Send all 3",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "b0b0b0b0b0b0"
+        },
+        {
+          "action_id": "dismiss_bulk_send",
+          "text": {
+            "emoji": true,
+            "text": "One by one",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "b0b0b0b0b0b0"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "text": {
+              "text": ":outbox_tray: *3 drafts are ready.* Send all of them at once, or work through the blocks above one by one.",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "block_id": "bulk_send_b0b0b0b0b0b0",
+            "elements": [
+              {
+                "action_id": "approve_bulk_send",
+                "style": "primary",
+                "text": {
+                  "emoji": true,
+                  "text": ":outbox_tray: Send all 3",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "b0b0b0b0b0b0"
+              },
+              {
+                "action_id": "dismiss_bulk_send",
+                "text": {
+                  "emoji": true,
+                  "text": "One by one",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "b0b0b0b0b0b0"
+              }
+            ],
+            "type": "actions"
+          }
+        ],
+        "channel": "D_OWNER",
+        "text": ":outbox_tray: *3 drafts are ready.* Send all of them at once, or work through the blocks above one by one."
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {},
+    "stubs": {
+      "bulk": {
+        "dm_channel": "D_OWNER",
+        "ids": [
+          "AAMkDRAFT1",
+          "AAMkDRAFT2",
+          "AAMkDRAFT3",
+          "AAMkDRAFT4"
+        ]
+      },
+      "confirms": {
+        "AAMkDRAFT1": {
+          "status": "live"
+        },
+        "AAMkDRAFT2": {
+          "status": "live"
+        },
+        "AAMkDRAFT3": {
+          "status": "live"
+        },
+        "AAMkDRAFT4": {
+          "status": "sent"
+        }
+      }
+    }
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "text": {
+          "text": ":outbox_tray: *3 drafts are ready.* Send all of them at once, or work through the blocks above one by one.",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "block_id": "bulk_send_b0b0b0b0b0b0",
+        "elements": [
+          {
+            "action_id": "approve_bulk_send",
+            "style": "primary",
+            "text": {
+              "emoji": true,
+              "text": ":outbox_tray: Send all 3",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "b0b0b0b0b0b0"
+          },
+          {
+            "action_id": "dismiss_bulk_send",
+            "text": {
+              "emoji": true,
+              "text": "One by one",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "b0b0b0b0b0b0"
+          }
+        ],
+        "type": "actions"
+      }
+    ],
+    "channel": "D_OWNER",
+    "text": ":outbox_tray: *3 drafts are ready.* Send all of them at once, or work through the blocks above one by one."
+  },
+  "text": ":outbox_tray: *3 drafts are ready.* Send all of them at once, or work through the blocks above one by one."
+}

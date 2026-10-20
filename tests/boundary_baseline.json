@@ -1,0 +1,30 @@
+{
+  "about": "Accepted exceptions to scripts/boundary_lint.py (docs/SECURITY.md, \"Owner trust rules\"). Each entry is one file and rule, one reason, and the source line of every accepted hit, whitespace collapsed. tests/test_boundary_lint.py fails on a hit that is not listed and on a listed line no hit matches, so the list only shrinks: remove a line when its hit is fixed.",
+  "exceptions": [
+    {
+      "file": "ea-chat-bot.py",
+      "rule": "py-write",
+      "reason": "The staged-file claim renames the resident's entry out of state/ by path; the claim is then read without following a link, as a single-linked regular file.",
+      "lines": [
+        "os.rename(src, claim)"
+      ]
+    },
+    {
+      "file": "preprocessor/fetch_url.py",
+      "rule": "py-write",
+      "reason": "Only the resident's fetch_url CLI writes this shared log; the owner's digest imports only the address checks, which write nothing.",
+      "lines": [
+        "LOG_PATH.parent.mkdir(parents=True, exist_ok=True)",
+        "with open(LOG_PATH, \"a\", encoding=\"utf-8\") as f:"
+      ]
+    },
+    {
+      "file": "deploy/docker/prepare_ea_dir.py",
+      "rule": "py-env-file",
+      "reason": "Container init copies the bytes of a file another uid left in the ea-bot volume so ea-bot owns it; the content is never parsed, sourced or used.",
+      "lines": [
+        "adopt_file(entry, 0o640)"
+      ]
+    }
+  ]
+}

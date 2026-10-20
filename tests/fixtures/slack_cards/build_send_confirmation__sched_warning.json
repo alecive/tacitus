@@ -1,0 +1,126 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm send*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": ":warning: *Scheduling check:* Tue Oct 6, 2:00 PM is no longer free (conflicts with Faculty meeting).",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "fields": [
+        {
+          "text": "*To:* Alex Rivera &lt;alex.rivera@example.edu&gt;",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*CC:* Sam Lee &lt;sam.lee@example.edu&gt;",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Subject:* Re: Thursday lab meeting",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "Hi Alex,\n\nThursday at 2 works. I will bring the draft figures.\n\nKit",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_send_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "approve_send",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": ":outbox_tray: Send",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "cancel_send",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": "Cancel",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "edit_draft",
+          "text": {
+            "emoji": true,
+            "text": ":pencil2: Edit",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "draft_handled",
+          "text": {
+            "emoji": true,
+            "text": ":white_check_mark: Handled",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        },
+        {
+          "action_id": "sent_myself",
+          "text": {
+            "emoji": true,
+            "text": ":incoming_envelope: Sent myself",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [],
+  "inputs": {
+    "args": {
+      "channel": "C_MAIN",
+      "draft_id": "AAMkDRAFT1",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "draft": {
+        "body": "Hi Alex,\n\nThursday at 2 works. I will bring the draft figures.\n\nKit",
+        "cc": "Sam Lee <sam.lee@example.edu>",
+        "conversation_id": "AAQkCONV1",
+        "subject": "Re: Thursday lab meeting",
+        "to": "Alex Rivera <alex.rivera@example.edu>"
+      },
+      "sched_warning": ":warning: *Scheduling check:* Tue Oct 6, 2:00 PM is no longer free (conflicts with Faculty meeting)."
+    }
+  },
+  "kwargs": {},
+  "text": ":lock: *Confirm send*\n:warning: *Scheduling check:* Tue Oct 6, 2:00 PM is no longer free (conflicts with Faculty meeting).\n*To:* Alex Rivera &lt;alex.rivera@example.edu&gt;\n*CC:* Sam Lee &lt;sam.lee@example.edu&gt;\n*Subject:* Re: Thursday lab meeting\n\nHi Alex,\n\nThursday at 2 works. I will bring the draft figures.\n\nKit"
+}

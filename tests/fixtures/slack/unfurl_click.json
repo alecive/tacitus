@@ -1,0 +1,34 @@
+{
+  "actions": [
+    {
+      "action_id": "cancel_send",
+      "block_id": "confirm_send_1700000000.000100",
+      "type": "button",
+      "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"conversation_id\": \"AAQkCONV1\", \"ea_channel\": \"C_MAIN\", \"email_system\": \"outlook\", \"gmail_email\": \"\"}"
+    }
+  ],
+  "channel": {
+    "id": "C_MAIN"
+  },
+  "message": {
+    "attachments": [
+      {
+        "channel_id": "D_OWNER",
+        "from_url": "https://example.slack.com/archives/D_OWNER/p1700000001000200",
+        "is_msg_unfurl": true,
+        "ts": "1700000001.000200"
+      }
+    ],
+    "bot_id": "B_BOT",
+    "text": ":lock: The Send button for this draft is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>",
+    "thread_ts": "1700000000.000100",
+    "ts": "1700000002.000300",
+    "type": "message",
+    "user": "U_BOT"
+  },
+  "trigger_id": "333.444.def",
+  "type": "block_actions",
+  "user": {
+    "id": "U_OWNER"
+  }
+}

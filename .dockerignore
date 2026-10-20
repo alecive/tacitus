@@ -1,0 +1,29 @@
+# The image holds the committed code only. Local state, secrets, virtual
+# environments and other worktrees stay out of the build context.
+.git
+.github
+.venv
+venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.claude/worktrees
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
+# The developer guide; Claude Code would load it into every EA turn.
+.claude/CLAUDE.md
+.env
+.env.*
+# An install's own overlay (preprocessor/install_overlay.py); each
+# container renders and installs its own at start.
+CLAUDE.local.md
+deploy/zulip/.env
+**/*.log
+node_modules
+# Local-only notes and secrets a checkout may hold (gitignored, and the
+# build context is the working tree, not the commit).
+docs/_local
+.webui_secret_key
+.claude/RESUME.md

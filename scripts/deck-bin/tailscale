@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""`tailscale` for the EA's deck builds: reads pass through, the two route
+writes become deck_serve.py calls, everything else is refused.
+
+build-deck.sh and stage-tailnet.mjs (the owner's presentation scripts, read
+through the read-only mount) call `tailscale` by name. Run as ea-bot with
+this directory first on PATH, they get:
+
+  version | status ... | serve status ... | funnel status ...
+        the real binary. tailscaled answers reads for any local user.
+  serve [--bg] --https=443 --set-path=/<slug> http://127.0.0.1:<port>/<slug>
+        deck_serve.py serve --slug <slug> --port <port>
+  serve --https=443 --set-path=/<slug> off
+        deck_serve.py off --slug <slug>
+  anything else (funnel, serve reset, up, down, set, cert, ...)
+        refused, exit 1.
+
+deck_serve.py forwards to the owner-side mediator, which validates again and is
+the only side that can write. The refusals here are not the gate;
+tailscaled itself refuses a write from a non-operator user. They turn that
+"Access denied" into a message that names the rule.
+"""
+from __future__ import annotations
+
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+REPO = HERE.parent.parent
+DECK_SERVE = REPO / "preprocessor" / "deck_serve.py"
+
+# Subcommand prefixes that only read tailscaled state.
+READS = {("version",), ("status",), ("ip",), ("serve", "status"),
+         ("funnel", "status"), ("dns", "status")}
+PATH_RE = re.compile(r"^/([a-z0-9][a-z0-9-]*)$")
+TARGET_RE = re.compile(r"^http://127\.0\.0\.1:(\d{2,5})/([a-z0-9][a-z0-9-]*)/?$")
+
+
+def real_binary() -> str:
+    """The first `tailscale` on PATH that is not this file."""
+    for d in os.environ.get("PATH", "").split(os.pathsep):
+        if not d:
+            continue
+        try:
+            if Path(d).resolve() == HERE:
+                continue
+        except OSError:
+            continue
+        cand = Path(d) / "tailscale"
+        if cand.is_file() and os.access(cand, os.X_OK):
+            return str(cand)
+    return "/usr/bin/tailscale"
+
+
+def plan(argv: list[str]) -> tuple[str, object]:
+    """Decide what to do with one tailscale command line.
+
+    Returns ("passthrough", argv), ("deck_serve", [verb, --slug, S, ...]) or
+    ("refuse", reason). Pure, so the mapping is unit-tested."""
+    if not argv:
+        return ("refuse", "no subcommand")
+    if tuple(argv[:1]) in READS or tuple(argv[:2]) in READS:
+        return ("passthrough", list(argv))
+    if argv[0] != "serve":
+        head = " ".join(argv[:2])
+        return ("refuse", f"'{head}' is not available to the EA; a tailnet-only "
+                          "`serve` route is the only write it makes")
+    https = set_path = None
+    positional: list[str] = []
+    i = 1
+    while i < len(argv):
+        a = argv[i]
+        if a == "--bg":
+            i += 1
+            continue
+        matched = False
+        for flag in ("--https", "--set-path"):
+            if a == flag:
+                if i + 1 >= len(argv):
+                    return ("refuse", f"{flag} needs a value")
+                val = argv[i + 1]
+                i += 2
+            elif a.startswith(flag + "="):
+                val = a[len(flag) + 1:]
+                i += 1
+            else:
+                continue
+            if flag == "--https":
+                https = val
+            else:
+                set_path = val
+            matched = True
+            break
+        if matched:
+            continue
+        if a.startswith("-"):
+            return ("refuse", f"serve flag {a!r} is not available to the EA")
+        positional.append(a)
+        i += 1
+    if https != "443":
+        return ("refuse", "the EA serves on --https=443 only")
+    m = PATH_RE.match(set_path or "")
+    if not m:
+        return ("refuse", "the EA serves at --set-path=/<slug> only (a plain "
+                          "lowercase kebab-case slug)")
+    slug = m.group(1)
+    if len(positional) != 1:
+        return ("refuse", "expected exactly one target or 'off'")
+    if positional[0] == "off":
+        return ("deck_serve", ["off", "--slug", slug])
+    t = TARGET_RE.match(positional[0])
+    if not t:
+        return ("refuse", "the target must be http://127.0.0.1:<port>/<slug>")
+    if t.group(2) != slug:
+        return ("refuse", f"target path /{t.group(2)} does not match --set-path /{slug}")
+    return ("deck_serve", ["serve", "--slug", slug, "--port", t.group(1)])
+
+
+def main() -> int:
+    kind, payload = plan(sys.argv[1:])
+    if kind == "passthrough":
+        real = real_binary()
+        os.execv(real, [real, *payload])
+    if kind == "refuse":
+        print(f"tailscale (EA shim): refused: {payload}", file=sys.stderr)
+        return 1
+    r = subprocess.run([sys.executable, str(DECK_SERVE), *payload],
+                       capture_output=True, text=True)
+    if r.stdout:
+        sys.stdout.write(r.stdout)
+    if r.stderr:
+        sys.stderr.write(r.stderr)
+    return r.returncode
+
+
+if __name__ == "__main__":
+    sys.exit(main())

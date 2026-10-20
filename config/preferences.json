@@ -1,0 +1,30 @@
+{
+  "_doc": "Your standing rules, in your words, injected into every prompt whose skill declares a matching scope (preprocessor/preferences.py; CLAUDE.md 'Personal rules'). kind: instruction (a quoted standing instruction), prefer (post / do), avoid (skip / never do), fact (about you: role, eligibility, interests). scopes: * (everywhere), briefing, mail-triage, funding, newsletters, newsletters:<list>, scheduling, drafting, manuscripts. Add with `preferences.py add`, or edit by hand. Retired rules keep status=retired for the record. calibration: how past runs landed and what you said.",
+  "_example": {
+    "rules": [
+      {
+        "id": "standing-baas-not-opportunities",
+        "kind": "avoid",
+        "scopes": [
+          "funding",
+          "newsletters"
+        ],
+        "text": "Standing or office-wide BAAs are not opportunities; skip them.",
+        "quote": "Office-wide BAAs are never real calls for me, skip them.",
+        "date": "2026-09-01",
+        "source": "slack",
+        "status": "active"
+      }
+    ],
+    "calibration": [
+      {
+        "date": "2026-09-01",
+        "scope": "newsletters:robotics-worldwide",
+        "note": "1 of 17 posted (a dataset release); the user confirmed."
+      }
+    ]
+  },
+  "version": 1,
+  "rules": [],
+  "calibration": []
+}

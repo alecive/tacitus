@@ -1,0 +1,159 @@
+{
+  "_meta": {
+    "id": "hard-success-002",
+    "name": "Correct priority ordering with VIP, deadline, and routine items",
+    "category": "hard-success",
+    "description": "The briefing should order items by actual urgency: deadline email from a program officer > VIP scheduling request > routine CC-only thread. Tests that the system doesn't just dump items in inbox order but applies judgment about what matters most."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 5,
+      "new_sent_messages": 0,
+      "total_delta_items": 4,
+      "total_inbox": 50,
+      "flagged_count": 1,
+      "events_next_14d": 15
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-routine-cc-001",
+        "subject": "Re: Department Happy Hour Planning",
+        "from": {
+          "emailAddress": {
+            "name": "Lane Larchmont",
+            "address": "morgan.ashcombe69@example.edu"
+          }
+        },
+        "to": ["dov.vasquez4@example.edu"],
+        "cc": ["wren.fairbanks84@example.edu"],
+        "user_is_direct_recipient": false,
+        "user_is_cc_only": true,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T08:00:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Sounds great! I can bring the chips and salsa. See everyone Friday!",
+        "conversationId": "AAQk-happy-hour-001",
+        "hasAttachments": false,
+        "response_signals": 0
+      },
+      {
+        "message_id": "AAMk-vip-sched-001",
+        "subject": "Catching up - when are you free next week?",
+        "from": {
+          "emailAddress": {
+            "name": "Rio Oyelaran",
+            "address": "yuki.zielinski33@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T09:00:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, it's been a while since we caught up. Any time next week that works for a coffee? I have some ideas about the robotics curriculum I'd like to bounce off you.",
+        "conversationId": "AAQk-oyelaran-001",
+        "hasAttachments": false,
+        "response_signals": 4
+      },
+      {
+        "message_id": "AAMk-deadline-po-001",
+        "subject": "ACTION REQUIRED: Final Budget Justification for NSF Award #2345678 - Due April 11",
+        "from": {
+          "emailAddress": {
+            "name": "Hale Merriweather",
+            "address": "hale.merriweather@nsf.gov"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": ["cy.brightwater8@example.edu"],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T07:00:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Dear Dr. Calloway, This is a reminder that the final budget justification narrative for your NSF award is due by April 11, 2026. Please submit via Research.gov. Failure to submit may result in delayed funding.",
+        "conversationId": "AAQk-nsf-budget-001",
+        "hasAttachments": true,
+        "response_signals": 6
+      }
+    ],
+    "new_scheduling_requests": [
+      {
+        "message_id": "AAMk-vip-sched-001",
+        "subject": "Catching up - when are you free next week?",
+        "from": {
+          "emailAddress": {
+            "name": "Rio Oyelaran",
+            "address": "yuki.zielinski33@example.edu"
+          }
+        },
+        "bodyPreview": "Hi Kit, it's been a while since we caught up. Any time next week that works for a coffee?",
+        "received": "2026-04-09T09:00:00Z"
+      }
+    ],
+    "travel_reimbursement": [],
+    "availability_merged": [
+      {"start": "2026-04-14T09:00:00-06:00", "end": "2026-04-14T11:30:00-06:00", "duration_minutes": 150, "day": "Monday"},
+      {"start": "2026-04-14T14:00:00-06:00", "end": "2026-04-14T17:00:00-06:00", "duration_minutes": 180, "day": "Monday"},
+      {"start": "2026-04-15T09:00:00-06:00", "end": "2026-04-15T10:00:00-06:00", "duration_minutes": 60, "day": "Tuesday"}
+    ],
+    "open_obligations": [],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "Lab Meeting",
+        "start": {"dateTime": "2026-04-09T14:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T15:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [
+      {
+        "message_id": "AAMk-deadline-po-001",
+        "subject": "ACTION REQUIRED: Final Budget Justification for NSF Award #2345678 - Due April 11",
+        "from": "hale.merriweather@nsf.gov",
+        "from_name": "Hale Merriweather",
+        "received": "2026-04-09T07:00:00Z",
+        "domain": "general",
+        "deadline_text": "due april 11, 2026",
+        "extracted_date": "april 11, 2026",
+        "body_preview": "Dear Dr. Calloway, This is a reminder that the final budget justification...",
+        "is_reminder": true
+      }
+    ],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": []
+}

@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "example-chat-reader",
+  "version": "0.1.0",
+  "description": "A made-up owner-zone plugin: a mediated read verb, an auth source and an owner cron job, for the tests.",
+  "zone": "owner",
+  "capabilities": {
+    "owner_hooks": {
+      "verbs": [
+        {"name": "get-example-dms", "class": "safe",
+         "alias": {"tool": "graph_actions", "verb": "get-example-dms"},
+         "command": ["python3", "{plugin_dir}/reader.py"], "timeout_seconds": 60},
+        {"name": "post-example-dm", "class": "gated",
+         "command": ["python3", "{plugin_dir}/reader.py"]}
+      ],
+      "auth_sources": [
+        {"name": "example-token", "kind": "graph", "module": "auth_source.py", "function": "token"}
+      ],
+      "cron": [
+        {"label": "refresh", "cron": "0 */12 * * *",
+         "command": ["python3", "{plugin_dir}/reader.py", "refresh"]}
+      ]
+    },
+    "network": {"domains": ["chat.example.org"]}
+  }
+}

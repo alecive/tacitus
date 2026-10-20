@@ -1,0 +1,59 @@
+{
+  "blocks": [
+    {
+      "elements": [
+        {
+          "text": ":white_check_mark: Sent to alex.rivera@example.edu.",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "context"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "elements": [
+              {
+                "text": ":white_check_mark: Sent to alex.rivera@example.edu.",
+                "type": "mrkdwn"
+              }
+            ],
+            "type": "context"
+          }
+        ],
+        "channel": "D_OWNER",
+        "text": ":white_check_mark: Sent to alex.rivera@example.edu.",
+        "ts": "1700000001.000200"
+      },
+      "method": "chat_update"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "channel": "D_OWNER",
+      "message_ts": "1700000001.000200",
+      "status_text": ":white_check_mark: Sent to alex.rivera@example.edu."
+    },
+    "stubs": {}
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "elements": [
+          {
+            "text": ":white_check_mark: Sent to alex.rivera@example.edu.",
+            "type": "mrkdwn"
+          }
+        ],
+        "type": "context"
+      }
+    ],
+    "channel": "D_OWNER",
+    "text": ":white_check_mark: Sent to alex.rivera@example.edu.",
+    "ts": "1700000001.000200"
+  },
+  "text": ":white_check_mark: Sent to alex.rivera@example.edu."
+}

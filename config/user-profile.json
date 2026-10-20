@@ -1,0 +1,38 @@
+{
+  "name": "Your Name",
+  "email": "you@example.edu",
+  "role_description": "Your title, department, and research focus. Example: A tenured professor of computer science specializing in autonomous systems, with active NSF and DARPA grants and graduate students.",
+  "department": "Computer Science",
+  "university": "Example University",
+  "institution": {
+    "name": "Example University",
+    "domains": [
+      "example.edu"
+    ],
+    "related_domains": [],
+    "safety_rail_domain": "example.edu",
+    "video": {
+      "platform": "Zoom",
+      "link": ""
+    },
+    "boilerplate_tokens": [],
+    "boilerplate_phrases": [],
+    "letterhead": {
+      "template_dir": "~/.ea/templates/letterhead",
+      "asset_dirs": [],
+      "required_assets": []
+    }
+  },
+  "institution_note": "Your institution (preprocessor/institution.py). domains: internal mail; related_domains: sister campuses the admissions filter treats as internal; safety_rail_domain: the EA never sends a first email outside it on its own; video: the platform and your personal link (zoom_link is read when video.link is empty); boilerplate_tokens/phrases: words and footer text that name the institution, never a person or an item; letterhead: where compiled letters find their template, and asset_dirs where an institution plugin keeps its letterhead style and logos. Every field falls back to the domain of your email.",
+  "slack_channel_name": "ai-assistant-yourname",
+  "bio_blurb": "Brief professional bio for letter composition. Used when the EA drafts letters of recommendation or professional correspondence.",
+  "calendar_accounts": [
+    "you@gmail.com"
+  ],
+  "gmail_accounts": [],
+  "gmail_accounts_note": "Gmail accounts the EA may draft from (gmail_client.py --email <addr>). Empty when you use Outlook only.",
+  "family": [],
+  "family_note": "Optional. People the family-sync and rsvp skills may name: [{\"name\": \"...\", \"relation\": \"spouse|child|...\", \"notes\": \"school, team, sitter, ...\"}]. Their calendars go in calendar_accounts and in scheduling-preferences.json family_calendars.",
+  "zoom_link": "",
+  "office": ""
+}

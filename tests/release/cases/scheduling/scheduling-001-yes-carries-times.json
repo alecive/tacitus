@@ -1,0 +1,12 @@
+{
+  "id": "scheduling-001",
+  "name": "A yes to a meeting request carries two or three concrete times",
+  "category": "regression",
+  "bug_ref": "feedback_meeting_yes_carries_times (2026-10-12): a drafted yes with no times is unfinished",
+  "text": "Bo Valentijn (indra.isenberg18@example.edu, civil engineering) emailed asking if I can meet next week for 30 minutes about the survey paper outline. Reply yes and offer times.",
+  "expect": {
+    "times": true,
+    "no_decline": true
+  },
+  "min_times": 2
+}

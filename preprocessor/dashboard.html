@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Everything on this page is same-origin: one inline script (nonced by
+     project_dashboard.py per response), one inline stylesheet, and fetches
+     to /api/*. No external origin is allowed, and script 'unsafe-inline'
+     is NOT granted, so an injected onerror=/onclick= attribute cannot run
+     even if escaping is ever missed. B6-01. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-__CSP_NONCE__'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'none'">
+<title>EA Projects</title>
+<style>
+  :root {
+    --bg:#f6f7f9; --card:#fff; --ink:#1c2733; --mut:#6b7a8c; --line:#dfe4ea;
+    --accent:#2563eb; --you:#dbeafe; --ea:#eef1f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#111827; --card:#1f2937; --ink:#e5e7eb; --mut:#93a1b3;
+            --line:#374151; --accent:#60a5fa; --you:#1e3a5f; --ea:#273244; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.45 -apple-system,'Segoe UI',Roboto,sans-serif;
+         background:var(--bg); color:var(--ink); }
+  header { display:flex; align-items:center; gap:12px; padding:10px 14px;
+           border-bottom:1px solid var(--line); position:sticky; top:0;
+           background:var(--bg); z-index:10; }
+  header h1 { font-size:16px; margin:0; flex:1; }
+  header .hint { color:var(--mut); font-size:11.5px; }
+  #trayBtn { display:none; }
+  #layout { display:flex; height:calc(100vh - 46px); }
+  #board { flex:1; display:flex; gap:12px; overflow-x:auto; padding:12px;
+           scroll-snap-type:x proximity; }
+  .col { min-width:230px; flex:1; scroll-snap-align:start; }
+  .col h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+            color:var(--mut); margin:2px 4px 8px; position:sticky; top:0; }
+  .col .zone { min-height:60vh; border-radius:10px; padding:4px; }
+  .zone.dragover { outline:2px dashed var(--accent); outline-offset:-2px; }
+  .card { background:var(--card); border:1px solid var(--line);
+          border-radius:10px; padding:8px 10px; margin:0 0 8px; cursor:grab; }
+  .card.child { margin-left:16px; }
+  .card.dragover { outline:2px solid var(--accent); outline-offset:-2px; }
+  .card .nm { font-weight:600; }
+  .card .meta { color:var(--mut); font-size:12px; margin-top:2px;
+                display:flex; gap:8px; }
+  .card .badge { background:var(--accent); color:#fff; border-radius:9px;
+                 padding:0 7px; font-size:11px; }
+  .card .chan { color:var(--accent); font-size:11px; font-weight:500;
+                text-decoration:none; border:1px solid var(--accent);
+                border-radius:9px; padding:0 6px; }
+  .card .chan:hover { background:var(--you); }
+  .card.dormant { opacity:.65; } .card.closed { opacity:.4; }
+  #tray { width:290px; border-left:1px solid var(--line); padding:12px;
+          overflow-y:auto; background:var(--bg); }
+  #tray h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+             color:var(--mut); margin:10px 0 8px; }
+  .item { background:var(--card); border:1px dashed var(--line);
+          border-radius:8px; padding:7px 9px; margin-bottom:7px;
+          font-size:12.5px; cursor:grab; }
+  .item .who { color:var(--mut); font-size:11.5px; }
+  #looseZone { border:2px dashed var(--line); border-radius:10px;
+               color:var(--mut); text-align:center; padding:10px;
+               font-size:12px; margin-bottom:6px; }
+  #looseZone.dragover { border-color:var(--accent); color:var(--accent); }
+  #looseList .item { border-style:solid; opacity:.75; cursor:default; }
+  #looseList button { background:none; border:0; color:var(--mut);
+      cursor:pointer; font-size:11px; padding:0; text-decoration:underline; }
+  .item .qdone { background:none; border:1px solid var(--line); color:var(--mut);
+      border-radius:6px; font-size:11px; padding:1px 7px; cursor:pointer; }
+  .item .qdone:hover { color:var(--accent); border-color:var(--accent); }
+  .fb { display:inline-flex; gap:4px; flex-wrap:wrap; }
+  .fb .qdone { padding:1px 5px; }
+  #drawer { position:fixed; top:0; right:0; width:min(560px,100vw);
+            height:100vh; background:var(--card);
+            border-left:1px solid var(--line);
+            box-shadow:-8px 0 30px rgba(0,0,0,.18); transform:translateX(105%);
+            transition:transform .18s ease; overflow-y:auto;
+            padding:16px 18px 90px; z-index:20; }
+  #drawer.open { transform:none; }
+  #drawer h2 { margin:0 0 2px; font-size:17px; }
+  #drawer .sub { color:var(--mut); font-size:12.5px; margin-bottom:12px; }
+  #drawer textarea { width:100%; min-height:100px; background:var(--bg);
+      color:var(--ink); border:1px solid var(--line); border-radius:8px;
+      padding:8px; font:inherit; }
+  #drawer h3 { font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+               color:var(--mut); margin:15px 0 6px; }
+  #drawer ul { margin:0; padding-left:18px; }
+  #drawer li { margin-bottom:4px; }
+  .row { display:flex; gap:8px; margin-top:8px; }
+  button, select { background:var(--accent); border:0; color:#fff;
+      border-radius:7px; padding:6px 12px; font:inherit; cursor:pointer; }
+  select { background:var(--card); color:var(--ink);
+           border:1px solid var(--line); }
+  button.ghost { background:transparent; color:var(--mut);
+                 border:1px solid var(--line); }
+  input[type=text] { flex:1; background:var(--bg); color:var(--ink);
+      border:1px solid var(--line); border-radius:7px; padding:6px 9px;
+      font:inherit; min-width:0; }
+  .voice { color:var(--mut); font-size:11.5px; }
+  #toast { position:fixed; bottom:70px; left:50%; transform:translateX(-50%);
+           background:var(--ink); color:var(--bg); border-radius:8px;
+           padding:8px 16px; opacity:0; transition:opacity .2s; z-index:40;
+           font-size:13px; pointer-events:none; }
+  #toast.show { opacity:.92; }
+
+
+  @media (max-width: 700px) {
+    header .hint { display:none; }
+    #trayBtn { display:inline-block; }
+    #layout { height:auto; }
+    #board { height:calc(100vh - 46px); }
+    .col { min-width:84vw; }
+    #tray { position:fixed; top:44px; right:0; bottom:58px; width:min(320px,92vw);
+            transform:translateX(105%); transition:transform .18s ease;
+            z-index:15; border-left:1px solid var(--line);
+            box-shadow:-8px 0 30px rgba(0,0,0,.2); }
+    #tray.open { transform:none; }
+    #drawer { padding-bottom:120px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>EA Board</h1>
+  <span class="hint">drag card &rarr; column: domain &middot; card &rarr; card:
+    parent &middot; tray &rarr; card: file &middot; tray &rarr; Loose: keep loose</span>
+  <button id="trayBtn" class="ghost">Unfiled</button>
+</header>
+<div id="layout">
+  <div id="board"></div>
+  <div id="tray">
+    <h2>Unfiled <span id="unfiledN" class="voice"></span></h2>
+    <div id="looseZone">drop here to keep loose<br>(no project, on purpose)</div>
+    <div id="trayItems"></div>
+    <h2>Loose <span id="looseN" class="voice"></span></h2>
+    <div id="looseList"></div>
+  </div>
+</div>
+<div id="drawer"></div>
+
+<div id="toast"></div>
+<script nonce="__CSP_NONCE__">
+"use strict";
+const $ = s => document.querySelector(s);
+let BOARD = null;
+let DRAWER_PROJECT = null;
+
+/* ── Untrusted text ────────────────────────────────────────────────
+   Project names, ledger descriptions, sender names, mail subjects and
+   journal text all originate in inbound email, so every one of them is
+   attacker-controlled. Two rules, no exceptions (B6-01):
+     1. plain text goes in through el()/textContent;
+     2. any value inside an HTML template literal goes through esc().
+   The page's CSP also withholds script 'unsafe-inline', so a missed
+   spot cannot run an injected onerror= handler. */
+const ESC_MAP = {"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;",
+                 "'":"&#39;", "`":"&#96;"};
+function esc(v) {
+  return (v === null || v === undefined) ? ""
+    : String(v).replace(/[&<>"'`]/g, c => ESC_MAP[c]);
+}
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== null && text !== undefined) n.textContent = String(text);
+  return n;
+}
+/* Only same-origin paths and http(s) URLs may become an href, so a
+   stored javascript:/data: value cannot be clicked into script. */
+function safeHref(u) {
+  const s = (u === null || u === undefined) ? "" : String(u);
+  if (/^\/[^/\\]/.test(s)) return s;
+  if (/^https?:\/\//i.test(s)) return s;
+  return "";
+}
+const STATUSES = ["active", "dormant", "closed"];
+const statusClass = s => STATUSES.indexOf(s) >= 0 ? s : "";
+
+/* Optional shared secret (EA_DASH_TOKEN server-side): opened as
+   /?t=<token>, carried on every API call from here. */
+const TOKEN = new URLSearchParams(location.search).get("t") || "";
+function withToken(path) {
+  if (!TOKEN) return path;
+  return path + (path.indexOf("?") >= 0 ? "&" : "?") + "t=" +
+    encodeURIComponent(TOKEN);
+}
+
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1600);
+}
+async function api(path, opts) {
+  const r = await fetch(withToken(path), opts); return r.json();
+}
+async function op(body, quiet) {
+  const res = await api("/api/op", {method:"POST",
+    headers:{"Content-Type":"application/json", "X-EA-Dashboard":"1"},
+    body:JSON.stringify(body)});
+  if (!res.ok) { toast("✗ " + (res.error || "failed")); return false; }
+  if (!quiet) toast("saved");
+  await load();
+  return true;
+}
+
+/* ── Item feedback ────────────────────────────────────────────────
+   Four dispositions per ledger item, each with an optional note. They
+   reach the ledger, the missed-closure log (a human had to say "done":
+   a closure signal is missing) and the preferences store ("not mine"
+   teaches the briefing), through /api/op {op:"disposition"}. Built with
+   el()/textContent only: the drawer template stays the page's single
+   HTML sink. */
+const DISPOSITIONS = [
+  ["✓ done",     "done",       "I finished this (closes it, archives the email, logs the missed signal)"],
+  ["✗ not mine", "not_mine",   "not my obligation, or never open (closes it, keeps the email, teaches the briefing)"],
+  ["zz snooze",  "snooze",     "park it until a date"],
+  ["still open", "still_open", "yes, this is really open (the pre-send audit stops asking for a week)"],
+];
+async function disposition(ledgerId, kind, btn) {
+  const label = btn ? btn.textContent : "";
+  const body = {op:"disposition", ledger_id:ledgerId, kind:kind};
+  if (kind === "snooze") {
+    const d = new Date(); d.setDate(d.getDate() + 7);
+    const until = window.prompt("snooze until (YYYY-MM-DD)",
+                                d.toISOString().slice(0, 10));
+    if (!until) return false;
+    body.until = until.trim();
+  }
+  const note = window.prompt("note (optional): why?", "");
+  if (note === null) return false;
+  body.note = note.trim();
+  if (btn) btn.textContent = "…";
+  const ok = await op(body, true);
+  if (ok)
+    toast({done:"closed + logged", not_mine:"closed, briefing told",
+           snooze:"snoozed until " + body.until,
+           still_open:"confirmed open"}[kind]);
+  else if (btn) btn.textContent = label;
+  return ok;
+}
+function feedbackEl(ledgerId) {
+  const wrap = el("span", "fb");
+  DISPOSITIONS.forEach(([label, kind, title]) => {
+    const b = el("button", "qdone", label);
+    b.title = title;
+    b.addEventListener("click", ev => {
+      ev.stopPropagation();
+      disposition(ledgerId, kind, b);
+    });
+    wrap.appendChild(b);
+  });
+  return wrap;
+}
+
+/* ── Board ─────────────────────────────────────────────────────── */
+function cardEl(p, isChild) {
+  const box = el("div", "card " + statusClass(p.status) +
+                 (isChild ? " child" : ""));
+  box.draggable = true; box.dataset.id = p.id;
+  const nm = el("div", "nm", p.name || p.id || "");
+  if (p.open_items) nm.append(" ", el("span", "badge", p.open_items));
+  if (p.channel && p.channel.name) {
+    // the #ea- badge: the same marker App Home and the Slack topic carry
+    const href = safeHref(p.channel.url);
+    const ch = el(href ? "a" : "span", "chan", "#" + p.channel.name);
+    if (href) { ch.href = href; ch.target = "_blank"; ch.rel = "noopener"; }
+    ch.title = "this project's Slack channel";
+    ch.addEventListener("click", ev => ev.stopPropagation());
+    nm.append(" ", ch);
+  }
+  const meta = el("div", "meta");
+  meta.append(el("span", null, p.kind || ""),
+              el("span", null, p.people ? p.people + " ppl" : ""),
+              el("span", null, p.status !== "active" ? (p.status || "") : ""));
+  box.append(nm, meta);
+  if (p.next_actions) {
+    const nx = el("div", "meta", "→ " + p.next_actions);
+    nx.style.marginTop = "3px";
+    box.append(nx);
+  }
+  box.addEventListener("click", () => openDrawer(p.id));
+  box.addEventListener("dragstart", ev => {
+    ev.dataTransfer.setData("text/project", p.id); ev.stopPropagation(); });
+  box.addEventListener("dragover", ev => { ev.preventDefault();
+    box.classList.add("dragover"); ev.stopPropagation(); });
+  box.addEventListener("dragleave", () => box.classList.remove("dragover"));
+  box.addEventListener("drop", async ev => {
+    ev.preventDefault(); ev.stopPropagation(); box.classList.remove("dragover");
+    const led = ev.dataTransfer.getData("text/ledger");
+    const proj = ev.dataTransfer.getData("text/project");
+    if (led) {
+      if (await op({op:"link_ledger", project:p.id, ledger_id:led}, true))
+        toast(`filed under “${p.name}” — see its drawer`);
+    } else if (proj && proj !== p.id) {
+      if (await op({op:"set_parent", project:proj, value:p.id}, true))
+        toast(`now a child of “${p.name}”`);
+    }
+  });
+  return box;
+}
+
+function render() {
+  const board = $("#board"); board.replaceChildren();
+  for (const [dom, projs] of Object.entries(BOARD.board.domains)) {
+    const col = el("div", "col");
+    col.appendChild(el("h2", null, dom));
+    const zone = el("div", "zone");
+    zone.addEventListener("dragover", ev => { ev.preventDefault();
+      zone.classList.add("dragover"); });
+    zone.addEventListener("dragleave", () => zone.classList.remove("dragover"));
+    zone.addEventListener("drop", ev => {
+      ev.preventDefault(); zone.classList.remove("dragover");
+      const proj = ev.dataTransfer.getData("text/project");
+      const led = ev.dataTransfer.getData("text/ledger");
+      if (proj) op({op:"set_domain", project:proj, value:dom});
+      else if (led) toast("items file to a PROJECT card (or Loose), not a domain");
+    });
+    const byParent = {};
+    projs.forEach(p => (byParent[p.parent_id || ""] ||= []).push(p));
+    const inDomain = new Set(projs.map(p => p.id));
+    (byParent[""] || []).concat(
+        projs.filter(p => p.parent_id && !inDomain.has(p.parent_id)))
+      .forEach(p => {
+        zone.appendChild(cardEl(p, false));
+        (byParent[p.id] || []).forEach(c => zone.appendChild(cardEl(c, true)));
+      });
+    col.appendChild(zone); board.appendChild(col);
+  }
+  const tray = $("#trayItems"); tray.replaceChildren();
+  $("#unfiledN").textContent = BOARD.unfiled.length || "";
+  BOARD.unfiled.forEach(it => {
+    const item = el("div", "item");
+    item.draggable = true;
+    const head = el("div", null,
+      String(it.description || it.id || "").slice(0, 90));
+    const href = safeHref(it.email_link);
+    if (href) {
+      const a = el("a", null, "✉");
+      a.href = href; a.target = "_blank"; a.rel = "noopener";
+      a.title = "open email in Outlook";
+      head.append(" ", a);
+    }
+    const who = el("div", "who");
+    who.style.display = "flex"; who.style.justifyContent = "space-between";
+    who.style.gap = "6px"; who.style.flexWrap = "wrap";
+    who.append(el("span", null, (it.from_name || it.from_email || "") +
+                 (it.deadline ? " · due " + it.deadline : "")));
+    who.append(feedbackEl(it.id));
+    item.append(head, who);
+    item.addEventListener("dragstart", ev =>
+      ev.dataTransfer.setData("text/ledger", it.id));
+    tray.appendChild(item);
+  });
+  if (!BOARD.unfiled.length)
+    tray.appendChild(el("div", "voice", "nothing unfiled 🎉"));
+  const ll = $("#looseList"); ll.replaceChildren();
+  $("#looseN").textContent = (BOARD.loose || []).length || "";
+  (BOARD.loose || []).forEach(it => {
+    const item = el("div", "item");
+    item.appendChild(el("div", null,
+      String(it.description || it.id || "").slice(0, 80)));
+    const back = el("button", null, "back to unfiled");
+    back.addEventListener("click", () =>
+      op({op:"unmark_loose", ledger_id:it.id}));
+    const row = el("div", "who");
+    row.style.display = "flex"; row.style.justifyContent = "space-between";
+    row.style.gap = "6px"; row.style.flexWrap = "wrap";
+    row.append(back, feedbackEl(it.id));
+    item.appendChild(row);
+    ll.appendChild(item);
+  });
+}
+
+/* ── Drawer ────────────────────────────────────────────────────── */
+async function openDrawer(id) {
+  const d = await api("/api/project?id=" + encodeURIComponent(id));
+  if (d.error) return toast(d.error);
+  DRAWER_PROJECT = id;
+  const f = d.fields || {};
+  const drawer = $("#drawer");
+  drawer.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>${esc(f.name)}</h2>
+      <button class="ghost" id="drawerClose">✕</button></div>
+    <div class="sub">${esc(f.domain)}${f.kind ? " · " + esc(f.kind) : ""}
+      ${f.parent_id ? " · part of " + esc(f.parent_id) : ""} ·
+      <select id="statusSel">
+        ${STATUSES.map(s =>
+          `<option ${s === f.status ? "selected" : ""}>${s}</option>`).join("")}
+      </select></div>
+    <h3>Summary</h3>
+    <textarea id="summaryTa">${esc(f.summary || "")}</textarea>
+    <div class="row"><input type="text" id="nextTa" placeholder="next actions"
+      value="${esc(f.next_actions || "")}">
+      <button id="drawerSave">Save</button></div>
+    <h3>People</h3>
+    <ul>${(d.people || []).map(p => `<li>${esc(p.name || p.email)}
+      ${p.role_in_project ? "— " + esc(p.role_in_project) : ""}
+      ${p.person_notes ? `<div class="voice">${esc(p.person_notes)}</div>` : ""}
+      ${p.tone ? `<div class="voice">voice: ${esc(p.tone)}</div>` : ""}</li>`)
+      .join("") || "<li class='voice'>none linked</li>"}</ul>
+    <h3>Open items</h3>
+    <ul id="drawerItems">${(d.open_items || []).map(o => `<li data-lid="${esc(o.id)}">${esc(o.description)}
+      ${o.deadline ? `<b>due ${esc(o.deadline)}</b>` : ""}
+      <span class="fb"><button class="qdone" data-kind="done" title="I finished this">✓ done</button><button class="qdone" data-kind="not_mine" title="not my obligation, or never open">✗ not mine</button><button class="qdone" data-kind="snooze" title="park it until a date">zz snooze</button><button class="qdone" data-kind="still_open" title="yes, this is really open">still open</button></span></li>`).join("")
+      || "<li class='voice'>none</li>"}</ul>
+    <h3>Journal</h3>
+    <ul>${(d.events || []).map(e =>
+      `<li><span class="voice">${esc(String(e.ts || "").slice(0, 10))} [${esc(e.kind)}]</span> ${esc(e.text)}</li>`
+      ).join("") || "<li class='voice'>empty</li>"}</ul>
+    <div class="row"><input type="text" id="journalTa"
+      placeholder="journal a note / decision…">
+      <button id="journalAdd">Add</button></div>
+    <h3>Recent mail</h3>
+    <ul>${(d.messages || []).map(m => `<li><span class="voice">${esc(String(m.received || "").slice(0, 10))}
+      ${m.direction === "in" ? "←" : "→"}</span> ${esc(m.subject)}</li>`).join("")
+      || "<li class='voice'>none filed</li>"}</ul>`;
+  drawer.classList.add("open");
+  $("#drawerClose").addEventListener("click", closeDrawer);
+  $("#drawerSave").addEventListener("click", () => saveDrawer(id));
+  $("#journalAdd").addEventListener("click", () => addJournal(id));
+  $("#statusSel").addEventListener("change", ev =>
+    op({op:"set_status", project:id, value:ev.target.value}, true));
+  // one delegated handler for the item buttons in the template above
+  $("#drawerItems").addEventListener("click", async ev => {
+    const btn = ev.target.closest("button[data-kind]");
+    if (!btn) return;
+    const li = btn.closest("li[data-lid]");
+    if (!li) return;
+    if (await disposition(li.dataset.lid, btn.dataset.kind, btn)) openDrawer(id);
+  });
+}
+function closeDrawer() {
+  $("#drawer").classList.remove("open");
+  DRAWER_PROJECT = null;
+}
+async function saveDrawer(id) {
+  await op({op:"set_summary", project:id, value:$("#summaryTa").value}, true);
+  await op({op:"set_next_actions", project:id, value:$("#nextTa").value}, true);
+  toast("saved — shown on the card as → next");
+  openDrawer(id);
+}
+async function addJournal(id) {
+  const v = $("#journalTa").value.trim();
+  if (v && await op({op:"journal_add", project:id, text:v})) openDrawer(id);
+}
+function toggleTray() { $("#tray").classList.toggle("open"); }
+
+/* Static handlers bind once: render() runs every 60 s, and re-binding
+   the drop zone there stacked one op() per past render. */
+function initStatic() {
+  $("#trayBtn").addEventListener("click", toggleTray);
+  const lz = $("#looseZone");
+  lz.addEventListener("dragover", ev => { ev.preventDefault();
+    lz.classList.add("dragover"); });
+  lz.addEventListener("dragleave", () => lz.classList.remove("dragover"));
+  lz.addEventListener("drop", ev => {
+    ev.preventDefault(); lz.classList.remove("dragover");
+    const led = ev.dataTransfer.getData("text/ledger");
+    if (led) op({op:"mark_loose", ledger_id:led});
+  });
+}
+
+async function load() {
+  BOARD = await api("/api/board");
+  render();
+}
+initStatic();
+load().then(() => {
+  // ?open=<project id>: the Slack channel's opening post links here, so
+  // the board lands on the project's drawer.
+  const open = new URLSearchParams(location.search).get("open");
+  if (open) openDrawer(open);
+});
+setInterval(load, 60000);
+</script>
+</body>
+</html>

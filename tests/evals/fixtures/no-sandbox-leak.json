@@ -1,0 +1,246 @@
+{
+  "_meta": {
+    "id": "regression-007",
+    "name": "Output must never contain sandbox or internal error language",
+    "category": "regression",
+    "bug_ref": "Sandbox errors in Slack output (commit d1f7efd)",
+    "description": "Claude subprocess was leaking sandbox-related error messages into Slack output. The user-facing briefing must never mention 'sandbox', 'blocked', 'permission denied', 'allowedTools', or other internal technical error language. This fixture provides a normal morning briefing scenario to verify clean output."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T07:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 3,
+      "new_sent_messages": 1,
+      "total_delta_items": 3,
+      "total_inbox": 40,
+      "flagged_count": 1,
+      "events_next_14d": 10
+    },
+    "new_dropped_threads": [
+      {
+        "message_id": "AAMk-sandbox-dropped-001",
+        "subject": "Re: Quarterly report draft",
+        "from": {
+          "emailAddress": {
+            "name": "Kai Underhill",
+            "address": "lane.whitlock5@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": true,
+        "received": "2026-04-07T11:00:00Z",
+        "days_in_inbox": 2,
+        "bodyPreview": "Hi Kit, Following up on the quarterly report -- did you get a chance to review the numbers I sent last week? The department needs our section by Friday.",
+        "conversationId": "AAQk-sandbox-dropped-conv-001",
+        "hasAttachments": false,
+        "response_signals": 3
+      }
+    ],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-sandbox-email-001",
+        "subject": "Workshop proposal review",
+        "from": {
+          "emailAddress": {
+            "name": "Ash Sorensen",
+            "address": "casey.westbrook22@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T06:15:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, I've drafted a proposal for the Example Robotics Symposium 2030 workshop on field robotics. Could you review the abstract and let me know your thoughts by end of week? Happy to jump on a call if that's easier.",
+        "conversationId": "AAQk-sandbox-email-conv-001",
+        "hasAttachments": true,
+        "response_signals": 3
+      },
+      {
+        "message_id": "AAMk-sandbox-email-002",
+        "subject": "TA assignment confirmation - Fall 2030",
+        "from": {
+          "emailAddress": {
+            "name": "Admin Office",
+            "address": "taylor.kowalczyk51@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu", "ari.calloway84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T05:50:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Dear faculty, Please confirm your TA assignments for Fall 2030 by April 18. The attached spreadsheet lists current allocations. Reply with any change requests.",
+        "conversationId": "AAQk-sandbox-email-conv-002",
+        "hasAttachments": true,
+        "response_signals": 2
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [
+      {
+        "id": "response-kai-quarterly-001",
+        "type": "dropped_thread",
+        "status": "open",
+        "description": "Kai Underhill following up on quarterly report numbers. Department deadline: Friday.",
+        "from_email": "lane.whitlock5@example.edu",
+        "date_identified": "2026-04-07T11:00:00Z",
+        "days_stale": 2
+      },
+      {
+        "id": "response-ash-workshop-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Ash Sorensen requesting review of Example Robotics Symposium 2030 workshop proposal abstract.",
+        "from_email": "casey.westbrook22@example.edu",
+        "date_identified": "2026-04-09T06:15:00Z",
+        "days_stale": 0
+      },
+      {
+        "id": "response-admin-ta-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "CS admin requesting TA assignment confirmation for Fall 2030.",
+        "from_email": "taylor.kowalczyk51@example.edu",
+        "date_identified": "2026-04-09T05:50:00Z",
+        "days_stale": 0
+      }
+    ],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "ROBO 5001 Lecture",
+        "start": {"dateTime": "2026-04-09T09:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T10:15:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      },
+      {
+        "subject": "Office Hours",
+        "start": {"dateTime": "2026-04-09T14:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T15:30:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [
+      {
+        "subject": "Lab Meeting",
+        "start": {"dateTime": "2026-04-10T10:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-10T11:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {
+        "casey.westbrook22@example.edu": {
+          "greeting": "Hi Ash",
+          "closing": "Best,\nKit",
+          "avg_length": 60,
+          "tone": "collegial"
+        }
+      }
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": [
+    {
+      "id": "response-kai-quarterly-001",
+      "type": "dropped_thread",
+      "status": "open",
+      "description": "Kai Underhill following up on quarterly report. User replied earlier in thread but Kai is asking again. Department needs the section by Friday.",
+      "from_email": "lane.whitlock5@example.edu",
+      "from_name": "Kai Underhill",
+      "source_message_id": "AAMk-sandbox-dropped-001",
+      "date_identified": "2026-04-07",
+      "deadline": "2026-04-10",
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "Surfaced in briefing 2026-04-07.",
+      "notes": "Second follow-up from Kai. Department deadline is Friday April 10.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-07T11:00:00Z",
+      "updated_at": "2026-04-07T11:00:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-sandbox-dropped-conv-001",
+      "email_archived": 0
+    },
+    {
+      "id": "response-ash-workshop-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Ash Sorensen requesting review of Example Robotics Symposium 2030 workshop proposal abstract. End of week deadline.",
+      "from_email": "casey.westbrook22@example.edu",
+      "from_name": "Ash Sorensen",
+      "source_message_id": "AAMk-sandbox-email-001",
+      "date_identified": "2026-04-09",
+      "deadline": "2026-04-11",
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "Workshop proposal attached. Ash offered to discuss on a call.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T06:15:00Z",
+      "updated_at": "2026-04-09T06:15:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-sandbox-email-conv-001",
+      "email_archived": 0
+    },
+    {
+      "id": "response-admin-ta-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "CS admin office requesting confirmation of Fall 2030 TA assignments. Deadline April 18. Spreadsheet attached.",
+      "from_email": "taylor.kowalczyk51@example.edu",
+      "from_name": "Admin Office",
+      "source_message_id": "AAMk-sandbox-email-002",
+      "date_identified": "2026-04-09",
+      "deadline": "2026-04-18",
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "Mass faculty email. TA allocation spreadsheet attached.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T05:50:00Z",
+      "updated_at": "2026-04-09T05:50:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-sandbox-email-conv-002",
+      "email_archived": 0
+    }
+  ]
+}

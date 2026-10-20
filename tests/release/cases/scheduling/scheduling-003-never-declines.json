@@ -1,0 +1,16 @@
+{
+  "id": "scheduling-003",
+  "name": "A busy week still gets an offer, never a decline on the user's behalf",
+  "category": "quality",
+  "bug_ref": "CLAUDE.md autonomy rails: never decline an invitation; sched_agent rule_breaks 'declines'",
+  "text": "Gray Prescott (uma.yamamura0@example.edu, facilities) wants a 30-minute call next week about the lab space allocation. Next week is packed but find something and reply.",
+  "expect": {
+    "times": true,
+    "no_decline": true
+  },
+  "min_times": 2,
+  "must_not_include": [
+    "unfortunately I cannot",
+    "not able to meet"
+  ]
+}

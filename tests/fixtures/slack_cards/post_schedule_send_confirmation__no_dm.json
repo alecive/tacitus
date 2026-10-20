@@ -1,0 +1,239 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm scheduled send*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "fields": [
+        {
+          "text": "*Sends:* Sun Apr 21, 9:00 AM",
+          "type": "mrkdwn"
+        },
+        {
+          "text": "*To:* pat@example.org",
+          "type": "mrkdwn"
+        }
+      ],
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Subject:* Quick question",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "Hi Pat,\n\nCan you send the slides?\n\nKit",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_schedule_send_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "approve_schedule_send",
+          "style": "primary",
+          "text": {
+            "emoji": true,
+            "text": ":alarm_clock: Schedule",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"send_after\": \"2030-04-21T09:00\", \"description\": \"Scheduled send\", \"ledger_id\": \"\", \"ea_channel\": \"C_MAIN\"}"
+        },
+        {
+          "action_id": "cancel_schedule_send",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": "Cancel",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"send_after\": \"2030-04-21T09:00\", \"description\": \"Scheduled send\", \"ledger_id\": \"\", \"ea_channel\": \"C_MAIN\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "text": {
+              "text": ":lock: *Confirm scheduled send*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "fields": [
+              {
+                "text": "*Sends:* Sun Apr 21, 9:00 AM",
+                "type": "mrkdwn"
+              },
+              {
+                "text": "*To:* pat@example.org",
+                "type": "mrkdwn"
+              }
+            ],
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Subject:* Quick question",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "Hi Pat,\n\nCan you send the slides?\n\nKit",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "block_id": "confirm_schedule_send_1700000000.000100",
+            "elements": [
+              {
+                "action_id": "approve_schedule_send",
+                "style": "primary",
+                "text": {
+                  "emoji": true,
+                  "text": ":alarm_clock: Schedule",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"send_after\": \"2030-04-21T09:00\", \"description\": \"Scheduled send\", \"ledger_id\": \"\", \"ea_channel\": \"C_MAIN\"}"
+              },
+              {
+                "action_id": "cancel_schedule_send",
+                "style": "danger",
+                "text": {
+                  "emoji": true,
+                  "text": "Cancel",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"send_after\": \"2030-04-21T09:00\", \"description\": \"Scheduled send\", \"ledger_id\": \"\", \"ea_channel\": \"C_MAIN\"}"
+              }
+            ],
+            "type": "actions"
+          }
+        ],
+        "channel": "C_MAIN",
+        "text": ":lock: *Confirm scheduled send*\n*Sends:* Sun Apr 21, 9:00 AM\n*To:* pat@example.org\n*Subject:* Quick question\n\nHi Pat,\n\nCan you send the slides?\n\nKit",
+        "thread_ts": "1700000000.000100"
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "channel": "C_MAIN",
+      "description": "",
+      "draft_id": "AAMkDRAFT1",
+      "ledger_id": "",
+      "send_after": "2030-04-21T09:00",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "dm": null,
+      "draft": {
+        "body": "Hi Pat,\n\nCan you send the slides?\n\nKit",
+        "cc": "",
+        "conversation_id": "",
+        "subject": "Quick question",
+        "to": "pat@example.org"
+      }
+    }
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "text": {
+          "text": ":lock: *Confirm scheduled send*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "fields": [
+          {
+            "text": "*Sends:* Sun Apr 21, 9:00 AM",
+            "type": "mrkdwn"
+          },
+          {
+            "text": "*To:* pat@example.org",
+            "type": "mrkdwn"
+          }
+        ],
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Subject:* Quick question",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "Hi Pat,\n\nCan you send the slides?\n\nKit",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "block_id": "confirm_schedule_send_1700000000.000100",
+        "elements": [
+          {
+            "action_id": "approve_schedule_send",
+            "style": "primary",
+            "text": {
+              "emoji": true,
+              "text": ":alarm_clock: Schedule",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"send_after\": \"2030-04-21T09:00\", \"description\": \"Scheduled send\", \"ledger_id\": \"\", \"ea_channel\": \"C_MAIN\"}"
+          },
+          {
+            "action_id": "cancel_schedule_send",
+            "style": "danger",
+            "text": {
+              "emoji": true,
+              "text": "Cancel",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"draft_id\": \"AAMkDRAFT1\", \"send_after\": \"2030-04-21T09:00\", \"description\": \"Scheduled send\", \"ledger_id\": \"\", \"ea_channel\": \"C_MAIN\"}"
+          }
+        ],
+        "type": "actions"
+      }
+    ],
+    "channel": "C_MAIN",
+    "text": ":lock: *Confirm scheduled send*\n*Sends:* Sun Apr 21, 9:00 AM\n*To:* pat@example.org\n*Subject:* Quick question\n\nHi Pat,\n\nCan you send the slides?\n\nKit",
+    "thread_ts": "1700000000.000100"
+  },
+  "text": ":lock: *Confirm scheduled send*\n*Sends:* Sun Apr 21, 9:00 AM\n*To:* pat@example.org\n*Subject:* Quick question\n\nHi Pat,\n\nCan you send the slides?\n\nKit"
+}

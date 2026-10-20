@@ -1,0 +1,345 @@
+# Comma-separated --disallowedTools list shared by every Claude invocation
+# in the EA (Slack bot, run-agent.sh, run-plugin.sh, ea-bot-shell.sh,
+# ea-resident-inner.sh).
+#
+# Everything listed here has EXTERNAL effect on a human — it sends mail,
+# deletes mail, or creates/moves/cancels a meeting other people are on —
+# AND is button-gated in the normal Slack-approval flow. The button-gate
+# is enforced in code (confirm-tokens in graph_actions.py, the mediator
+# in preprocessor/mail_mediation.py); this list is defense-in-depth so an
+# LLM can never invoke them even if it has the right --allowedTools glob
+# in scope.
+#
+# This list is the ONLY enforcement layer for the resident lane:
+# scripts/ea-resident-inner.sh runs Claude with
+# --dangerously-skip-permissions, where the allowlist is moot and only
+# --disallowed-tools still applies. Anything omitted here is reachable.
+#
+# request-confirm is included because it mints tokens — without it on the
+# deny list, an LLM with the graph_actions.py glob could chain
+# request-confirm -> send-draft and bypass the Slack button entirely.
+#
+# Both `python3 *<script> <cmd>` and bare `*<script> <cmd>` variants are
+# listed because the LLM could invoke a script either with or without an
+# explicit python3 prefix.
+#
+# Lines starting with '#' are comments. The runtime concatenates all
+# non-comment lines, strips whitespace, and joins with commas.
+
+# --- graph_actions.py: the Outlook send/event verbs ------------------
+Bash(python3 *graph_actions.py send-draft *)
+Bash(python3 *graph_actions.py send-gmail-draft *)
+Bash(python3 *graph_actions.py create-event *)
+Bash(python3 *graph_actions.py update-event *)
+Bash(python3 *graph_actions.py delete-event *)
+Bash(python3 *graph_actions.py schedule-send *)
+Bash(python3 *graph_actions.py request-confirm *)
+Bash(*graph_actions.py send-draft *)
+Bash(*graph_actions.py send-gmail-draft *)
+Bash(*graph_actions.py create-event *)
+Bash(*graph_actions.py update-event *)
+Bash(*graph_actions.py delete-event *)
+Bash(*graph_actions.py schedule-send *)
+Bash(*graph_actions.py request-confirm *)
+
+# --- The other gated CLI verbs (mail_mediation.GATED) ----------------
+# mail_mediation._config_enabled() returns False on ANY exception reading
+# ea-config.json, i.e. it fails OPEN. If that file is deleted or corrupted
+# this one runs straight against the tokens in ~/.ea/auth with no gate at
+# all. This line is the backstop for that case.
+Bash(python3 *gmail_client.py send-draft *)
+Bash(*gmail_client.py send-draft *)
+# google_calendar_client.py create-event is deliberately NOT denied: the
+# EA-Managed auto-hold carve-out in
+# mail_mediation.is_ea_managed_autohold is the documented un-gated path
+# for the resident's own holds (skills/scheduling-rules.md). Both the
+# shim and the owner-side mediator enforce --calendar-id == EA-Managed, and the
+# verb structurally cannot invite anyone: create_event() takes no
+# attendee parameter (pinned by test_gcal_ea_managed_writes).
+
+# --- Deferred sends --------------------------------------------------
+# `scheduled_sends.py add` parks a draft that the */5 cron later SENDS
+# with no further approval, so it is a send lever wearing a delay. The
+# approved path is graph_actions.py schedule-send behind its confirm
+# token (which the bot mints only after a Slack button click).
+Bash(python3 *scheduled_sends.py add *)
+Bash(*scheduled_sends.py add *)
+
+# --- Publishing outside the host --------------------------------------
+# A site publish (public GitHub Pages, or a private site partners read) and
+# an Overleaf push put the EA's work in front of other people. Both run
+# only on the owner's click: the EA stages pending-publish.json, the bot
+# posts the card and runs the verb with a one-time token bound to that
+# commit (preprocessor/publish_gate.py). The verbs refuse without the
+# token; this keeps the lanes from calling them at all. doc_review.py (the
+# private review repo) stays un-gated. Raw git push is denied for the same
+# reason; the lanes have no raw git grant, and the resident runs in bypass.
+# These rules match spellings, so they are a backstop, not a boundary: a
+# shell has more ways to spell a push than any list holds. The list names
+# the plain form, the forms behind a global option (-c, -C, --git-dir,
+# --work-tree, or any other --option), send-pack and the transport helper
+# git-remote-https, subtree push, and an alias defined for the call or in
+# config.
+Bash(python3 *site_tools.py publish *)
+Bash(*site_tools.py publish *)
+Bash(python3 *overleaf_tools.py push *)
+Bash(*overleaf_tools.py push *)
+Bash(git push)
+Bash(git push *)
+Bash(*git push)
+Bash(*git push *)
+Bash(git -C * push*)
+Bash(*git -C * push*)
+Bash(git -c * push*)
+Bash(*git -c * push*)
+Bash(git --git-dir* push*)
+Bash(*git --git-dir* push*)
+Bash(git --work-tree* push*)
+Bash(*git --work-tree* push*)
+Bash(git --* push*)
+Bash(*git --* push*)
+Bash(git send-pack*)
+Bash(*git send-pack*)
+Bash(*git-send-pack*)
+Bash(*git * send-pack*)
+Bash(*git-remote-http*)
+Bash(*git remote-http*)
+Bash(*git subtree push*)
+Bash(*git * subtree push*)
+Bash(*alias.*push*)
+Bash(*alias.*send-pack*)
+Bash(git config *alias.*)
+Bash(*git config *alias.*)
+Bash(*git * config *alias.*)
+
+# --- Plugin verbs ----------------------------------------------------
+# A plugin's own gated verbs are denied by its manifest
+# (capabilities.denied_tools, docs/plugins.md). Every lane adds the
+# enabled plugins' denials from the owner's lock to this list.
+
+# --- Direct module imports that route around the CLI gates -----------
+# The verb-level denials above match a command line. Importing the module
+# and calling its function does not. CLAUDE.md already forbids this
+# ("NEVER import graph_client directly"); this makes it structural.
+Bash(python3 -c *graph_client*)
+Bash(python -c *graph_client*)
+Bash(python3 -c *graph_actions*)
+Bash(python -c *graph_actions*)
+Bash(python3 -c *gmail_client*)
+Bash(python -c *gmail_client*)
+Bash(python3 -c *google_calendar_client*)
+Bash(python -c *google_calendar_client*)
+
+# --- Tailscale: public exposure --------------------------------------
+# Deck hosting is tailnet-only. The route for a deck is made by
+# deck_serve.py through the owner-side mediator, which has no funnel verb; Funnel
+# puts a route on the public internet, `serve reset` drops every route on
+# the node, and the owner's funnel-toggle.sh is the owner's lever. tailscaled
+# refuses a write from a non-operator user anyway; this stops the attempt.
+Bash(tailscale funnel *)
+Bash(*tailscale funnel *)
+Bash(*funnel-toggle.sh*)
+Bash(*tailscale serve reset*)
+
+# --- Gmail MCP: send, delete and draft ------------------------------
+# The claude.ai Gmail connector is live for ea-bot. These verbs have the
+# same external effect as graph_actions.py send-draft but the mediator
+# never sees them (it only intercepts Bash shell-outs), so the deny list
+# is the only place they can be stopped. search_threads / get_thread /
+# list_drafts / list_labels stay allowed: they only read.
+mcp__claude_ai_Gmail__send_message
+mcp__claude_ai_Gmail__reply
+mcp__claude_ai_Gmail__forward
+mcp__claude_ai_Gmail__trash_message
+mcp__claude_ai_Gmail__trash_thread
+mcp__claude_ai_Gmail__mark_message_spam
+mcp__claude_ai_Gmail__mark_thread_spam
+# The connector's create_draft rewrote every link in a body as a
+# google.com/url?q= redirect, which the recipient then saw and which
+# expires after a day. Every Gmail draft goes through gmail_client.py
+# create-draft / update-draft, which writes plain text and quotes the
+# original under a reply. The resident runs in bypass mode, where this
+# list is the only thing that stops a tool.
+mcp__claude_ai_Gmail__create_draft
+mcp__claude_ai_Gmail__update_draft
+
+# --- Google Calendar MCP: every write verb ---------------------------
+# CLAUDE.md removes these from allowed tools entirely. Calendar
+# writes go through pending-event.json + the Slack button, or through
+# google_calendar_client.py update-event/delete-event, which refuse every
+# calendar except EA-Managed (nothing there has attendees, so nothing
+# there mails anyone).
+mcp__claude_ai_Google_Calendar__create_event
+mcp__claude_ai_Google_Calendar__update_event
+mcp__claude_ai_Google_Calendar__delete_event
+mcp__claude_ai_Google_Calendar__respond_to_event
+
+# --- Google Drive MCP: every verb that changes or shares a file --------
+# Plugins with drive context get the Drive tool wildcard; reads stay,
+# writes and sharing need a human.
+mcp__claude_ai_Google_Drive__create_file
+mcp__claude_ai_Google_Drive__update_file
+mcp__claude_ai_Google_Drive__copy_file
+mcp__claude_ai_Google_Drive__trash_file
+mcp__claude_ai_Google_Drive__share_file
+
+# --- Slack MCP: posting ----------------------------------------------
+# Slack MCP is read-only by design. The orchestrator posts the agent's
+# text output; slack_notifier webhooks cover the cron/plugin lanes.
+mcp__claude_ai_Slack__slack_send_message
+mcp__claude_ai_Slack__slack_send_message_draft
+mcp__claude_ai_Slack__slack_schedule_message
+
+# --- Gmail MCP: the rest of the mailbox writes ------------------------
+# Labels, spam marks and restores change what the owner sees and what his
+# filters do; delete_draft destroys a draft the owner may be reviewing.
+# The EA files mail through graph_actions.py and gmail_client.py.
+mcp__claude_ai_Gmail__delete_draft
+mcp__claude_ai_Gmail__untrash_message
+mcp__claude_ai_Gmail__untrash_thread
+mcp__claude_ai_Gmail__unmark_message_spam
+mcp__claude_ai_Gmail__unmark_thread_spam
+mcp__claude_ai_Gmail__label_message
+mcp__claude_ai_Gmail__label_thread
+mcp__claude_ai_Gmail__unlabel_message
+mcp__claude_ai_Gmail__unlabel_thread
+mcp__claude_ai_Gmail__update_message_labels
+mcp__claude_ai_Gmail__apply_sensitive_message_label
+mcp__claude_ai_Gmail__apply_sensitive_thread_label
+mcp__claude_ai_Gmail__create_label
+mcp__claude_ai_Gmail__update_label
+mcp__claude_ai_Gmail__delete_label
+
+# --- Every other claude.ai connector ---------------------------------
+# The lanes run on a shared Claude account, and each connector on it loads
+# into a run that does not pass --strict-mcp-config. Task trackers, docs,
+# design and CRM connectors post comments, assign people and share files,
+# which notifies people, and no lane uses one. A rule that names a server
+# denies all of its tools. The headless lanes run in dontAsk mode, where a
+# tool the allow list does not name is refused anyway; the bypass lanes
+# (the resident pane, the ea-bot shell) have only this list.
+mcp__claude_ai_Asana
+mcp__claude_ai_Atlassian
+mcp__claude_ai_Box
+mcp__claude_ai_Canva
+mcp__claude_ai_Claude_Docs
+mcp__claude_ai_Figma
+mcp__claude_ai_HubSpot
+mcp__claude_ai_Intercom
+mcp__claude_ai_Linear
+mcp__claude_ai_Notion
+mcp__claude_ai_monday_com
+# A connector added to the account later is caught by verb: a deny rule
+# takes a glob anywhere in the name. Each verb appears twice, once at the
+# start of the tool name and once after a prefix (`asana_create_task`).
+# None matches a read verb a lane grants (tests/test_lane_modes.py checks).
+# Connecting an account from a lane is denied too.
+mcp__claude_ai_*__authenticate
+mcp__claude_ai_*__complete_authentication
+mcp__claude_ai_*__send*
+mcp__claude_ai_*__*_send*
+mcp__claude_ai_*__reply*
+mcp__claude_ai_*__*_reply*
+mcp__claude_ai_*__forward*
+mcp__claude_ai_*__*_forward*
+mcp__claude_ai_*__create*
+mcp__claude_ai_*__*_create*
+mcp__claude_ai_*__update*
+mcp__claude_ai_*__*_update*
+mcp__claude_ai_*__delete*
+mcp__claude_ai_*__*_delete*
+mcp__claude_ai_*__trash*
+mcp__claude_ai_*__*_trash*
+mcp__claude_ai_*__share*
+mcp__claude_ai_*__*_share*
+mcp__claude_ai_*__post*
+mcp__claude_ai_*__*_post*
+mcp__claude_ai_*__schedule*
+mcp__claude_ai_*__*_schedule*
+mcp__claude_ai_*__respond*
+mcp__claude_ai_*__*_respond*
+mcp__claude_ai_*__invite*
+mcp__claude_ai_*__*_invite*
+mcp__claude_ai_*__assign*
+mcp__claude_ai_*__*_assign*
+mcp__claude_ai_*__comment*
+mcp__claude_ai_*__*_comment*
+mcp__claude_ai_*__add_*
+mcp__claude_ai_*__*_add_*
+mcp__claude_ai_*__remove_*
+mcp__claude_ai_*__*_remove_*
+mcp__claude_ai_*__set_*
+mcp__claude_ai_*__*_set_*
+mcp__claude_ai_*__move*
+mcp__claude_ai_*__*_move*
+mcp__claude_ai_*__copy*
+mcp__claude_ai_*__*_copy*
+mcp__claude_ai_*__upload*
+mcp__claude_ai_*__*_upload*
+mcp__claude_ai_*__publish*
+mcp__claude_ai_*__*_publish*
+mcp__claude_ai_*__archive*
+mcp__claude_ai_*__*_archive*
+mcp__claude_ai_*__edit*
+mcp__claude_ai_*__*_edit*
+mcp__claude_ai_*__batch*
+mcp__claude_ai_*__*_batch*
+
+# --- File tools: the stores that steer every later session -------------
+# `~` is the running user's home (ea-bot's in every lane). Claude Code
+# settings carry hooks and permissions, CLAUDE.md, skills, agents,
+# commands and Claude plugins load into every session, and a user unit or
+# shell rc file runs code at login. No workflow writes them with the file
+# tools, and a deny holds in the resident pane too, where the allow list is
+# moot. The chat and cron lanes also allow Write and Edit only on the
+# paths in preprocessor/resident_write_paths.py; the persistence digest
+# (scripts/persistence-digest.py) reports a change made any other way.
+Edit(~/.claude/settings.json)
+Edit(~/.claude/settings.local.json)
+Edit(~/.claude/CLAUDE.md)
+Edit(~/.claude/skills/**)
+Edit(~/.claude/agents/**)
+Edit(~/.claude/commands/**)
+Edit(~/.claude/plugins/**)
+Edit(~/CLAUDE.md)
+Edit(~/.ea/CLAUDE.md)
+Edit(~/.config/systemd/**)
+Edit(~/.bashrc)
+Edit(~/.profile)
+Edit(~/.bash_profile)
+# The rest of what a later session loads (resident_write_paths.py
+# STEERING_RULES): the user config (MCP servers, per-project settings),
+# auto-memory, rules and output styles, a project's settings or MCP file
+# in any directory, the memory files in the docs and research folders
+# (inside the write paths) and the lane directories, whose sessions start
+# there and load a CLAUDE.md found there or above.
+Edit(~/.claude.json)
+Edit(~/.claude/projects/*/memory/**)
+Edit(~/.claude/rules/**)
+Edit(~/.claude/output-styles/**)
+Edit(//**/.claude/settings*.json)
+Edit(//**/.mcp.json)
+Edit(~/CLAUDE.local.md)
+Edit(~/.ea/CLAUDE.local.md)
+Edit(~/.ea/docs/CLAUDE.md)
+Edit(~/.ea/docs/CLAUDE.local.md)
+Edit(~/.ea/docs/**/CLAUDE.md)
+Edit(~/.ea/docs/**/CLAUDE.local.md)
+Edit(~/.ea/research/CLAUDE.md)
+Edit(~/.ea/research/CLAUDE.local.md)
+Edit(~/.ea/research/**/CLAUDE.md)
+Edit(~/.ea/research/**/CLAUDE.local.md)
+Edit(~/.local/CLAUDE.md)
+Edit(~/.local/state/CLAUDE.md)
+Edit(~/.local/state/ea-lanes/**)
+
+# --- File tools: git's own files in a clone ----------------------------
+# The write paths include the site, doc-review and Overleaf clones. A
+# clone's .git (config, hooks, info/attributes) and its .gitattributes files
+# can name programs git runs or hide a change from the diff the owner
+# reviews. The git tools refuse or ignore them (preprocessor/safe_git.py);
+# these keep the file tools from writing them at all
+# (preprocessor/resident_write_paths.py DENIED_RULES).
+Edit(//**/.git/**)
+Edit(//**/.git)
+Edit(//**/.gitattributes)

@@ -1,0 +1,143 @@
+{
+  "_meta": {
+    "id": "regression-001",
+    "name": "Completed item should NOT appear as overdue",
+    "category": "regression",
+    "bug_ref": "Tam Marchetti overdue bug (2026-04-09)",
+    "description": "A ledger entry with status=completed and a past deadline was surfaced as 'OVERDUE (6 days)' in the morning briefing. The system should never report completed/closed items as overdue."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 2,
+      "new_sent_messages": 0,
+      "total_delta_items": 1,
+      "total_inbox": 45,
+      "flagged_count": 0,
+      "events_next_14d": 12
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-tam-reply-001",
+        "subject": "Re: Example Certificate Overview Draft",
+        "from": {
+          "emailAddress": {
+            "name": "Tam Marchetti",
+            "address": "edie.stavros43@example.com"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": false,
+        "received": "2026-04-09T08:30:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, Thanks for sending the overview. The certificate outline looks solid. I would add a lab safety module at the start.",
+        "conversationId": "AAQk-tam-conv-001",
+        "hasAttachments": false,
+        "response_signals": 4
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [
+      {
+        "id": "response-tam-reply-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Needs response: Re: Example Certificate Overview Draft",
+        "from_email": "edie.stavros43@example.com",
+        "date_identified": "2026-04-09T14:00:00Z",
+        "days_stale": 0
+      }
+    ],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "Faculty Meeting",
+        "start": {"dateTime": "2026-04-09T15:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T16:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {}
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": [
+    {
+      "id": "tam-marchetti-certificate-curriculum-review-20260327",
+      "type": "outreach",
+      "status": "completed",
+      "description": "Send the certificate curriculum materials to Tam Marchetti (Example Labs) for review",
+      "from_email": "",
+      "from_name": "",
+      "source_message_id": "",
+      "date_identified": "2026-03-27",
+      "deadline": "2026-04-03",
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "Email sent to edie.stavros43@example.com with curriculum attached.",
+      "notes": "Completed outreach. Tam replied with feedback.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-02T14:59:51Z",
+      "updated_at": "2026-04-07T21:54:48Z",
+      "closed_at": "2026-04-07T21:54:48Z",
+      "conversation_id": "",
+      "email_archived": 0
+    },
+    {
+      "id": "response-tam-reply-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Needs response: Re: Example Certificate Overview Draft",
+      "from_email": "edie.stavros43@example.com",
+      "from_name": "Tam Marchetti",
+      "source_message_id": "AAMk-tam-reply-001",
+      "date_identified": "2026-04-09T14:00:00Z",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "Tam replied with curriculum feedback",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-09T14:00:00Z",
+      "updated_at": "2026-04-09T14:00:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-tam-conv-001",
+      "email_archived": 0
+    }
+  ]
+}

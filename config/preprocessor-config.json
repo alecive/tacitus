@@ -1,0 +1,14 @@
+{
+  "_doc": "Preprocessor behavior settings. These control how aggressively the EA detects dropped threads, what inbox philosophy to follow, and writing style analysis windows.",
+
+  "stale_thread_days": 3,
+  "stale_thread_days_weekly_audit": 2,
+  "writing_style_window_days": 14,
+
+  "inbox_philosophy": {
+    "mode": "inbox_zero",
+    "mode_doc": "inbox_zero: inbox is the task queue, everything gets archived after handling. relaxed: inbox is for reference, archiving is optional, obligations are tracked independently.",
+    "read_entire_inbox": true,
+    "read_entire_inbox_doc": "In inbox_zero mode, the entire inbox is always read (no time filter) because every message is a potential action item. Set to false to only read recent messages (14 days)."
+  }
+}

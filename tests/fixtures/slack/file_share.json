@@ -1,0 +1,25 @@
+{
+  "channel": "C_MAIN",
+  "channel_type": "group",
+  "files": [
+    {
+      "id": "F0001",
+      "mimetype": "application/pdf",
+      "name": "receipt 1.pdf",
+      "title": "Hotel receipt",
+      "url_private": "https://files.slack.com/files-pri/T_TEAM-F0001/receipt_1.pdf"
+    },
+    {
+      "id": "F0002",
+      "mimetype": "image/jpeg",
+      "name": "photo.jpg",
+      "title": "",
+      "url_private": "https://files.slack.com/files-pri/T_TEAM-F0002/photo.jpg"
+    }
+  ],
+  "subtype": "file_share",
+  "text": "receipt for the trip",
+  "ts": "1700000300.000400",
+  "type": "message",
+  "user": "U_OWNER"
+}

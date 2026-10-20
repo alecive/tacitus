@@ -1,0 +1,17 @@
+{
+  "id": "scheduling-002",
+  "name": "A poll reply answers every offered option and, if drafted, goes to the sender only",
+  "category": "regression",
+  "bug_ref": "tests/evals hard-success-006 (poll replies use --sender-only)",
+  "text": "Avery Fairbanks (eli.dalby4@example.edu) sent a poll to the seminar committee: Tuesday 2pm, Wednesday 10am or Thursday 3pm next week, 45 minutes. Check my calendar against those three and reply with the ones that work.",
+  "expect": {
+    "times": false,
+    "no_decline": true,
+    "sender_only": true
+  },
+  "must_mention": [
+    "Tue",
+    "Wed",
+    "Thu"
+  ]
+}

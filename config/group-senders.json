@@ -1,0 +1,7 @@
+{
+  "_doc": "Group email lists that produce noisy reply-all threads. The EA detects threads with 3+ messages from these addresses and offers to summarize them. Populate during user-init or add groups manually.",
+  "_example": {
+    "book_club": ["alice@gmail.com", "bob@gmail.com"],
+    "dept_committee": ["chair@example.edu", "faculty@example.edu"]
+  }
+}

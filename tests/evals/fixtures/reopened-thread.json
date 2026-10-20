@@ -1,0 +1,156 @@
+{
+  "_meta": {
+    "id": "regression-008",
+    "name": "Re-opened thread with new question must be surfaced as needing response",
+    "category": "regression",
+    "bug_ref": "Re-opened thread detection failure (commit cd672ef)",
+    "description": "A conversation thread that was previously handled (ledger entry closed) has a new reply from the same sender with a new question. The system must recognize this as a re-opened thread requiring a fresh response, not silently ignore it because the old ledger entry is closed. The new message appears in new_needs_response and a new open ledger entry exists alongside the closed old one."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 2,
+      "new_sent_messages": 0,
+      "total_delta_items": 1,
+      "total_inbox": 44,
+      "flagged_count": 0,
+      "events_next_14d": 10
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [
+      {
+        "message_id": "AAMk-ari-reopened-002",
+        "subject": "Re: Sensor fusion paper revision timeline",
+        "from": {
+          "emailAddress": {
+            "name": "Ari Isenberg",
+            "address": "hollis.stavros15@example.edu"
+          }
+        },
+        "to": ["wren.fairbanks84@example.edu"],
+        "cc": [],
+        "user_is_direct_recipient": true,
+        "user_is_cc_only": false,
+        "user_already_replied_in_thread": true,
+        "received": "2026-04-09T09:15:00Z",
+        "days_in_inbox": 0,
+        "bodyPreview": "Hi Kit, thanks for confirming the timeline last week. One more thing: the reviewers also asked us to add a comparison with the ORB-SLAM3 baseline. Do you have access to the dataset we'd need, or should I reach out to Hale?",
+        "conversationId": "AAQk-ari-sensor-001",
+        "hasAttachments": false,
+        "response_signals": 4,
+        "thread_context": {
+          "is_reopened_thread": true,
+          "previous_ledger_id": "response-ari-sensor-001",
+          "previous_status": "completed",
+          "new_question_detected": true
+        }
+      }
+    ],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [
+      {
+        "id": "response-ari-sensor-002",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Re-opened: Ari Isenberg asking about ORB-SLAM3 baseline dataset for sensor fusion paper revision",
+        "from_email": "hollis.stavros15@example.edu",
+        "date_identified": "2026-04-09T14:00:00Z",
+        "days_stale": 0
+      }
+    ],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [
+      {
+        "subject": "1:1 with Eli",
+        "start": {"dateTime": "2026-04-09T09:30:00.0000000", "timeZone": "Mountain Standard Time"},
+        "end": {"dateTime": "2026-04-09T10:00:00.0000000", "timeZone": "Mountain Standard Time"},
+        "isAllDay": false
+      }
+    ],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {
+        "hollis.stavros15@example.edu": {
+          "greeting": "Hi Ari",
+          "closing": "Best,\nKit",
+          "avg_length_words": 65,
+          "tone": "collegial"
+        }
+      }
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 0,
+      "user_message_count": 0,
+      "messages": [],
+      "user_instructions": [],
+      "pending_instructions": [],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": [
+    {
+      "id": "response-ari-sensor-001",
+      "type": "response_needed",
+      "status": "completed",
+      "description": "Reply to Ari Isenberg re: sensor fusion paper revision timeline",
+      "from_email": "hollis.stavros15@example.edu",
+      "from_name": "Ari Isenberg",
+      "source_message_id": "AAMk-ari-sensor-001",
+      "date_identified": "2026-04-02T10:00:00Z",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "Reply sent confirming April 25 revision deadline and section assignments.",
+      "notes": "Ari asked about revision timeline. Kit confirmed April 25 target, Ari handles experiments section, Kit handles related work.",
+      "priority": null,
+      "metadata": "{}",
+      "created_at": "2026-04-02T14:00:00Z",
+      "updated_at": "2026-04-03T09:15:00Z",
+      "closed_at": "2026-04-03T09:15:00Z",
+      "conversation_id": "AAQk-ari-sensor-001",
+      "email_archived": 1
+    },
+    {
+      "id": "response-ari-sensor-002",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Re-opened: Ari Isenberg asking about ORB-SLAM3 baseline dataset for sensor fusion paper revision",
+      "from_email": "hollis.stavros15@example.edu",
+      "from_name": "Ari Isenberg",
+      "source_message_id": "AAMk-ari-reopened-002",
+      "date_identified": "2026-04-09T14:00:00Z",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "",
+      "notes": "Re-opened thread. Ari's new question: reviewers want ORB-SLAM3 baseline comparison, needs dataset access. Previous thread (response-ari-sensor-001) was completed on 2026-04-03.",
+      "priority": null,
+      "metadata": "{\"reopened_from\": \"response-ari-sensor-001\"}",
+      "created_at": "2026-04-09T14:00:00Z",
+      "updated_at": "2026-04-09T14:00:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-ari-sensor-001",
+      "email_archived": 0
+    }
+  ]
+}

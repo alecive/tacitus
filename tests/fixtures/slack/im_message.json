@@ -1,0 +1,9 @@
+{
+  "channel": "D_OWNER",
+  "channel_type": "im",
+  "event_ts": "1700000200.000300",
+  "text": "what is on my calendar today?",
+  "ts": "1700000200.000300",
+  "type": "message",
+  "user": "U_OWNER"
+}

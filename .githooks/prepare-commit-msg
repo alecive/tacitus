@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# prepare-commit-msg hook: auto-tag commits with eval fixture coverage
+#
+# When a commit touches prompt-affecting files (skills, CLAUDE.md,
+# preprocessor, bot), this appends Eval-Coverage trailers listing
+# the fixture IDs that test the affected behavior. This creates a
+# bidirectional link: fixture bug_ref -> commit, commit trailer -> fixture.
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+# Skip for merges, amends, and template-based commits
+[[ "$COMMIT_SOURCE" == "merge" || "$COMMIT_SOURCE" == "squash" ]] && exit 0
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+MAP_FILE="$REPO_ROOT/.githooks/eval-coverage-map.json"
+
+[[ ! -f "$MAP_FILE" ]] && exit 0
+
+# Get staged files
+STAGED=$(git diff --cached --name-only)
+[[ -z "$STAGED" ]] && exit 0
+
+# Collect all fixture IDs that cover the changed files
+FIXTURE_IDS=()
+while IFS= read -r file_pattern; do
+    # Check if any staged file matches this pattern
+    if echo "$STAGED" | grep -qF "$file_pattern"; then
+        # Extract fixture IDs for this pattern
+        while IFS= read -r fid; do
+            FIXTURE_IDS+=("$fid")
+        done < <(python3 -c "
+import json, sys
+m = json.load(open('$MAP_FILE'))
+for fid in m.get('$file_pattern', []):
+    print(fid)
+" 2>/dev/null)
+    fi
+done < <(python3 -c "
+import json
+m = json.load(open('$MAP_FILE'))
+for k in m:
+    if not k.startswith('_'):
+        print(k)
+" 2>/dev/null)
+
+# Deduplicate and sort
+if [[ ${#FIXTURE_IDS[@]} -gt 0 ]]; then
+    UNIQUE_IDS=$(printf '%s\n' "${FIXTURE_IDS[@]}" | sort -u | tr '\n' ',' | sed 's/,$//')
+    COUNT=$(printf '%s\n' "${FIXTURE_IDS[@]}" | sort -u | wc -l)
+
+    # Only append if not already present
+    if ! grep -q "^Eval-Coverage:" "$COMMIT_MSG_FILE"; then
+        # Add blank line separator if needed
+        if [[ -n "$(tail -c 1 "$COMMIT_MSG_FILE")" ]]; then
+            echo "" >> "$COMMIT_MSG_FILE"
+        fi
+        echo "" >> "$COMMIT_MSG_FILE"
+        echo "Eval-Coverage: $UNIQUE_IDS" >> "$COMMIT_MSG_FILE"
+    fi
+fi
+
+exit 0

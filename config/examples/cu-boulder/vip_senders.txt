@@ -1,0 +1,23 @@
+# VIP Senders List
+# Emails from these addresses trigger priority alerts.
+# One email address per line. Case-insensitive.
+# Lines starting with # are comments.
+
+# University leadership
+# <dean>@colorado.edu
+# <chair>@cs.colorado.edu
+# <provost>@colorado.edu
+
+# Program officers
+# program.officer@agency.example.org
+# grants@agency.example.org
+
+# Sponsored research
+# <sponsored-research>@colorado.edu
+# <grants-office>@colorado.edu
+
+# Key collaborators
+# collaborator@university.example.edu
+
+# Students (your direct advisees)
+# <advisee>@colorado.edu

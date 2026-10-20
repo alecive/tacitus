@@ -1,0 +1,19 @@
+{
+  "_doc": {
+    "_": "GitHub identity for the EA's git tools (doc_review.py, site_tools.py, overleaf_tools.py). Lives at ~/.ea/config/github.json, owned by the owner, group-readable by ea-bot. Keys starting with _ are ignored.",
+    "bot_login": "GitHub login of the bot account the EA commits as (git user.name); the owner grants this account write access to each repository.",
+    "bot_email": "The commit author email for that account, usually its <id>+<login>@users.noreply.github.com address.",
+    "bot_token_dir": "Directory name under ea-bot's ~/.config that holds the bot account's classic token for the sites (~/.config/<bot_token_dir>/token).",
+    "doc_review.repo": "owner/name of the private repository where working documents are reviewed as pull requests; its fine-grained token is ~/.config/doc-review/token.",
+    "doc_review.owner_login": "The owner's own GitHub login; only this login's review threads and reviews count.",
+    "sites": "The sites the EA publishes, keyed by slug: title, repo (owner/name), url (the live site), and optional private (true: behind sign-in, publish cannot read it), deploy_note (one line for the lane) and build (the GitHub Actions workflow path that builds a Jekyll site)."
+  },
+  "bot_login": "",
+  "bot_email": "",
+  "bot_token_dir": "",
+  "doc_review": {
+    "repo": "",
+    "owner_login": ""
+  },
+  "sites": {}
+}

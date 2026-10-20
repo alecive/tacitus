@@ -1,0 +1,16 @@
+{
+  "blocks": [],
+  "calls": [],
+  "inputs": {
+    "args": {
+      "dm_channel": "D_OWNER",
+      "dm_ts": "1700000001.000200",
+      "ea_channel": "D_OWNER",
+      "thread_ts": "1700000000.000100",
+      "what": "The Send button for this draft"
+    },
+    "stubs": {}
+  },
+  "kwargs": {},
+  "text": null
+}

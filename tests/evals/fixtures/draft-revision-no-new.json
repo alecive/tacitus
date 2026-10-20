@@ -1,0 +1,109 @@
+{
+  "_meta": {
+    "id": "hard-success-007",
+    "name": "Draft revision must use update-draft, not create a new draft",
+    "category": "hard-success",
+    "bug_ref": "Duplicate drafts on revision (commit 83bf885)",
+    "description": "When the user asks to revise an existing draft (e.g., change the closing), the system must use update-draft with the existing draft_id, not create-reply which would produce a duplicate draft. The draft_id is stored in the ledger entry notes. This tests that revision flows reuse drafts correctly."
+  },
+  "briefing": {
+    "generated_at": "2026-04-09T14:00:00Z",
+    "mode": "full-daily-delta",
+    "is_first_run": false,
+    "delta_summary": {
+      "new_inbox_messages": 0,
+      "new_sent_messages": 0,
+      "total_delta_items": 0,
+      "total_inbox": 42,
+      "flagged_count": 0,
+      "events_next_14d": 8
+    },
+    "new_dropped_threads": [],
+    "new_needs_response": [],
+    "new_scheduling_requests": [],
+    "travel_reimbursement": [],
+    "availability_merged": [],
+    "open_obligations": [
+      {
+        "id": "response-cy-gpu-001",
+        "type": "response_needed",
+        "status": "open",
+        "description": "Draft reply to Cy Rasmussen re: GPU cluster availability",
+        "from_email": "lior.corvino62@example.edu",
+        "date_identified": "2026-04-08T10:00:00Z",
+        "days_stale": 1
+      }
+    ],
+    "working_hours": {
+      "daysOfWeek": ["monday", "tuesday", "wednesday", "thursday"],
+      "startTime": "09:00:00.0000000",
+      "endTime": "17:00:00.0000000",
+      "timeZone": "Mountain Standard Time"
+    },
+    "todays_events": [],
+    "tomorrows_events": [],
+    "noisy_group_threads": [],
+    "deadline_items": [],
+    "pending_rsvps": [],
+    "writing_style": {
+      "default_greeting": "Hi",
+      "default_closing": "Best,\nKit",
+      "avg_length_words": 75,
+      "uses_contractions": true,
+      "per_contact": {
+        "lior.corvino62@example.edu": {
+          "greeting": "Hey Cy",
+          "closing": "Best,\nKit",
+          "avg_length_words": 60,
+          "tone": "casual-collegial"
+        }
+      }
+    },
+    "resurrected_follow_ups": [],
+    "stale_obligations": [],
+    "woken_snoozed": [],
+    "scheduled_sends_due_today": [],
+    "recent_slack_messages": {
+      "message_count": 1,
+      "user_message_count": 1,
+      "messages": [
+        {
+          "user": "U_OWNER",
+          "text": "Change the closing in the draft to Cy to 'Thanks, Kit' instead of 'Best, Kit'",
+          "ts": "1744200000.000200"
+        }
+      ],
+      "user_instructions": [
+        "Change the closing in the draft to Cy to 'Thanks, Kit' instead of 'Best, Kit'"
+      ],
+      "pending_instructions": [
+        "Change the closing in the draft to Cy to 'Thanks, Kit' instead of 'Best, Kit'"
+      ],
+      "handled_instructions": []
+    }
+  },
+  "ledger_entries": [
+    {
+      "id": "response-cy-gpu-001",
+      "type": "response_needed",
+      "status": "open",
+      "description": "Draft reply to Cy Rasmussen re: GPU cluster availability",
+      "from_email": "lior.corvino62@example.edu",
+      "from_name": "Cy Rasmussen",
+      "source_message_id": "AAMk-cy-gpu-001",
+      "date_identified": "2026-04-08T10:00:00Z",
+      "deadline": null,
+      "follow_up_after": null,
+      "snooze_until": null,
+      "last_action": "Draft created. draft_id=AAMk-draft-cy-gpu-001",
+      "notes": "Cy asked about A100 availability for student thesis work. Draft reply created with draft_id=AAMk-draft-cy-gpu-001 confirming the GPU is available this semester with reservation process details. Closing used: 'Best, Kit'.",
+      "priority": null,
+      "metadata": "{\"draft_id\": \"AAMk-draft-cy-gpu-001\"}",
+      "created_at": "2026-04-08T14:00:00Z",
+      "updated_at": "2026-04-08T14:30:00Z",
+      "closed_at": null,
+      "conversation_id": "AAQk-gpu-conv-001",
+      "email_archived": 0
+    }
+  ]
+}

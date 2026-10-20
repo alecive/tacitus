@@ -1,0 +1,310 @@
+{
+  "blocks": [
+    {
+      "text": {
+        "text": ":lock: *Confirm event deletion*",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Attendees (2):* Alex Rivera (alex.rivera@example.edu), sam.lee@example.edu (optional)",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": ":warning: You organize this event. Deleting it sends a cancellation to all 2 attendees.",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Event:* Project sync",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Organizer:* you",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "text": {
+        "text": "*Series:* the whole series: every occurrence",
+        "type": "mrkdwn"
+      },
+      "type": "section"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "block_id": "confirm_event_delete_1700000000.000100",
+      "elements": [
+        {
+          "action_id": "approve_event_delete",
+          "style": "danger",
+          "text": {
+            "emoji": true,
+            "text": ":wastebasket: Delete",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        },
+        {
+          "action_id": "cancel_event_delete",
+          "text": {
+            "emoji": true,
+            "text": "Keep",
+            "type": "plain_text"
+          },
+          "type": "button",
+          "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+        }
+      ],
+      "type": "actions"
+    }
+  ],
+  "calls": [
+    {
+      "kwargs": {
+        "blocks": [
+          {
+            "text": {
+              "text": ":lock: *Confirm event deletion*",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Attendees (2):* Alex Rivera (alex.rivera@example.edu), sam.lee@example.edu (optional)",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": ":warning: You organize this event. Deleting it sends a cancellation to all 2 attendees.",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Event:* Project sync",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Organizer:* you",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "text": {
+              "text": "*Series:* the whole series: every occurrence",
+              "type": "mrkdwn"
+            },
+            "type": "section"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "block_id": "confirm_event_delete_1700000000.000100",
+            "elements": [
+              {
+                "action_id": "approve_event_delete",
+                "style": "danger",
+                "text": {
+                  "emoji": true,
+                  "text": ":wastebasket: Delete",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              },
+              {
+                "action_id": "cancel_event_delete",
+                "text": {
+                  "emoji": true,
+                  "text": "Keep",
+                  "type": "plain_text"
+                },
+                "type": "button",
+                "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+              }
+            ],
+            "type": "actions"
+          }
+        ],
+        "channel": "D_OWNER",
+        "text": ":lock: *Confirm event deletion*\n*Event:* Project sync\n*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT\n*Organizer:* you\n*Series:* the whole series: every occurrence"
+      },
+      "method": "chat_postMessage"
+    },
+    {
+      "kwargs": {
+        "channel": "D_OWNER",
+        "message_ts": "1700000001.000200"
+      },
+      "method": "chat_getPermalink"
+    },
+    {
+      "kwargs": {
+        "channel": "C_MAIN",
+        "text": ":lock: The Delete button for this event is in your DM: <https://example.slack.com/archives/D_OWNER/p1700000001000200|open it>",
+        "thread_ts": "1700000000.000100",
+        "unfurl_links": false,
+        "unfurl_media": false
+      },
+      "method": "chat_postMessage"
+    }
+  ],
+  "inputs": {
+    "args": {
+      "channel": "C_MAIN",
+      "end": "2026-10-06T14:30",
+      "event_id": "AAMkEVENT1",
+      "start": "2026-10-06T14:00",
+      "subject": "Project sync",
+      "thread_ts": "1700000000.000100"
+    },
+    "stubs": {
+      "event": {
+        "attendees": [
+          {
+            "address": "alex.rivera@example.edu",
+            "name": "Alex Rivera",
+            "type": "required"
+          },
+          {
+            "address": "sam.lee@example.edu",
+            "name": "",
+            "type": "optional"
+          }
+        ],
+        "cancelled": false,
+        "fingerprint": "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "is_organizer": true,
+        "location": "Room 717",
+        "organizer": "you",
+        "series": "series",
+        "subject": "Project sync",
+        "when": "Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT"
+      }
+    }
+  },
+  "kwargs": {
+    "blocks": [
+      {
+        "text": {
+          "text": ":lock: *Confirm event deletion*",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Attendees (2):* Alex Rivera (alex.rivera@example.edu), sam.lee@example.edu (optional)",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": ":warning: You organize this event. Deleting it sends a cancellation to all 2 attendees.",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Event:* Project sync",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Organizer:* you",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "text": {
+          "text": "*Series:* the whole series: every occurrence",
+          "type": "mrkdwn"
+        },
+        "type": "section"
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "block_id": "confirm_event_delete_1700000000.000100",
+        "elements": [
+          {
+            "action_id": "approve_event_delete",
+            "style": "danger",
+            "text": {
+              "emoji": true,
+              "text": ":wastebasket: Delete",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          },
+          {
+            "action_id": "cancel_event_delete",
+            "text": {
+              "emoji": true,
+              "text": "Keep",
+              "type": "plain_text"
+            },
+            "type": "button",
+            "value": "{\"thread_ts\": \"1700000000.000100\", \"ea_channel\": \"C_MAIN\", \"payload_ref\": \"0123456789abcdef0123456789abcdef\"}"
+          }
+        ],
+        "type": "actions"
+      }
+    ],
+    "channel": "D_OWNER",
+    "text": ":lock: *Confirm event deletion*\n*Event:* Project sync\n*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT\n*Organizer:* you\n*Series:* the whole series: every occurrence"
+  },
+  "text": ":lock: *Confirm event deletion*\n*Event:* Project sync\n*When:* Tue Oct 6 2026, 2:00 PM MDT to Tue Oct 6 2026, 2:30 PM MDT\n*Organizer:* you\n*Series:* the whole series: every occurrence"
+}

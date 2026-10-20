@@ -1,0 +1,29 @@
+## Web page reading
+
+When emails contain URLs to external programs, events, opportunities, or
+documents, fetch and read the page content:
+
+```bash
+python3 /home/ea-bot/ea-system/preprocessor/fetch_url.py --url "<URL>" [--max-chars 4000] [--js]
+```
+
+Returns JSON with page title, meta description, and extracted main text.
+Auto-falls back to JS rendering (Playwright) if the page is empty.
+
+A scheduled (cron) run has no WebFetch or WebSearch: `fetch_url.py` is its
+only web reader. Every request either way is logged and reviewed daily.
+
+**When to fetch:**
+- Opportunity/program emails with a link to eligibility, deadlines, or requirements
+- Scheduling emails linking to event details (dates, location, agenda)
+- Forwarded announcements where the body says "check this out" with a URL
+- LoR requests linking to a submission portal
+- The user asks "what is this?" or "should I do this?" about a URL
+
+**When NOT to fetch:**
+- Generic footer links, unsubscribe links, social media links
+- URLs already fetched in this run
+- When the email body already contains sufficient detail
+
+**Token budget:** Default max is 4000 chars (~1000 tokens). For quick
+checks (just need a date or deadline), use `--max-chars 1500`.

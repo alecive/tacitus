@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520" width="1000" height="520" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>What the gate does with one detector item</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#55554f"/></marker>
+  </defs>
+  <rect x="0.5" y="0.5" width="999" height="519" rx="12" fill="#ffffff" stroke="#deded8"/>
+  <text x="24" y="34" font-size="18" font-weight="600" fill="#1d1d1b">What the gate does with one item</text>
+  <text x="24" y="56" font-size="13" fill="#6b6b66">An item is a detector's output about one message (needs response, scheduling, deadline, RSVP, priority, dropped thread).</text>
+  <text x="24" y="74" font-size="13" fill="#6b6b66">mail_gate.Gate.classify gives it one class; Gate.items keeps or drops it. The class names are the ones in the mail_gate block.</text>
+
+  <!-- start -->
+  <rect x="24" y="226" width="136" height="64" rx="10" fill="#f4f4f1" stroke="#9a9a93"/>
+  <text x="92" y="253" font-size="13" font-weight="600" fill="#1d1d1b" text-anchor="middle">Detector item</text>
+  <text x="92" y="272" font-size="12" fill="#6b6b66" text-anchor="middle">one message</text>
+
+  <!-- questions -->
+  <rect x="196" y="226" width="132" height="64" rx="32" fill="#e8eef5" stroke="#2f5d8a"/>
+  <text x="262" y="253" font-size="13" font-weight="600" fill="#22476b" text-anchor="middle">From you?</text>
+  <text x="262" y="272" font-size="11" fill="#22476b" text-anchor="middle">your own address</text>
+
+  <rect x="364" y="226" width="150" height="64" rx="32" fill="#e8eef5" stroke="#2f5d8a"/>
+  <text x="439" y="253" font-size="13" font-weight="600" fill="#22476b" text-anchor="middle">On the keep list?</text>
+  <text x="439" y="272" font-size="11" fill="#22476b" text-anchor="middle">record label or address</text>
+
+  <rect x="550" y="226" width="150" height="64" rx="32" fill="#e8eef5" stroke="#2f5d8a"/>
+  <text x="625" y="253" font-size="13" font-weight="600" fill="#22476b" text-anchor="middle">Remote record?</text>
+  <text x="625" y="272" font-size="11" fill="#22476b" text-anchor="middle">read inline if missing</text>
+
+  <rect x="736" y="128" width="150" height="64" rx="32" fill="#e8eef5" stroke="#2f5d8a"/>
+  <text x="811" y="155" font-size="13" font-weight="600" fill="#22476b" text-anchor="middle">Actionable?</text>
+  <text x="811" y="174" font-size="11" fill="#22476b" text-anchor="middle">reply, todo, decide, meeting</text>
+
+  <rect x="736" y="324" width="150" height="64" rx="32" fill="#e8eef5" stroke="#2f5d8a"/>
+  <text x="811" y="351" font-size="13" font-weight="600" fill="#22476b" text-anchor="middle">Older than 4 h?</text>
+  <text x="811" y="370" font-size="11" fill="#22476b" text-anchor="middle">since it arrived</text>
+
+  <!-- chain arrows (no) -->
+  <line x1="160" y1="258" x2="190" y2="258" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="328" y1="258" x2="358" y2="258" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="343" y="250" font-size="11" fill="#6b6b66" text-anchor="middle">no</text>
+  <line x1="514" y1="258" x2="544" y2="258" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="529" y="250" font-size="11" fill="#6b6b66" text-anchor="middle">no</text>
+  <path d="M700,246 C720,246 720,160 730,160" fill="none" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="726" y="212" font-size="11" fill="#6b6b66">yes</text>
+  <path d="M700,270 C720,270 720,356 730,356" fill="none" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="726" y="312" font-size="11" fill="#6b6b66">no</text>
+
+  <!-- outcomes -->
+  <!-- own -->
+  <line x1="262" y1="290" x2="262" y2="412" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="270" y="356" font-size="11" fill="#6b6b66">yes</text>
+  <rect x="190" y="418" width="144" height="76" rx="10" fill="#fbeee7" stroke="#b4572e"/>
+  <text x="262" y="442" font-size="13" font-weight="600" fill="#8a3f1f" text-anchor="middle">own</text>
+  <text x="262" y="461" font-size="11.5" fill="#1d1d1b" text-anchor="middle">passes; preview</text>
+  <text x="262" y="477" font-size="11.5" fill="#1d1d1b" text-anchor="middle">emptied</text>
+
+  <!-- kept -->
+  <line x1="439" y1="290" x2="439" y2="412" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="447" y="356" font-size="11" fill="#6b6b66">yes</text>
+  <rect x="364" y="418" width="150" height="76" rx="10" fill="#efeaf7" stroke="#6b4fa0"/>
+  <text x="439" y="442" font-size="13" font-weight="600" fill="#4f3780" text-anchor="middle">kept</text>
+  <text x="439" y="461" font-size="11.5" fill="#1d1d1b" text-anchor="middle">left out; the digest</text>
+  <text x="439" y="477" font-size="11.5" fill="#1d1d1b" text-anchor="middle">lists it first</text>
+
+  <!-- action -->
+  <line x1="886" y1="152" x2="910" y2="152" stroke="#55554f" stroke-width="2"/>
+  <path d="M910,152 L910,118" fill="none" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="916" y="142" font-size="11" fill="#6b6b66">yes</text>
+  <rect x="842" y="18" width="140" height="94" rx="10" fill="#fbeee7" stroke="#b4572e"/>
+  <text x="912" y="40" font-size="13" font-weight="600" fill="#8a3f1f" text-anchor="middle">action</text>
+  <text x="912" y="59" font-size="11.5" fill="#1d1d1b" text-anchor="middle">passes with the</text>
+  <text x="912" y="75" font-size="11.5" fill="#1d1d1b" text-anchor="middle">remote summary and</text>
+  <text x="912" y="91" font-size="11.5" fill="#1d1d1b" text-anchor="middle">remote_record</text>
+
+  <!-- fyi -->
+  <path d="M811,192 L811,212 L940,212 L940,226" fill="none" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="820" y="206" font-size="11" fill="#6b6b66">no</text>
+  <rect x="880" y="232" width="104" height="60" rx="10" fill="#efeaf7" stroke="#6b4fa0"/>
+  <text x="932" y="254" font-size="13" font-weight="600" fill="#4f3780" text-anchor="middle">fyi</text>
+  <text x="932" y="273" font-size="11.5" fill="#1d1d1b" text-anchor="middle">left out;</text>
+  <text x="932" y="287" font-size="11.5" fill="#1d1d1b" text-anchor="middle">digest</text>
+
+  <!-- unread -->
+  <text x="890" y="348" font-size="11" fill="#6b6b66">yes</text>
+  <rect x="842" y="404" width="142" height="90" rx="10" fill="#fbeee7" stroke="#b4572e" stroke-dasharray="5 4"/>
+  <path d="M886,356 L926,356 L926,398" fill="none" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="913" y="426" font-size="13" font-weight="600" fill="#8a3f1f" text-anchor="middle">unread</text>
+  <text x="913" y="445" font-size="11.5" fill="#1d1d1b" text-anchor="middle">passes as sender,</text>
+  <text x="913" y="461" font-size="11.5" fill="#1d1d1b" text-anchor="middle">subject and ids;</text>
+  <text x="913" y="477" font-size="11.5" fill="#1d1d1b" text-anchor="middle">remote_unread: true</text>
+
+  <!-- pending -->
+  <path d="M811,388 L811,412" fill="none" stroke="#55554f" stroke-width="2" marker-end="url(#a)"/>
+  <text x="790" y="404" font-size="11" fill="#6b6b66">no</text>
+  <rect x="700" y="418" width="130" height="76" rx="10" fill="#f4f4f1" stroke="#9a9a93" stroke-dasharray="5 4"/>
+  <text x="765" y="442" font-size="13" font-weight="600" fill="#3d3d39" text-anchor="middle">pending</text>
+  <text x="765" y="461" font-size="11.5" fill="#1d1d1b" text-anchor="middle">held; not marked</text>
+  <text x="765" y="477" font-size="11.5" fill="#1d1d1b" text-anchor="middle">seen; next run</text>
+
+  <!-- legend -->
+  <rect x="24" y="110" width="14" height="14" rx="3" fill="#fbeee7" stroke="#b4572e"/>
+  <text x="44" y="122" font-size="12" fill="#1d1d1b">reaches a Claude lane</text>
+  <rect x="200" y="110" width="14" height="14" rx="3" fill="#efeaf7" stroke="#6b4fa0"/>
+  <text x="220" y="122" font-size="12" fill="#1d1d1b">mail-digest only</text>
+  <rect x="350" y="110" width="14" height="14" rx="3" fill="#f4f4f1" stroke="#9a9a93" stroke-dasharray="3 2"/>
+  <text x="370" y="122" font-size="12" fill="#1d1d1b">waits for a later run</text>
+</svg>

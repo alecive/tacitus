@@ -1,0 +1,49 @@
+# Files depicted in docs/ARCHITECTURE.md
+# Changing these without updating the arch doc triggers a pre-commit warning.
+#
+# Supports exact paths and glob patterns (expanded via git ls-files).
+# Lines starting with # are comments; blank lines are ignored.
+
+# Entry points / orchestration
+run-agent.sh
+ea-chat-bot.py
+
+# Prompt routing logic
+preprocessor/prompt_logic.py
+
+# Operating instructions (conditionally stripped into prompts)
+CLAUDE.md
+
+# Preprocessing pipeline
+preprocessor/preprocess.py
+
+# Tool interface (Graph API, confirmation tokens)
+preprocessor/graph_actions.py
+preprocessor/graph_client.py
+
+# Skill files (loaded into prompts by keyword match)
+skills/*.md
+
+# Scheduling engine (called by Claude + preprocessor)
+preprocessor/scheduling_engine.py
+
+# Slack integration
+preprocessor/slack_reader.py
+preprocessor/slack_notifier.py
+
+# Mail mediation (arch doc §7, SECURITY.md Layer 5)
+preprocessor/mail_mediation.py
+preprocessor/mail_mediator.py
+preprocessor/deck_serve.py
+scripts/deck-bin/tailscale
+
+# Deferred sends (arch doc §5, the :lock: Schedule button)
+preprocessor/scheduled_sends.py
+
+# Dispatch instrumentation
+preprocessor/dispatch_log.py
+
+# Writing style measurement (arch doc §9)
+preprocessor/style_profiles.py
+preprocessor/style_analysis.py
+preprocessor/draft_capture.py
