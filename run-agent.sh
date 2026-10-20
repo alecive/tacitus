@@ -688,6 +688,48 @@ ALLOWED_TOOLS+=",Bash(cat *),Bash(ls *),Read,Agent"
 # here: no retry, no validation, no Slack post, no failure line in the log,
 # and the run log just stops after "Invoking Claude Code with skill: …".
 # Capture the status instead and let the validate/retry ladder below run.
+# The lane on Codex (docs/codex-harness.md, "Production"): EA_HARNESS=codex
+# runs a briefing lane through codex_ghost.py run-lane --live as ea-bot,
+# the same prompt, writes confined to the EA state. It runs only when the
+# ghost arm's final verdict for briefings is GO (codex_ghost.py gate), or
+# with EA_HARNESS_FORCE=1; otherwise the Claude run below goes ahead and
+# the log says why.
+CODEX_LANE=0
+if [[ "$REMOTE_BRIEFING" == 0 && "${EA_HARNESS:-claude}" == "codex" ]]; then
+    case "$AGENT" in
+        morning-briefing|afternoon-catchup)
+            GATE_WHY=$(EA_DIR="$EA_DIR" "$PYTHON3" "$SCRIPT_DIR/preprocessor/codex_ghost.py" gate briefing 2>>"$LOG_FILE")
+            GATE_RC=$?
+            if [[ "$GATE_RC" == 0 || "${EA_HARNESS_FORCE:-0}" == 1 ]]; then
+                CODEX_LANE=1
+                log "Harness: codex (${GATE_WHY:-forced})"
+            else
+                log "Harness: claude; the codex gate said: ${GATE_WHY}"
+            fi
+            ;;
+        *)
+            # No ghost verdict exists for the other lanes yet, so they run
+            # on Codex only when forced; the same runner serves them.
+            if [[ "${EA_HARNESS_FORCE:-0}" == 1 ]]; then
+                CODEX_LANE=1
+                log "Harness: codex (forced; no ghost verdict exists for $AGENT)"
+            else
+                log "Harness: claude; a lane other than the briefings runs on codex only with EA_HARNESS_FORCE=1"
+            fi
+            ;;
+    esac
+fi
+if [[ "$CODEX_LANE" == 1 ]]; then
+    set +e
+    CLAUDE_OUTPUT=$(printf '%s' "$PROMPT" | EA_DIR="$EA_DIR" "$PYTHON3" "$SCRIPT_DIR/preprocessor/codex_ghost.py" run-lane \
+        --agent "$AGENT" --run-id "cron-${AGENT}-${TIMESTAMP}" --live 2>>"$LOG_FILE")
+    CLAUDE_RC=$?
+    set -e
+    # The Claude block below is skipped; the output handling further down is shared.
+    REMOTE_BRIEFING=1
+    [[ "$CLAUDE_RC" == 0 ]] || CLAUDE_OUTPUT=":warning: ${AGENT}: the Codex lane failed (rc=${CLAUDE_RC}). The run log has the error. No Claude run was made; the next scheduled run tries again."
+fi
+
 if [[ "$REMOTE_BRIEFING" == 0 ]]; then
 set +e
 # EA_RUN_ID labels every draft this run creates, so the bot can give
@@ -1035,6 +1077,15 @@ if [[ -n "$CLAUDE_OUTPUT" ]]; then
     "$SCRIPT_DIR/scripts/owner-io.sh" mkdir "$REPORT_DIR" 2>/dev/null || true
     printf '%s\n' "$CLAUDE_OUTPUT" | "$SCRIPT_DIR/scripts/owner-io.sh" write "$REPORT_DIR/${AGENT}-latest.md" 2>/dev/null \
         && log "Report written to $REPORT_DIR/${AGENT}-latest.md" || true
+    # The Codex ghost arm (docs/codex-harness.md, "The ghost arm"): with a
+    # window open, the same prompt is replayed on Codex off to the side and
+    # judged against this report. The enqueue returns at once; a closed
+    # window is a one-line skip. Never for a run Codex itself produced.
+    if [[ "${CODEX_LANE:-0}" == 0 ]]; then
+        GHOST_NOTE=$(printf '%s' "$PROMPT" | EA_DIR="$EA_DIR" "$PYTHON3" "$SCRIPT_DIR/preprocessor/codex_ghost.py" enqueue-lane \
+            --agent "$AGENT" --run-id "cron-${AGENT}-${TIMESTAMP}" --report "$REPORT_DIR/${AGENT}-latest.md" 2>>"$LOG_FILE" || true)
+        [[ -n "$GHOST_NOTE" ]] && log "Codex ghost: $GHOST_NOTE"
+    fi
     if [[ "$HAS_SLACK" == 1 ]]; then
         # `set +e`: without it, errexit + pipefail kill the script the moment
         # the post fails, so POST_RC could only ever be 0 by the time it is
