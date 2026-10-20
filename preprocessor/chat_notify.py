@@ -229,8 +229,40 @@ def _zulip_post_parts(zcfg: dict, target: dict, parts: list[str]) -> bool:
     return all_ok
 
 
+ROOM_KEY_PREFIX = "room:"
+
+
+def room_key(channel_id: str) -> str:
+    """The channel key that posts to one project room (a new topic)."""
+    return ROOM_KEY_PREFIX + str(channel_id)
+
+
+def _room_stream(channel_key: str) -> str:
+    """The stream of the room a `room:` key names, or "" when the owner's
+    own record (owner_rooms) does not name it or the bot archived it. The
+    registry in ea-bot space is never the authority: a process that cannot
+    read the owner record posts nowhere."""
+    try:
+        try:
+            import owner_rooms
+        except ImportError:
+            from preprocessor import owner_rooms
+        row = owner_rooms.get(channel_key[len(ROOM_KEY_PREFIX):])
+    except Exception:
+        return ""
+    if not row or row.get("archived_by_bot"):
+        return ""
+    return str(row.get("name") or "")
+
+
 def _send_zulip(channel_key: str, parts: list[str], blocks: Optional[list]) -> bool:
     zcfg = _chat_cfg()["zulip"]
+    if channel_key.startswith(ROOM_KEY_PREFIX):
+        stream = _room_stream(channel_key)
+        if not stream:
+            print(f"WARNING: '{channel_key}' is not a room in the owner's record; nothing posted")
+            return False
+        return _zulip_post_parts(zcfg, {"stream": stream}, parts)
     target = (zcfg.get("notify") or {}).get(channel_key)
     if not isinstance(target, dict) or not target.get("stream"):
         print(f"WARNING: No Zulip notify target configured for '{channel_key}'")

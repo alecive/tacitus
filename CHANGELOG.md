@@ -6,6 +6,16 @@ repository that preceded it.
 
 ## Unreleased
 
+- **Briefings also post to project rooms.** After the open-claims audit,
+  each item in the morning briefing or the afternoon update that belongs
+  to a project with a room is posted in that room too, one message per
+  room in a new topic, with up to five other open rows of the project.
+  The project comes from the ledger link, then the filed thread, then
+  the strict project matcher. The full post still goes to the EA stream
+  and ends with the rooms that got a slice. A room post goes only to a
+  room the owner's record names (`room:<channel id>` keys in
+  `chat_notify.post`), and quiet hours hold it. `"briefing_rooms":
+  false` in remote-llm.json turns it off.
 - **Intake for a public repository.** Issue forms that require the
   version, platform, profile and the doctor's output; `ea-doctor.py
   --share` masks addresses, account names, hosts and ids for pasting;
