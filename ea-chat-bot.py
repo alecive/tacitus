@@ -4737,6 +4737,49 @@ def handle_dismiss_bulk_send(ev: "_chat.ActionEvent"):
                                  ":ok_hand: One by one it is.")
 
 
+def _toggle_quoted(ev: "_chat.ActionEvent", show: bool):
+    """Open or fold a draft card's quoted thread in place (the Slack card
+    shows only its length). A fresh read, so it is the draft's text now;
+    when the card cannot be updated the thread is posted under it."""
+    if not _verify_button_user(ev):
+        return
+    value = _card_value(ev)
+    if not value.get("draft_id"):
+        return
+    draft = _fetch_draft_body(value["draft_id"], value.get("email_system", "outlook"),
+                              value.get("gmail_email", ""))
+    if "error" in draft:
+        FRONTEND.post(channel=ev.card.channel, thread_ts=ev.card.id,
+                      text=f":warning: Could not load the draft: {draft['error']}")
+        return
+    from preprocessor.chat import slack_frontend as _sf
+    quoted = draft.get("quoted") or ""
+    message = (ev.raw or {}).get("message") or {}
+    blocks = _sf.toggle_quoted_blocks(message.get("blocks") or [], quoted, show)
+    if blocks is not None and (quoted or not show):
+        try:
+            FRONTEND.client.chat_update(channel=ev.card.channel, ts=ev.card.id,
+                                        text=message.get("text") or "Confirm send",
+                                        blocks=blocks)
+            return
+        except Exception as e:
+            log.warning(f"quoted thread toggle failed, posting it instead: {e}")
+    if show:
+        FRONTEND.post(channel=ev.card.channel, thread_ts=ev.card.id, unfurl=False,
+                      text=_sf.quoted_thread_text(quoted) if quoted
+                      else "This draft has no quoted thread now.")
+
+
+@app.action("show_quoted")
+def handle_show_quoted(ev: "_chat.ActionEvent"):
+    _toggle_quoted(ev, True)
+
+
+@app.action("hide_quoted")
+def handle_hide_quoted(ev: "_chat.ActionEvent"):
+    _toggle_quoted(ev, False)
+
+
 @app.action("edit_draft")
 def handle_edit_draft(ev: "_chat.ActionEvent"):
     """Open the draft body in a modal; Save writes it back with update-draft
