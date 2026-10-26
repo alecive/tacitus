@@ -529,6 +529,19 @@ def delete_draft(email: str, draft_id: str) -> dict:
     return {"status": "deleted", "draft_id": draft_id}
 
 
+def mark_read(email: str, message_id: str) -> dict:
+    """Mark a Gmail message read (removes the UNREAD label) in place."""
+    service = _get_service(email)
+    if not service:
+        return {"error": f"No Gmail credentials for {email}"}
+    try:
+        service.users().messages().modify(
+            userId="me", id=message_id, body={"removeLabelIds": ["UNREAD"]}).execute()
+    except HttpError as e:
+        return {"error": f"Gmail API error: {e}"}
+    return {"status": "marked_read", "message_id": message_id}
+
+
 def _message_fingerprint(service, message_id: str) -> str:
     """The content fingerprint (draft_fingerprint.py) of one Gmail message,
     from its RFC 822 form. A Gmail message never changes: an edit to a draft
@@ -1378,6 +1391,11 @@ def build_parser() -> argparse.ArgumentParser:
     ldrafts.add_argument("--since", type=float, default=0.0,
                          help="Only drafts whose message is at least this new (epoch seconds)")
 
+    mread = sub.add_parser("mark-read", help="Mark a message read in place (removes UNREAD)",
+                           allow_abbrev=False)
+    mread.add_argument("--email", required=True, help="Gmail address")
+    mread.add_argument("--message-id", required=True)
+
     ddraft = sub.add_parser("delete-draft", help="Delete a draft by ID", allow_abbrev=False)
     ddraft.add_argument("--email", required=True,
                         help="Gmail account whose draft to delete")
@@ -1561,6 +1579,12 @@ def main():
 
     elif args.command == "list-drafts":
         result = list_drafts(args.email, args.max_results, args.since)
+        print(json.dumps(result, indent=2))
+        if "error" in result:
+            sys.exit(1)
+
+    elif args.command == "mark-read":
+        result = mark_read(args.email, args.message_id)
         print(json.dumps(result, indent=2))
         if "error" in result:
             sys.exit(1)
