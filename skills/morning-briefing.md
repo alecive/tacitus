@@ -475,9 +475,13 @@ one this list is the only notice.]
 Open: [N] · Follow-up: [N] · Waiting on others: [N] | Inbox: [N] messages
 ```
 
-Take the three counts from `delta_summary.obligations_by_list` (`open`,
-`follow_up`, `waiting`), never from a count of your own: the main ledger
-list is `open`, and waiting rows are not open work.
+Take the counts from `delta_summary.obligations_by_list` (`open`,
+`follow_up`, `snoozed`, `waiting`), never from a count of your own; add
+`· Snoozed: [N]` after Follow-up when it is not 0. Waiting rows are owed
+by someone else, and follow-up and snoozed rows are parked until a date,
+so none of them is open work. When the field is absent (the split is off
+on this install, or the briefing JSON is older), print `Open obligations:
+[N]` from `delta_summary.open_obligations` in place of the counts.
 
 Then post threads ONLY for items requiring user input (draft approvals, scheduling choices).
 
