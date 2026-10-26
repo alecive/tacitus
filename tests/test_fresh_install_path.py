@@ -168,7 +168,17 @@ def test_now_flag_skips_the_morning_gate_and_the_nothing_new_skip():
 
 
 def test_briefing_model_follows_the_installs_pin():
-    assert 'MODEL="${EA_MODEL:-claude-opus-5-5}"' in RUN_AGENT
+    line = next(l for l in RUN_AGENT.splitlines() if "morning-briefing|afternoon-catchup" in l
+                and "MODEL=" in l)
+    pick = line.split(")", 1)[1].split(";;")[0].strip()
+
+    def model(**env):
+        return subprocess.run(["bash", "-c", f'{pick}; printf %s "$MODEL"'], capture_output=True,
+                              text=True, env={"PATH": os.environ["PATH"], **env}).stdout
+
+    assert model() == "claude-opus-5-5"
+    assert model(EA_MODEL="m-chat") == "m-chat"
+    assert model(EA_MODEL="m-chat", EA_BRIEFING_MODEL="m-brief") == "m-brief"
 
 
 # ── the doctor on an email profile ───────────────────────────────────

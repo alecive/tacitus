@@ -198,11 +198,12 @@ esac
 # agents write the user-facing daily digests, where triage judgment is
 # the whole product: they run on EA_MODEL, the model the install pins in
 # its .env for the chat bot too, and with no pin on the opus model named
-# here, so a CLI upgrade cannot move them. Everything else defaults to
-# the sonnet alias.
+# here, so a CLI upgrade cannot move them. EA_BRIEFING_MODEL (in .env)
+# pins them apart from EA_MODEL, so the chat bot can run a cheaper model
+# than the unattended runs. Everything else defaults to the sonnet alias.
 if [[ -z "$MODEL" ]]; then
     case "$AGENT" in
-        morning-briefing|afternoon-catchup|weekly-audit) MODEL="${EA_MODEL:-claude-opus-5-5}" ;;
+        morning-briefing|afternoon-catchup|weekly-audit) MODEL="${EA_BRIEFING_MODEL:-${EA_MODEL:-claude-opus-5-5}}" ;;
         *) MODEL="sonnet" ;;
     esac
 fi
