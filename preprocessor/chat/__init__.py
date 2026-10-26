@@ -1,5 +1,8 @@
 """The chat frontend layer: one interface in front of Slack, Zulip or an
-in-memory fake.
+in-memory fake. The platform code lives in the shared botcore package
+(botcore/botcore/chat); this package is the EA's side of it: config
+loading, secrets, and the writer for downloaded files. Its submodules
+(chat.base, chat.slack_frontend, ...) are the botcore modules themselves.
 
 `load_frontend()` builds the frontend named by `chat.frontend` in
 ea-config.json ("slack" by default). The platform modules are imported
@@ -19,10 +22,30 @@ try:
     from .. import card_text  # noqa: F401  (chat.card_text: the card builders' inert())
     from .. import ea_config
     from .. import owner_trust
+    from .. import resident_io as _rio
 except ImportError:
     import card_text  # noqa: F401
     import ea_config
     import owner_trust
+    import resident_io as _rio
+
+from . import files as _files
+
+# Downloads land in the resident's uploads dir: write them with the
+# resident's access, as the frontends did before they moved to botcore.
+# This package loads as `chat` and as `preprocessor.chat`, each with its own
+# resident_io module object, and botcore keeps one hook: look the writer up
+# at call time so every caller gets the same, patchable resident_io.
+import sys as _sys
+
+
+def _rio_now():
+    return (_sys.modules.get("resident_io")
+            or _sys.modules.get("preprocessor.resident_io") or _rio)
+
+
+_files.use(lambda *a, **k: _rio_now().make_dir(*a, **k),
+           lambda *a, **k: _rio_now().replace_bytes(*a, **k))
 
 from .base import (
     AlreadyArchived,

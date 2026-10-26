@@ -748,6 +748,7 @@ NOT_DRAFT_CHANGING = {
         "archive-message": "moves received mail; content unchanged",
         "archive-conversation": "moves received mail; content unchanged",
         "snooze-message": "moves received mail; content unchanged",
+        "mark-read": "the read flag only",
         "set-categories": "a mailbox label; not part of what is sent",
         "wake-snoozed": "moves received mail back to the inbox",
         "create-todo": "a To Do task, not mail",
@@ -755,6 +756,7 @@ NOT_DRAFT_CHANGING = {
     },
     "gmail_client": {
         "search": "read", "get-message": "read", "get-thread": "read", "get-draft": "read",
+        "mark-read": "the read flag only",
         "list-attachments": "read", "download-attachment": "read; writes a local file",
         "list-drafts": "read",
         "create-draft": "makes a new draft id, which gets its own card",
@@ -1448,13 +1450,19 @@ def test_slack_splits_the_whole_body_across_sections():
     _text, blocks = S.render_card(card)
     texts = [b["text"]["text"] for b in blocks if b.get("type") == "section" and "text" in b]
     assert all(len(t) <= 3000 for t in texts)
-    i = texts.index(f"*{S.QUOTED_LABEL}:*")
+    i = next(n for n, t in enumerate(texts) if t.startswith(f"*{S.QUOTED_LABEL}:*"))
     head = next(n for n, t in enumerate(texts) if t.startswith("*Subject:*")) + 1
     assert i - head > 1, "the body was not split"
     assert "".join(texts[head:i]) == body, "the body is not all on the card"
-    assert "".join(texts[i + 1:]).count("Old message.") == 400
-    assert any(a.get("action_id") == "approve_send"
-               for b in blocks if b.get("type") == "actions" for a in b["elements"])
+    # The quoted thread waits behind Show thread, which reads the same draft.
+    assert "Old message." not in "".join(texts) and "hidden" in texts[i]
+    buttons = {a.get("action_id"): a for b in blocks if b.get("type") == "actions"
+               for a in b["elements"]}
+    assert "approve_send" in buttons and S.SHOW_QUOTED_ACTION in buttons
+    assert json.loads(buttons[S.SHOW_QUOTED_ACTION]["value"])["draft_id"] == DRAFT
+    assert S.quoted_thread_text(quoted).count(">Old message.") == 400
+    # A long thread no longer costs the card its Send button.
+    assert S.draft_card_fits(_send_card_of("ok", "Old message.\n" * 20000))
     huge = _send_card_of("y" * (S.BODY_CHARS * S.MAX_BLOCKS))
     assert not S.draft_card_fits(huge)
     _t, cut = S.render_card(huge)
@@ -1509,6 +1517,21 @@ def test_outlook_from_reply_to_and_raw_recipients_move_the_fingerprint():
         assert _outlook_fp(m, base.atts) != fp0, label
     assert "replyTo" in DFP.OUTLOOK_SELECT and "from" in DFP.OUTLOOK_SELECT
 
+def test_show_thread_opens_the_quoted_thread_in_the_card_and_hide_folds_it():
+    from preprocessor.chat import slack_frontend as S
+    quoted = "Old message.\n" * 50
+    _text, blocks = S.render_card(_send_card_of("Authored line.", quoted))
+    opened = S.toggle_quoted_blocks(blocks, quoted, True)
+    flat = json.dumps(opened)
+    assert flat.count(">Old message.") == 50 and S.HIDE_QUOTED_ACTION in flat
+    assert len(opened) <= S.MAX_BLOCKS
+    folded = S.toggle_quoted_blocks(opened, quoted, False)
+    assert "Old message." not in json.dumps(folded) and S.SHOW_QUOTED_ACTION in json.dumps(folded)
+    assert len(folded) == len(blocks)
+    huge = "Old line.\n" * 30000
+    assert len(S.toggle_quoted_blocks(blocks, huge, True)) <= S.MAX_BLOCKS
+    assert S.toggle_quoted_blocks([{"type": "divider"}], quoted, True) is None
+
 
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
@@ -1524,3 +1547,4 @@ if __name__ == "__main__":
             failed += 1
     print(f"\n  {passed} passed, {failed} failed")
     sys.exit(1 if failed else 0)
+

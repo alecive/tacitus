@@ -11,6 +11,11 @@ the list digest) never counts: graph_client records every EA move
 by an archive; the user's word, a draft or event that names it, or a
 confirmed proposal closes it (`preprocessor/closure.py`).
 
+When the user asks to mark a message read, flip the flag in place:
+`graph_actions.py mark-read --message-id <id>` (Gmail: `gmail_client.py
+mark-read --email <acct> --message-id <id>`). It never moves the mail and
+needs no button.
+
 This behavior is configurable via `inbox_as_completion` in
 `~/.ea/config/autonomy-tiers.json`. When `enabled: false`, ledger
 items stay open regardless of inbox state and must be closed explicitly

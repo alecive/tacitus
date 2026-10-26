@@ -380,8 +380,11 @@ def _fixed_for(fd: int, st: os.stat_result, uid: int, gids: set[int], bit: int) 
     """A component the resident may use (`bit`) and only root or this user
     may change: owned by one of them, writable by no group and no other
     user, no ACL (mode bits then tell the whole answer), `bit` granted."""
+    # Linux keeps a POSIX ACL in an extended attribute; macOS has no
+    # os.listxattr, and its ACLs are not read here (as in boundary-audit.py).
+    listxattr = getattr(os, "listxattr", None)
     try:
-        acl = "system.posix_acl_access" in os.listxattr(fd)
+        acl = bool(listxattr) and "system.posix_acl_access" in listxattr(fd)
     except OSError:
         acl = False
     return (st.st_uid in (0, os.geteuid()) and not st.st_mode & 0o022

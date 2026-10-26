@@ -1076,31 +1076,14 @@ def _pagination_hint(text: str):
 
 def cmd_search_mail(args):
     # --folder scopes the search to one folder (inbox, drafts, sentitems,
-    # ...). Folder mode fetches recent messages from that folder and filters
-    # client-side.
-    if getattr(args, "folder", None):
-        try:
-            msgs = graph.get_messages(args.folder, days_back=60)
-        except LookupError as e:
-            print(json.dumps({"error": str(e)}, indent=2))
-            return
-        q = (args.query or "").lower()
-        terms = [t for t in q.split() if t] or [""]
-        results = []
-        for m in msgs:
-            hay = " ".join([
-                m.get("subject", "") or "",
-                m.get("bodyPreview", "") or "",
-                m.get("from", {}).get("emailAddress", {}).get("address", "")
-                if isinstance(m.get("from"), dict) else "",
-            ]).lower()
-            if all(t in hay for t in terms):
-                results.append(m)
-                if len(results) >= args.top:
-                    break
-        has_more = False
-    else:
-        results, has_more = graph.search_messages(args.query, top=args.top)
+    # ... or one the user made): Graph's $search on that folder, its whole
+    # history and the bodies too, not its subfolders.
+    try:
+        results, has_more = graph.search_messages(args.query, top=args.top,
+                                                  folder=getattr(args, "folder", None))
+    except LookupError as e:
+        print(json.dumps({"error": str(e)}, indent=2))
+        return
     output = []
     own_addrs = _user_addresses()
     for m in results:
@@ -1296,6 +1279,12 @@ def cmd_scan_attachments(args):
         print(json.dumps(hints, indent=2))
     else:
         print(json.dumps({"result": "no actionable info found in PDF attachments"}))
+
+
+def cmd_mark_read(args):
+    """Mark a message read in place (never moved). Ungated: only the
+    user's own read flag changes."""
+    print(json.dumps(graph.mark_message_read(args.message_id)))
 
 
 def cmd_archive_message(args):
@@ -2327,9 +2316,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--top", type=int, default=10)
     p.add_argument("--folder", default=None,
                    help="Scope to one folder (inbox, drafts, sentitems, ..., "
-                        "or a folder's own name such as admissions-inquiries); "
-                        "recent messages filtered client-side. To just see the "
-                        "newest messages in a folder, use list-mail instead.")
+                        "or a folder's own name such as admissions-inquiries): "
+                        "its whole history, bodies included, not its subfolders. "
+                        "To just see the newest messages in a folder, use "
+                        "list-mail instead.")
     p.set_defaults(func=cmd_search_mail)
 
     # list-mail (no query needed -- Graph does the ordering and the capping)
@@ -2372,6 +2362,11 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("scan-attachments", allow_abbrev=False)
     p.add_argument("--message-id", required=True)
     p.set_defaults(func=cmd_scan_attachments)
+
+    # mark-read
+    p = sub.add_parser("mark-read", allow_abbrev=False)
+    p.add_argument("--message-id", required=True)
+    p.set_defaults(func=cmd_mark_read)
 
     # archive-message
     p = sub.add_parser("archive-message", allow_abbrev=False)

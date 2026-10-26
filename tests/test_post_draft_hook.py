@@ -473,7 +473,7 @@ def test_dash_detector_catches_ascii_double_hyphen_as_punctuation():
 # --------------------------------------------------------------------------
 
 ACTIONS = {"approve_send", "cancel_send", "approve_schedule_send",
-           "cancel_schedule_send", "sent_myself",
+           "cancel_schedule_send", "sent_myself", "show_quoted", "hide_quoted",
            "approve_event", "cancel_event", "approve_event_update",
            "cancel_event_update", "approve_event_delete", "cancel_event_delete",
            "plugin_card_approve", "plugin_card_cancel", "approve_publish", "cancel_publish",

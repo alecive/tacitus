@@ -1467,7 +1467,7 @@ def test_prompt_strings_name_the_configured_dm_stream(tmp_path):
 
 def test_no_dashes_in_module():
     src = "".join((ROOT / p).read_text() for p in (
-        "preprocessor/chat/zulip_frontend.py", "scripts/zulip_smoke.py",
+        "botcore/botcore/chat/zulip_frontend.py", "scripts/zulip_smoke.py",
         "tests/test_zulip_frontend.py"))
     assert "\u2014" not in src and "\u2013" not in src
 

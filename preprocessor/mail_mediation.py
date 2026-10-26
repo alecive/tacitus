@@ -101,6 +101,8 @@ SAFE = {
         # files.
         "remove-attachment",
         "archive-message", "archive-conversation", "snooze-message",
+        # The read flag only, in place.
+        "mark-read",
         # Writes the categories list on one message: a label, nothing
         # leaves the mailbox.
         "set-categories",
@@ -116,6 +118,7 @@ SAFE = {
     "gmail_client": {
         "search", "get-message", "get-thread", "get-draft",
         "create-draft", "update-draft", "delete-draft",
+        "mark-read",
         # Adds files to an existing draft (the Gmail API has no attachment
         # endpoint, so the draft is rebuilt in place). --file is a
         # FILE_FLAGS input: staged through the owner-private directory and

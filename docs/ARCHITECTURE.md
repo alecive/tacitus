@@ -196,6 +196,21 @@ EA's own holds, so the general `delete-event` stays token-gated and
 and points at `pending-event-delete.json`. `calendar-view` rows carry
 `categories` and `ea_hold`, and it is the source of Outlook event ids
 for every reschedule or delete.
+
+## Guestless events need no Create card
+
+A staged Outlook event with no attendees and no optional attendees mails
+no one, so `_post_staged_action` creates it through
+`_create_guestless_event` before any card is drawn: the bot mints the
+token and runs `create-event` exactly as a click would
+(`_execute_event_create`), then posts one line in the thread listing what
+it created. The card stays for an event with any guest, for every Google
+calendar event (a family calendar shows it to others), past
+`_GUESTLESS_PER_HOUR` creates in an hour, and after a failed create. A
+subject and times already created within a week are skipped
+(`guestless-events.json` in the owner-private dir). Update and delete
+keep their buttons.
+
 Cron agents label their drafts `EA_RUN_ID=cron-<agent>-<ts>`; the
 router's sweep posts those blocks at the channel root as soon as it
 sees them, so the morning briefing's drafts are reviewable the moment
@@ -516,7 +531,8 @@ calendar, in the staged files and in its own thread.
 ## Chat front-end layer
 
 The bot core talks to its chat platform through one interface,
-`ChatFrontend` (`preprocessor/chat/base.py`). Zulip, self-hosted, is
+`ChatFrontend` (`botcore/botcore/chat/base.py`, aliased as
+`preprocessor/chat/base.py`). Zulip, self-hosted, is
 the recommended platform; Slack is the alternative and behaves exactly
 as it did before the layer existed (an install with no `chat` block
 runs Slack); an in-memory frontend serves the tests. The platform is

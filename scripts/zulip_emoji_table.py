@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""zulip_emoji_table: build preprocessor/chat/zulip_emoji_names.py, the
+"""zulip_emoji_table: build botcore/botcore/chat/zulip_emoji_names.py, the
 table of Slack emoji shortcodes that Zulip spells differently.
 
 The LLM writes Slack shortcodes from Slack's whole vocabulary, so a
@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "preprocessor"))
 import ea_config  # noqa: E402
 
-OUT = ROOT / "preprocessor" / "chat" / "zulip_emoji_names.py"
+OUT = ROOT / "botcore" / "botcore" / "chat" / "zulip_emoji_names.py"
 SLACK_DATA = "https://cdn.jsdelivr.net/npm/emoji-datasource@{version}/emoji.json"
 
 
