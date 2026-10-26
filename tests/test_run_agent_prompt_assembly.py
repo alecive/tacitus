@@ -237,6 +237,18 @@ def test_the_2026_08_31_incident_is_caught():
 
 # ── coverage stays complete as the script grows ─────────────────────
 
+def test_literal_command_rule_evaluates():
+    """The opt-in fifth rule is its own multi-line string; it must survive
+    set -euo pipefail and keep its literal $(...) and the script path."""
+    assignment = _extract('LITERAL_RULE="5. EVERY Bash CALL',
+                          'as if the shell were gone.\n"')
+    out = _evaluate(assignment, _stub_env(""), varname="LITERAL_RULE")
+    assert "no \\$(...)" not in out and "no $(...)" in out
+    assert "/home/ea-bot/ea-system/preprocessor/<script>.py" in out
+    missing = [l for l in _literal_lines(assignment) if l not in out]
+    assert not missing, f"literal rule lines were mutated: {missing[:3]}"
+
+
 def test_all_multiline_strings_are_covered():
     """A NEW multi-line double-quoted assignment in run-agent.sh is a new
     place for this bug class to live. Fail until it is either covered
@@ -244,6 +256,7 @@ def test_all_multiline_strings_are_covered():
     known = {
         "PROMPT",          # covered above
         "RETRY_PROMPT",    # covered above
+        "LITERAL_RULE",    # covered above (EA_LITERAL_COMMANDS=1)
         # the python -c body for strip_preamble; its behaviour is pinned
         # end-to-end by test_run_agent_preamble.py
         "STRIP_PREAMBLE_MAX_LINES",

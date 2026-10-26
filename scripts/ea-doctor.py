@@ -56,6 +56,7 @@ OPTIONAL_CONFIG = ("reimbursement-config.json", "deadline-senders.json",
                    "style-audiences.json")
 REQUIRED_ENV = ("EA_SLACK_CHANNEL_ID", "EA_SLACK_CHANNEL_NAME", "EA_SLACK_OWNER_ID")
 OPTIONAL_ENV = ("EA_SCHED_CHANNEL_ID", "EA_MODEL", "EA_RESIDENT_MODEL", "EA_BRIEFING_MODEL",
+                "EA_LITERAL_COMMANDS",
                 "EA_DASH_TOKEN", "EA_DASH_BIND", "EA_DASH_PORT")
 REQUIRED_SECRETS = ("SLACK_BOT_TOKEN", "SLACK_APP_TOKEN")
 # The secrets each chat frontend needs (chat.frontend in ea-config.json).
