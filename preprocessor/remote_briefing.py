@@ -64,12 +64,14 @@ import tempfile
 import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import institution as _institution  # noqa: E402
 import ledger as _ledger  # noqa: E402
 import remote_llm  # noqa: E402
+import sched_render  # noqa: E402
 
 EA_DIR = Path(os.environ.get("EA_DIR", str(Path.home() / ".ea")))
 ESCALATIONS = EA_DIR / "state" / "remote-escalations.json"
@@ -94,6 +96,17 @@ def active(cfg: dict | None = None) -> bool:
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+def _tz():
+    """The user's zone (user_tz.py: the profile, the scheduling
+    preferences, then the system's zone). Every day and clock time the
+    briefing shows is on it, never on the machine's clock."""
+    try:
+        import user_tz
+        return user_tz.zone()
+    except Exception:
+        return None   # astimezone(None): the system's zone
 
 
 def _date(s) -> date | None:
@@ -276,24 +289,60 @@ Write short plain sentences. Never write an em-dash. Use only the items given, a
 {rules}"""
 
 
+_TIME = re.compile(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?)(?:\.\d+)?(Z|[+-]\d{2}:?\d{2})?$")
+
+
+def _at(value, zone: str = "") -> datetime | None:
+    """A calendar time on the user's clock (`_tz`). Graph's calendar view
+    prints UTC wall-clock with no offset and timeZone "UTC"; a free slot
+    carries its offset. A time with neither is UTC."""
+    m = _TIME.match(str(value or "").strip())
+    if not m:
+        return None
+    try:
+        if m.group(2):
+            dt = datetime.fromisoformat(m.group(1) + ("+00:00" if m.group(2) == "Z" else m.group(2)))
+        else:
+            try:
+                src = ZoneInfo(zone) if zone and zone.upper() != "UTC" else timezone.utc
+            except Exception:
+                src = timezone.utc
+            dt = datetime.fromisoformat(m.group(1)).replace(tzinfo=src)
+    except ValueError:
+        return None
+    return dt.astimezone(_tz())
+
+
+def _event_times(e: dict) -> tuple[datetime | None, datetime | None]:
+    st, en = e.get("start") or {}, e.get("end") or {}
+    return _at(st.get("dateTime"), st.get("timeZone") or ""), _at(en.get("dateTime"), en.get("timeZone") or "")
+
+
+def _span(start: datetime | None, end: datetime | None) -> str:
+    """'9:30-10:30 AM' on the user's clock."""
+    if start and end:
+        return sched_render.clock_range(start, end)
+    return sched_render.clock(start) if start else ""
+
+
 def _calendar(b: dict, today: date) -> list[str]:
     out = []
     for e in b.get("todays_events") or []:
-        st = ((e.get("start") or {}).get("dateTime") or "")
         if e.get("isAllDay"):
             out.append(f"all day: {_clean(e.get('subject'), 80)}")
-        elif st:
-            en = ((e.get("end") or {}).get("dateTime") or "")
-            out.append(f"{st[11:16]}-{en[11:16]} {_clean(e.get('subject'), 80)}")
+            continue
+        start, end = _event_times(e)
+        if start:
+            out.append(f"{_span(start, end)} {_clean(e.get('subject'), 80)}")
     return out[:14]
 
 
 def _free(b: dict, today: date) -> list[str]:
     out = []
     for s in b.get("availability_merged") or []:
-        st, en = str(s.get("start") or ""), str(s.get("end") or "")
-        if st[:10] == today.isoformat():
-            out.append(f"{st[11:16]}-{en[11:16]}")
+        start, end = _at(s.get("start")), _at(s.get("end"))
+        if start and start.date() == today:
+            out.append(_span(start, end))
     return out[:10]
 
 
@@ -332,7 +381,7 @@ def ask_plan(agent: str, b: dict, cands: dict[str, dict], *, rules: str, now: da
     """The remote model's picks, refs checked against the candidates.
     Raises remote_llm.RemoteLLMError when it cannot answer."""
     chat = chat or remote_llm.chat_json
-    local = now.astimezone()
+    local = now.astimezone(_tz())
     morning = agent == "morning-briefing"
     system = (MORNING_PROMPT if morning else AFTERNOON_PROMPT).format(
         profile=_profile(), now=f"{local:%A %Y-%m-%d %H:%M}", rules=rules or "")
@@ -520,7 +569,7 @@ def make_draft(cand: dict, reply_must_say: str, *, run_id: str, write=None, runn
                                                          or "failed")[:160]}
     if cand.get("ledger_id"):
         runner([str(HERE / "ledger.py"), "update", "--id", cand["ledger_id"], "--last-action",
-                f"{date.today().isoformat()}: reply drafted by the remote briefing, awaiting Send"],
+                f"{datetime.now(_tz()).date().isoformat()}: reply drafted by the remote briefing, awaiting Send"],
                env=env)
     try:
         import draft_ab
@@ -598,7 +647,7 @@ def _soon_refs(cands: dict[str, dict], today: date, skip: set[str]) -> list[str]
 def shown_refs(cands: dict[str, dict], plan: dict, drafts: list[dict], escalated: list[dict],
                *, now: datetime, morning: bool) -> list[str]:
     """Every ref the post shows: the pre-send audit asks about each."""
-    today = now.astimezone().date()
+    today = now.astimezone(_tz()).date()
     if morning:
         listed = [p["ref"] for k in ("get_done_today", "flexes", "needs_you")
                   for p in plan.get(k) or []]
@@ -642,7 +691,7 @@ def _waiting_line(b: dict, today: date) -> list[str]:
             continue
         asked = f": {_words(wait['asked'], 110)}" if wait.get("asked") else ""
         try:   # the user's own day: an evening send is the next day in UTC
-            when = datetime.fromisoformat(str(wait["since"]).replace("Z", "+00:00")).astimezone()
+            when = datetime.fromisoformat(str(wait["since"]).replace("Z", "+00:00")).astimezone(_tz())
         except ValueError:
             when = None
         day = f" {when:%b} {when.day}" if when else ""
@@ -732,7 +781,7 @@ def render_morning(b: dict, cands: dict[str, dict], plan: dict, *, now: datetime
                    drafts: list[dict], escalated: list[dict], audit: dict | None = None,
                    stale: bool = False, fallback: str = "") -> str:
     audit = audit or {}
-    local = now.astimezone()
+    local = now.astimezone(_tz())
     today = local.date()
     lists = _morning_lists(cands, plan, drafts, escalated, audit, today)
 
@@ -806,7 +855,7 @@ def render_afternoon(b: dict, cands: dict[str, dict], plan: dict, *, now: dateti
     audit = audit or {}
     gone = set(audit.get("closed") or []) | set(audit.get("parked") or [])
     skip = {r for r, c in cands.items() if c.get("ledger_id") in gone}
-    local = now.astimezone()
+    local = now.astimezone(_tz())
     out = [f":coffee: *Afternoon Update, {local:%a %b} {local.day}*"]
     if stale:
         out.append(":warning: The mail sync failed this run; this update uses older data.")
@@ -822,15 +871,16 @@ def render_afternoon(b: dict, cands: dict[str, dict], plan: dict, *, now: dateti
         out += [f"- {_line_of(cands[p['ref']])}: {in_motion(cands[p['ref']])}" for p in motion]
     rest = []
     for e in b.get("todays_events") or []:
-        st = ((e.get("start") or {}).get("dateTime") or "")
-        if st and not e.get("isAllDay") and st[11:16] >= f"{local:%H:%M}":
-            rest.append(f"- {st[11:16]} {_clean(e.get('subject'), 80)}")
+        start, _end = _event_times(e)
+        if start and not e.get("isAllDay") and start >= now:
+            rest.append(f"- {sched_render.clock(start)} {_clean(e.get('subject'), 80)}")
     if rest:
         out += ["", "*Remaining today:*"] + rest[:8]
     tom = []
     for e in b.get("tomorrows_events") or []:
-        st = ((e.get("start") or {}).get("dateTime") or "")
-        tom.append(f"- {'all day' if e.get('isAllDay') else st[11:16]} {_clean(e.get('subject'), 80)}")
+        start, _end = _event_times(e)
+        when = "all day" if e.get("isAllDay") else (sched_render.clock(start) if start else "")
+        tom.append(f"- {when} {_clean(e.get('subject'), 80)}")
     tomorrow = local.date() + timedelta(days=1)
     tom += [f"- Due tomorrow: {_line_of(c)}" for r, c in cands.items()
             if _date(c.get("due")) == tomorrow and r not in skip]
@@ -969,7 +1019,7 @@ def room_slices(agent: str, cands: dict[str, dict], plan: dict, drafts: list[dic
     if not briefing_rooms.enabled():
         return []
     morning = agent == "morning-briefing"
-    local = now.astimezone()
+    local = now.astimezone(_tz())
     lists = (_morning_lists(cands, plan, drafts, escalated, audit, local.date()) if morning
              else _afternoon_lists(cands, plan, audit))
     entries = room_entries(cands, lists)
@@ -1004,7 +1054,7 @@ def run(agent: str, briefing: dict, *, run_id: str, stale: bool = False, dry_run
     now = now or _now()
     morning = agent == "morning-briefing"
     t0 = time.monotonic()
-    cands = candidates(briefing, today=now.astimezone().date())
+    cands = candidates(briefing, today=now.astimezone(_tz()).date())
     rec: dict = {"ts": now.isoformat(timespec="seconds"), "agent": agent, "run_id": run_id,
                  "dry_run": dry_run, "candidates": len(cands)}
     fallback = ""

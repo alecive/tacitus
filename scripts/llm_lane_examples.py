@@ -120,6 +120,9 @@ def _setup(tmp: Path):
     import mail_privacy
     import mail_gate
     import draft_ab
+    import user_tz
+    # The user's zone is pinned too: it reads the runner's config first.
+    user_tz.name = lambda ea_dir=None: os.environ["TZ"]
     remote_llm._owner = lambda: True
     remote_llm._breaker = lambda *a: None
     mail_privacy._user_addresses = lambda: {USER}
@@ -401,12 +404,16 @@ def _briefing_json() -> dict:
              "source_message_id": "msg-slides", "conversation_id": "conv-slides"},
             {"id": "row-nsf", "description": "NSF annual report", "deadline": "2026-10-14"},
             {"id": "row-travel", "description": "Travel form for the Portland trip"}],
-        "todays_events": [{"subject": "Lab meeting", "start": {"dateTime": "2026-10-12T09:30:00"},
-                           "end": {"dateTime": "2026-10-12T10:30:00"}},
-                          {"subject": "Thesis committee", "start": {"dateTime": "2026-10-12T15:00:00"},
-                           "end": {"dateTime": "2026-10-12T16:00:00"}}],
-        "tomorrows_events": [{"subject": "Program review", "start": {"dateTime": "2026-10-13T08:00:00"}}],
-        "availability_merged": [{"start": "2026-10-12T13:00:00", "end": "2026-10-12T14:30:00"}],
+        # Graph's calendar view: UTC wall-clock with timeZone "UTC".
+        "todays_events": [{"subject": "Lab meeting",
+                           "start": {"dateTime": "2026-10-12T15:30:00.0000000", "timeZone": "UTC"},
+                           "end": {"dateTime": "2026-10-12T16:30:00.0000000", "timeZone": "UTC"}},
+                          {"subject": "Thesis committee",
+                           "start": {"dateTime": "2026-10-12T21:00:00.0000000", "timeZone": "UTC"},
+                           "end": {"dateTime": "2026-10-12T22:00:00.0000000", "timeZone": "UTC"}}],
+        "tomorrows_events": [{"subject": "Program review",
+                              "start": {"dateTime": "2026-10-13T14:00:00.0000000", "timeZone": "UTC"}}],
+        "availability_merged": [{"start": "2026-10-12T19:00:00+00:00", "end": "2026-10-12T20:30:00+00:00"}],
         "handled_by_reply": [{"subject": "x"}, {"subject": "y"}],
         "delta_summary": {"open_obligations": 3, "total_inbox": 41},
         "recently_closed": [], "new_scheduling_requests": [{"subject": "meeting"}],
