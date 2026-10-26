@@ -411,7 +411,7 @@ file, ready for `create-reply --body-file`:
 ```text
 python3 /home/ea-bot/ea-system/preprocessor/email_writer.py write \
   --to pat.rivera@example.edu \
-  --brief-file /home/ea-bot/.ea/state/pat-slides-brief.txt \
+  --brief-file /home/ea-bot/.ea/state/briefs/pat-slides-brief.txt \
   --out /home/ea-bot/.ea/state/reply-body.txt \
   --conversation-id <the thread's id>
 ```

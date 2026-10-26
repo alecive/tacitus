@@ -38,10 +38,10 @@ style profiles govern that content.
 
 Email bodies come from the remote writer, the model the user chose to
 write in their voice. Write the brief (the recipient, the thread or
-request, what the reply must say) to a file in `~/.ea/state/`, then:
+request, what the reply must say) to a file in `~/.ea/state/briefs/`, then:
 
 ```
-python3 /home/ea-bot/ea-system/preprocessor/email_writer.py write --to <addr> --brief-file /home/ea-bot/.ea/state/<name>-brief.txt --out /home/ea-bot/.ea/state/reply-body.txt [--conversation-id <id>] [--draft-id <draft id>]
+python3 /home/ea-bot/ea-system/preprocessor/email_writer.py write --to <addr> --brief-file /home/ea-bot/.ea/state/briefs/<name>-brief.txt --out /home/ea-bot/.ea/state/reply-body.txt [--conversation-id <id>] [--draft-id <draft id>]
 ```
 
 `--conversation-id` gives it the thread. `--draft-id` revises that

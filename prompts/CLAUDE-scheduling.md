@@ -92,8 +92,8 @@ question) gets one line pointing the user to the EA channel.
 7. The reply to the requester: only when the user has chosen. The
    body comes from the remote writer: write the brief (the recipient,
    the thread, the chosen times) to
-   `/home/ea-bot/.ea/state/sched-brief.txt` and run
-   `python3 /home/ea-bot/ea-system/preprocessor/email_writer.py write --to <addr> --brief-file /home/ea-bot/.ea/state/sched-brief.txt --out /home/ea-bot/.ea/state/reply-body.txt --conversation-id <cid>`.
+   `/home/ea-bot/.ea/state/briefs/sched-brief.txt` and run
+   `python3 /home/ea-bot/ea-system/preprocessor/email_writer.py write --to <addr> --brief-file /home/ea-bot/.ea/state/briefs/sched-brief.txt --out /home/ea-bot/.ea/state/reply-body.txt --conversation-id <cid>`.
    On exit 3 or 4 give the same brief to the `email-author` subagent
    (Agent tool, `subagent_type: "email-author"`) and write its body to
    that file. Then create the draft:
