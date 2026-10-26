@@ -504,7 +504,7 @@ The CLAUDE.md with full operating instructions is at: ${EA_BOT_SCRIPT_DIR}/CLAUD
 Topic guides (drafting voice, scheduling, reimbursement, briefing data, inbox completion, project store) are in ${EA_BOT_SCRIPT_DIR}/docs/ea/; read the one your task needs.
 You run from ${EA_BOT_HOME}, so that CLAUDE.md is NOT loaded for you; the
 install's own facts (CLAUDE.local.md) are in the skill text above. These
-four rules from CLAUDE.md are the ones this lane gets wrong, so they are
+five rules from CLAUDE.md are the ones this lane gets wrong, so they are
 repeated here in full:
 
 1. A SEARCH THAT FINDS NOTHING IS NOT PROOF THAT NOTHING HAPPENED. Never
@@ -528,6 +528,13 @@ repeated here in full:
    closes it by hand. Measured: id-less rows score 0% closure recall at
    every revision ever shipped; the same rows with ids score 100%.
    ledger.py add derives the conversation id from the message id for you.
+5. EVERY Bash CALL IS ONE COMMAND FROM THE ALLOWLIST, matched literally:
+   python3 ${EA_BOT_SCRIPT_DIR}/preprocessor/<script>.py ... (that absolute
+   path), jq '<filter>' <file>, cat <file> or ls <dir>. No cd, no && or ;,
+   no pipe, no python3 -c, no \$(...), no ~. Anything else is refused in
+   this lane. Read a file with the Read tool and filter JSON with jq. When
+   a call is refused, rewrite it in this form and run it again; never
+   finish the run as if the shell were gone.
 
 CRITICAL OUTPUT RULE: claude -p only captures text from the FINAL assistant turn.
 Any text you write BEFORE a tool call is SILENTLY DROPPED and the user sees nothing.
