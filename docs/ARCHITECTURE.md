@@ -516,7 +516,8 @@ calendar, in the staged files and in its own thread.
 ## Chat front-end layer
 
 The bot core talks to its chat platform through one interface,
-`ChatFrontend` (`preprocessor/chat/base.py`). Zulip, self-hosted, is
+`ChatFrontend` (`botcore/botcore/chat/base.py`, aliased as
+`preprocessor/chat/base.py`). Zulip, self-hosted, is
 the recommended platform; Slack is the alternative and behaves exactly
 as it did before the layer existed (an install with no `chat` block
 runs Slack); an in-memory frontend serves the tests. The platform is

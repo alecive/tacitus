@@ -10,10 +10,7 @@ from __future__ import annotations
 import re
 from collections.abc import Callable
 
-try:
-    from .. import card_text as _ct
-except ImportError:
-    import card_text as _ct
+from . import card_text as _ct
 
 from .zulip_emoji_names import SLACK_TO_ZULIP
 

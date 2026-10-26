@@ -160,7 +160,7 @@ the API gives no bytes). One module computes it for Outlook and Gmail.
   does not rely on it, and the lock carries the guarantee.
 - **Card text is inert.** A subject, a display name, a location, a plugin
   item's fields, a commit subject and the body come from the model or from
-  mail, and a frontend renders card text as markup. `preprocessor/card_text.py`
+  mail, and a frontend renders card text as markup. `botcore/botcore/chat/card_text.py`
   is the one place that makes such text inert: every field value renders on
   one line as literal text (a Zulip code span; on Slack with `&`, `<` and
   `>` escaped), invisible and reordering characters (bidi controls,

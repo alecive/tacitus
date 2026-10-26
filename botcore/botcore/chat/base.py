@@ -14,7 +14,7 @@ import re
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, NamedTuple
+from typing import TYPE_CHECKING, Any, NamedTuple, Union
 
 from .types import (
     ActionEvent,
@@ -68,7 +68,7 @@ class ChannelNotPrivate(ChatError):
     owner and the bot. Not transient: the bot does not start."""
 
 
-Key = str | re.Pattern
+Key = Union[str, re.Pattern]  # Union, not |: botcore supports Python 3.9
 Handler = Callable[..., Any]
 
 

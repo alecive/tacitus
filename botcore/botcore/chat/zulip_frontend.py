@@ -71,12 +71,8 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-try:
-    from .. import card_text as _ct
-    from .. import resident_io as _rio
-except ImportError:
-    import card_text as _ct
-    import resident_io as _rio
+from . import card_text as _ct
+from . import files as _files
 
 from .base import (
     AlreadyArchived,
@@ -1810,7 +1806,7 @@ class ZulipFrontend(ChatFrontend):
         # dest_dir is the resident's uploads dir: the directory and the file
         # are made with the resident's access, and the file replaces
         # whatever is at the name instead of writing through it.
-        if not (_rio.make_dir(dest, 0o2775) and _rio.replace_bytes(target, r.content, 0o664)):
+        if not (_files.make_dir(dest, 0o2775) and _files.replace_bytes(target, r.content, 0o664)):
             log.warning("zulip download could not be saved to %s", target)
             return None
         return str(target)

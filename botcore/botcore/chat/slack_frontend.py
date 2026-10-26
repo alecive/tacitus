@@ -27,12 +27,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-try:
-    from .. import card_text as _ct
-    from .. import resident_io as _rio
-except ImportError:
-    import card_text as _ct
-    import resident_io as _rio
+from . import card_text as _ct
+from . import files as _files
 
 from .base import (
     AlreadyArchived,
@@ -951,8 +947,8 @@ class SlackFrontend(ChatFrontend):
             resp = req.get(ref.url, headers={"Authorization": f"Bearer {self._bot_token}"},
                            timeout=30)
             resp.raise_for_status()
-            if not (_rio.make_dir(upload_dir, 0o2775)
-                    and _rio.replace_bytes(local_path, resp.content, 0o664)):
+            if not (_files.make_dir(upload_dir, 0o2775)
+                    and _files.replace_bytes(local_path, resp.content, 0o664)):
                 raise OSError(f"could not save the download to {local_path}")
             log.info(f"Downloaded Slack file to {local_path} ({len(resp.content)} bytes)")
             return str(local_path)
