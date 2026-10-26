@@ -2833,7 +2833,7 @@ def _tools_block(body_file: str, needed_modules: set[str] | None = None) -> str:
   archive-message, snooze-message, wake-snoozed, get-attachments, scan-attachments,
   attach-file and remove-attachment (on a draft; a swap is remove, then attach)
   For "what is newest in <folder>": list-mail --folder sentitems --top 25
-  (server-side newest-first; search-mail needs a query and scans client-side).
+  (server-side newest-first; search-mail needs a query and searches the folder).
   To READ A THREAD: get-conversation --conversation-id <id>. ONE call for
   the whole thread, quoted history stripped. Never search-mail plus a
   get-message per hit -- search-mail matches loosely, so you pay for hits
