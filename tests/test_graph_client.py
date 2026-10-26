@@ -864,10 +864,16 @@ _ADMISSIONS_ID = "AAMkAQQQQQQQQQQQQQAQQQQQAdmissionsFolderIdQQQQQQQQQQQQ="
 
 
 def _folders(path, params=None):
-    tops = {"/me/mailFolders": [{"id": "AAMkInboxId", "displayName": "Inbox"},
-                                {"id": _ADMISSIONS_ID, "displayName": "admissions-inquiries"}],
-            "/me/mailFolders/inbox/childFolders": [{"id": "AAMkChildId", "displayName": "Receipts"}]}
-    return {"value": tops[path]}
+    tree = {"/me/mailFolders": [{"id": "AAMkInboxId", "displayName": "Inbox", "childFolderCount": 1},
+                                {"id": _ADMISSIONS_ID, "displayName": "admissions-inquiries"},
+                                {"id": "AAMkResearchId", "displayName": "Research", "childFolderCount": 1},
+                                {"id": "AAMkOtherId", "displayName": "Other", "childFolderCount": 1}],
+            "/me/mailFolders/AAMkInboxId/childFolders": [{"id": "AAMkChildId", "displayName": "Receipts"}],
+            "/me/mailFolders/AAMkResearchId/childFolders": [
+                {"id": "AAMkCandId", "displayName": "Phd_Candidates", "childFolderCount": 1}],
+            "/me/mailFolders/AAMkCandId/childFolders": [{"id": "AAMkNotesA", "displayName": "Notes"}],
+            "/me/mailFolders/AAMkOtherId/childFolders": [{"id": "AAMkNotesB", "displayName": "Notes"}]}
+    return {"value": tree[path]}
 
 
 def test_resolve_folder_passes_well_known_names_and_ids():
@@ -885,9 +891,22 @@ def test_resolve_folder_finds_a_user_folder_by_name():
         assert gc.resolve_folder("admissions-inquiries") == _ADMISSIONS_ID
         assert gc.resolve_folder("Admissions-Inquiries") == _ADMISSIONS_ID
         assert gc.resolve_folder("receipts") == "AAMkChildId"
-    # the top level is read once for the first name, then the cache answers
-    assert calls == ["/me/mailFolders", "/me/mailFolders",
-                     "/me/mailFolders/inbox/childFolders"], calls
+    # the tree is walked once per new name; a case variant is the same name
+    assert calls.count("/me/mailFolders") == 2, calls
+
+
+def test_resolve_folder_finds_a_folder_at_any_depth_or_by_its_path():
+    gc._FOLDER_IDS.clear()
+    with patch.object(gc, "graph_get", lambda p, params=None: _folders(p)):
+        assert gc.resolve_folder("PhD_Candidates") == "AAMkCandId"
+        assert gc.resolve_folder("research/phd_candidates") == "AAMkCandId"
+        assert gc.resolve_folder("Research/Phd_Candidates/Notes") == "AAMkNotesA"
+        try:
+            gc.resolve_folder("Notes")
+        except LookupError as e:
+            assert "Research/Phd_Candidates/Notes" in str(e) and "Other/Notes" in str(e)
+        else:
+            raise AssertionError("two folders named Notes resolved to one")
 
 
 def test_resolve_folder_refuses_an_unknown_name():

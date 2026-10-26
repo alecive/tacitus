@@ -1103,28 +1103,54 @@ _FOLDER_ID_RE = re.compile(r"^[A-Za-z0-9+/=_-]{40,}$")
 _FOLDER_IDS: dict[str, str] = {}
 
 
+_FOLDER_TREE_DEPTH = 8
+
+
+def _folder_tree() -> list[tuple[str, str]]:
+    """(path, id) of every mail folder, parents first, the path joined
+    with "/" ("Research/PhD Candidates")."""
+    # shortcut: 200 folders per parent, one page; page when a mailbox has more.
+    out, level = [], [("/me/mailFolders", "")]
+    for _ in range(_FOLDER_TREE_DEPTH):
+        nxt = []
+        for endpoint, prefix in level:
+            data = graph_get(endpoint, {"$select": "id,displayName,childFolderCount", "$top": 200})
+            for f in data.get("value", []):
+                name = (f.get("displayName") or "").strip()
+                if not (name and f.get("id")):
+                    continue
+                path = f"{prefix}/{name}" if prefix else name
+                out.append((path, f["id"]))
+                if f.get("childFolderCount"):
+                    nxt.append((f"/me/mailFolders/{f['id']}/childFolders", path))
+        if not nxt:
+            break
+        level = nxt
+    return out
+
+
 def resolve_folder(folder: str) -> str:
     """The /me/mailFolders path segment for `folder`. A well-known name or a
-    folder id passes as it is. Any other name is a folder the user made,
-    matched by display name (case-insensitive) at the top of the mailbox,
-    then under the inbox. Raises LookupError when no folder has the name."""
+    folder id passes as it is. Any other name is a folder the user made, at
+    any depth, matched case-insensitively by its path ("Research/PhD
+    Candidates") or by its own name. Raises LookupError when no folder has
+    the name, or when several do and only the path can tell them apart."""
     name = (folder or "").strip()
     if name.lower() in WELL_KNOWN_FOLDERS:
         return name.lower()
     if _FOLDER_ID_RE.match(name):
         return name
-    key = name.lower()
+    key = name.strip("/").lower()
     if key not in _FOLDER_IDS:
-        for parent in ("/me/mailFolders", "/me/mailFolders/inbox/childFolders"):
-            data = graph_get(parent, {"$select": "id,displayName", "$top": 200})
-            for f in data.get("value", []):
-                if (f.get("displayName") or "").strip().lower() == key and f.get("id"):
-                    _FOLDER_IDS[key] = f["id"]
-                    break
-            if key in _FOLDER_IDS:
-                break
-        else:
+        tree = _folder_tree()
+        hits = ([(p, i) for p, i in tree if p.lower() == key]
+                or [(p, i) for p, i in tree if p.rsplit("/", 1)[-1].lower() == key])
+        if not hits:
             raise LookupError(f"no mail folder named {name!r}")
+        if len(hits) > 1:
+            raise LookupError(f"several mail folders are named {name!r}: "
+                              + ", ".join(p for p, _ in hits) + "; pass the path")
+        _FOLDER_IDS[key] = hits[0][1]
     return _FOLDER_IDS[key]
 
 
