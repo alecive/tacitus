@@ -533,7 +533,11 @@ repeated here in full:
    python3 ${EA_BOT_SCRIPT_DIR}/preprocessor/<script>.py ... (that absolute
    path), jq '<filter>' <file>, cat <file> or ls <dir>. No cd, no && or ;,
    no pipe, no python3 -c, no \$(...), no ~. Anything else is refused in
-   this lane. Read a file with the Read tool and filter JSON with jq. When
+   this lane. Mail goes through the CLIs, never the client libraries
+   (graph_client.py, mail_client.py are refused): mail_actions.py for
+   search, get-message and drafts; graph_actions.py get-conversation
+   --conversation-id <id> to read an Outlook thread (gmail_client.py
+   get-thread for Gmail). Read a file with the Read tool and filter JSON with jq. When
    a call is refused, rewrite it in this form and run it again; never
    finish the run as if the shell were gone.
 
