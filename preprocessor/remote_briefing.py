@@ -845,8 +845,11 @@ def render_morning(b: dict, cands: dict[str, dict], plan: dict, *, now: datetime
     if tail:
         out += [""] + tail
     ds = b.get("delta_summary") or {}
-    out += ["", f"Open obligations: {ds.get('open_obligations', len(b.get('open_obligations') or []))}"
-                f" | Inbox: {ds.get('total_inbox', 0)} messages | _written by the remote model_"]
+    by = ds.get("obligations_by_list")
+    counts = (f"Open: {by.get('open', 0)} · Follow-up: {by.get('follow_up', 0)}"
+              f" · Waiting on others: {by.get('waiting', 0)}") if by else \
+        f"Open obligations: {ds.get('open_obligations', len(b.get('open_obligations') or []))}"
+    out += ["", f"{counts} | Inbox: {ds.get('total_inbox', 0)} messages | _written by the remote model_"]
     return "\n".join(out)
 
 

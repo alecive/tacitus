@@ -2262,6 +2262,20 @@ def _mail_gate(msgs: list, label: str, budget_s: float = 60.0):
     return mail_gate.Gate(msgs, label=label, graph=graph, budget_s=budget_s)
 
 
+def _obligations_by_list(entries: list) -> dict:
+    """The non-closed rows split as the ledger lists them: the main list,
+    follow-ups, and rows waiting on someone else (the waiting status, or
+    the waiting type on an open row). open_obligations is their sum."""
+    out = {"open": 0, "follow_up": 0, "waiting": 0}
+    for e in entries:
+        if e.get("status") == "waiting" or e.get("type") == "waiting":
+            out["waiting"] += 1
+        elif e.get("status") == "follow_up":
+            out["follow_up"] += 1
+        else:
+            out["open"] += 1
+    return out
+
 def run_full_daily(force_full: bool = False) -> dict:
     """
     Daily preprocessing with delta tracking.
@@ -2662,6 +2676,7 @@ def run_full_daily(force_full: bool = False) -> dict:
             "flagged_count": len(flagged),
             "events_next_14d": len(calendar),
             "open_obligations": len(open_obligations),
+            "obligations_by_list": _obligations_by_list(open_obligations),
         },
         # Ranked queue, computed in code. The briefing LEADS with today_top
         # (each entry carries its reason); everything_else is digest-only.

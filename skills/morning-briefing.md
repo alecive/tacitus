@@ -472,8 +472,12 @@ one this list is the only notice.]
 :question: *Needs you* ([N])
 - [item] — [the decision in one line, and what you will do once it is made]
 
-Open obligations: [N] | Inbox: [N] messages
+Open: [N] · Follow-up: [N] · Waiting on others: [N] | Inbox: [N] messages
 ```
+
+Take the three counts from `delta_summary.obligations_by_list` (`open`,
+`follow_up`, `waiting`), never from a count of your own: the main ledger
+list is `open`, and waiting rows are not open work.
 
 Then post threads ONLY for items requiring user input (draft approvals, scheduling choices).
 

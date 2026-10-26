@@ -734,3 +734,16 @@ def test_times_follow_the_users_configured_zone_not_the_machines(tmp_path, monke
     import preprocess
     assert preprocess._event_local_day(dinner_ev) == dinner_day
     assert preprocess._user_today() == datetime.now(ZoneInfo(zone)).strftime("%Y-%m-%d")
+def test_the_footer_splits_the_obligations_by_list():
+    import preprocess
+    rows = [{"status": "open", "type": "task"}, {"status": "open", "type": "waiting"},
+            {"status": "waiting", "type": "response_needed"}, {"status": "follow_up", "type": "lor"},
+            {"status": "snoozed", "type": "task"}]
+    by = preprocess._obligations_by_list(rows)
+    assert by == {"open": 2, "follow_up": 1, "waiting": 2}
+    b = _briefing()
+    b["delta_summary"]["obligations_by_list"] = by
+    c = rb.candidates(b, today=NOW.date())
+    post = rb.render_morning(b, c, {"get_done_today": [], "flexes": [], "needs_you": []},
+                             now=NOW, drafts=[], escalated=[])
+    assert "Open: 2 · Follow-up: 1 · Waiting on others: 2 | Inbox: 40 messages" in post
