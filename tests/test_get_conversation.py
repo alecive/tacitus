@@ -331,7 +331,7 @@ def _empty_folder_search(folder):
     import io
     import json
     buf = io.StringIO()
-    with patch.object(ga.graph, "get_messages", lambda *a, **k: []), \
+    with patch.object(ga.graph, "search_messages", lambda *a, **k: ([], False)), \
             patch("sys.stdout", buf):
         ga.cmd_search_mail(SimpleNamespace(query="Gala", top=10,
                                            folder=folder))
@@ -370,7 +370,7 @@ def test_a_folder_search_with_hits_is_not_annotated():
                subject="RE: Gala Invitation for Sept 3")
     row["bodyPreview"] = "I am sorry, I cannot make the Sept 3 gala."
     buf = io.StringIO()
-    with patch.object(ga.graph, "get_messages", lambda *a, **k: [row]), \
+    with patch.object(ga.graph, "search_messages", lambda *a, **k: ([row], False)), \
             patch("sys.stdout", buf):
         ga.cmd_search_mail(SimpleNamespace(query="Gala", top=10,
                                            folder="sentitems"))
@@ -473,9 +473,9 @@ def test_a_note_row_never_travels_with_message_rows():
         ("search_messages", (rows, True),
          SimpleNamespace(query="x", top=5, folder=None)),
         # a scoped search that found nothing: a note here is alone, so allowed
-        ("get_messages", [],
+        ("search_messages", ([], False),
          SimpleNamespace(query="x", top=5, folder="sentitems")),
-        ("get_messages", rows,
+        ("search_messages", (rows, False),
          SimpleNamespace(query="hi", top=5, folder="sentitems")),
     ):
         with patch.object(ga.graph, attr, lambda *a, **k: value):
@@ -524,6 +524,21 @@ def test_calendar_view_prints_exactly_one_json_document():
 
 
 # ── mediation ──────────────────────────────────────────────────────────
+
+def test_a_folder_search_asks_graph_to_search_that_folder():
+    """--folder runs Graph's $search on the folder itself (its whole
+    history, bodies included), not a filter over its recent messages."""
+    seen = []
+    with patch.object(ga.graph, "graph_get",
+                      lambda path, params=None: seen.append((path, params["$search"]))
+                      or {"value": []}), \
+            patch.object(ga.graph, "resolve_folder",
+                         lambda name: "FOLDERID" if name == "Admissions" else name):
+        ga.graph.search_messages("Gala", folder="Admissions")
+        ga.graph.search_messages("Gala")
+    assert seen == [("/me/mailFolders/FOLDERID/messages", '"Gala"'),
+                    ("/me/messages", '"Gala"')]
+
 
 
 if __name__ == "__main__":

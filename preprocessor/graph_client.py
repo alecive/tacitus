@@ -1228,15 +1228,19 @@ def list_folder_messages(folder: str = "inbox", top: int = 25,
     return data.get("value", []), has_more
 
 
-def search_messages(query: str, top: int = 25) -> tuple[list, bool]:
-    """Full-text search across mailbox.
+def search_messages(query: str, top: int = 25, folder: str | None = None) -> tuple[list, bool]:
+    """Full-text search across mailbox, or inside one folder (a well-known
+    name or one the user made, see resolve_folder; LookupError if none has
+    the name). A folder search does not descend into its subfolders.
 
     Returns (results, has_more), at most `top` results per call. Paginating a
     broad query returns 200+ results, takes 100+ seconds and produces 170KB+
     of JSON that bloats LLM context, so this does not paginate.
     """
     params = {"$search": f'"{query}"', "$top": top, "$select": MAIL_FIELDS}
-    data = graph_get("/me/messages", params)
+    endpoint = (f"/me/mailFolders/{resolve_folder(folder)}/messages" if folder
+                else "/me/messages")
+    data = graph_get(endpoint, params)
     has_more = "@odata.nextLink" in data
     return data.get("value", []), has_more
 
