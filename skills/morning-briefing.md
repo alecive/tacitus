@@ -472,16 +472,16 @@ one this list is the only notice.]
 :question: *Needs you* ([N])
 - [item] — [the decision in one line, and what you will do once it is made]
 
-Open: [N] · Follow-up: [N] · Waiting on others: [N] | Inbox: [N] messages
+Open obligations: [N] | Inbox: [N] messages
 ```
 
-Take the counts from `delta_summary.obligations_by_list` (`open`,
-`follow_up`, `snoozed`, `waiting`), never from a count of your own; add
-`· Snoozed: [N]` after Follow-up when it is not 0. Waiting rows are owed
-by someone else, and follow-up and snoozed rows are parked until a date,
-so none of them is open work. When the field is absent (the split is off
-on this install, or the briefing JSON is older), print `Open obligations:
-[N]` from `delta_summary.open_obligations` in place of the counts.
+`Open obligations: [N]` is `delta_summary.open_obligations`. When
+`delta_summary.obligations_by_list` is present (the install turned the
+split on), print its counts in place of it: `Open: [N] · Follow-up: [N] ·
+Waiting on others: [N]`, with `· Snoozed: [N]` after Follow-up when it is
+not 0. Never count the rows yourself. Waiting rows are owed by someone
+else, and follow-up and snoozed rows are parked until a date, so none of
+them is open work.
 
 Then post threads ONLY for items requiring user input (draft approvals, scheduling choices).
 
