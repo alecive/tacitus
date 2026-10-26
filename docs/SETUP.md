@@ -939,7 +939,8 @@ Two environment files, and the split is the security model:
   Graph keys (`GRAPH_AUTH_METHOD`, `GRAPH_CLIENT_ID`, `GRAPH_AUTHORITY`,
   `GRAPH_REDIRECT_URI`, `GRAPH_SCOPES`), the `EA_SLACK_*` ids, `EA_MODEL`
   (the bot's Claude model), the optional `EA_SCHED_CHANNEL_ID`,
-  `EA_RESIDENT_MODEL`, `EA_DASH_*`. The owner's loader
+  `EA_RESIDENT_MODEL`, `EA_BRIEFING_MODEL` (the briefings' model when it
+  should differ from `EA_MODEL`), `EA_DASH_*`. The owner's loader
   (`scripts/owner-io.sh env`) takes only config keys from it and skips a
   secret put here with a warning.
 - `~/.ea-private/secrets.env`: mode 600, yours, in a 0700 directory. The
