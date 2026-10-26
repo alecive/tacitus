@@ -1071,6 +1071,12 @@ def graph_patch(endpoint: str, body: dict) -> dict:
     return _normalize(resp.json()) if resp.content else {}
 
 
+def mark_message_read(message_id: str) -> dict:
+    """Mark a message read in place. Does NOT move or archive it."""
+    graph_patch(f"/me/messages/{_id(message_id)}", {"isRead": True})
+    return {"marked_read": True, "message_id": message_id}
+
+
 def graph_delete(endpoint: str) -> None:
     """DELETE request to Graph/Outlook API. Returns nothing on success."""
     url = _check_endpoint(endpoint)

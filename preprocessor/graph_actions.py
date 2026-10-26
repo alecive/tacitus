@@ -1298,6 +1298,12 @@ def cmd_scan_attachments(args):
         print(json.dumps({"result": "no actionable info found in PDF attachments"}))
 
 
+def cmd_mark_read(args):
+    """Mark a message read in place (never moved). Ungated: only the
+    user's own read flag changes."""
+    print(json.dumps(graph.mark_message_read(args.message_id)))
+
+
 def cmd_archive_message(args):
     """Move a message to the Archive folder. A message id is stale once the
     message has moved (Graph gives a message a new id per folder), so a 404
@@ -2372,6 +2378,11 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("scan-attachments", allow_abbrev=False)
     p.add_argument("--message-id", required=True)
     p.set_defaults(func=cmd_scan_attachments)
+
+    # mark-read
+    p = sub.add_parser("mark-read", allow_abbrev=False)
+    p.add_argument("--message-id", required=True)
+    p.set_defaults(func=cmd_mark_read)
 
     # archive-message
     p = sub.add_parser("archive-message", allow_abbrev=False)
