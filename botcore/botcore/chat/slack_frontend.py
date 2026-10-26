@@ -236,21 +236,87 @@ def _draft_head(card: ConfirmationCard) -> list[dict]:
     return blocks
 
 
-def _draft_tail(card: ConfirmationCard) -> list[dict]:
-    return [_divider(), _actions_block(card, [_button(a) for a in card.actions])] + _footer(card)
+def _draft_tail(card: ConfirmationCard, extra: list[dict] = ()) -> list[dict]:
+    buttons = [_button(a) for a in card.actions] + list(extra)
+    return [_divider(), _actions_block(card, buttons)] + _footer(card)
+
+
+SHOW_QUOTED_ACTION = "show_quoted"
+
+
+def _show_quoted_button(card: ConfirmationCard) -> list[dict]:
+    """The Show thread button, carrying the draft's own value so the tap
+    reads the same draft; none when no action names one."""
+    value = next((a.value for a in card.actions
+                  if isinstance(a.value, dict) and a.value.get("draft_id")), None)
+    if value is None:
+        return []
+    return [{"type": "button", "text": {"type": "plain_text", "text": ":scroll: Show thread",
+                                        "emoji": True},
+             "action_id": SHOW_QUOTED_ACTION, "value": _value_str(value)}]
 
 
 def _full_draft_blocks(card: ConfirmationCard) -> list[dict]:
-    """The draft card with the whole body, split across sections of 2800,
-    then the quoted thread under a label, quoted and split the same way."""
+    """The draft card with the whole body, split across sections of 2800.
+    The quoted thread (thousands of characters on a long one) is one line
+    under its label and a Show thread button that posts it under the card,
+    as Zulip folds it into a spoiler."""
     body = [_section(c) for c in _chunks(_body_mrkdwn(card.body), BODY_CHARS)] or \
         [_section("_(empty body)_")]
-    quoted = []
+    quoted, extra = [], []
     if (card.quoted or "").strip():
-        quoted = [_section(f"*{QUOTED_LABEL}:*")] + \
-            [_section(c) for c in _chunks(_quote_lines(_body_mrkdwn(card.quoted)),
-                                          BODY_CHARS)]
-    return _draft_head(card) + body + quoted + _draft_tail(card)
+        extra = _show_quoted_button(card)
+        how = "Tap *Show thread* to read it." if extra else "Open the draft to read it."
+        quoted = [_section(f"*{QUOTED_LABEL}:* {len(card.quoted):,} characters, "
+                           f"hidden. {how}")]
+    return _draft_head(card) + body + quoted + _draft_tail(card, extra)
+
+
+HIDE_QUOTED_ACTION = "hide_quoted"
+
+
+def toggle_quoted_blocks(blocks: list[dict], quoted: str, show: bool) -> list[dict] | None:
+    """A draft card's posted blocks with the quoted thread opened under its
+    label (show) or folded back to one line, and the button flipped; None
+    for a card without the label. An opened thread is cut to what fits in
+    one message."""
+    def _is_label(b):
+        return b.get("type") == "section" and \
+            str((b.get("text") or {}).get("text", "")).startswith(f"*{QUOTED_LABEL}:*")
+    i = next((n for n, b in enumerate(blocks) if _is_label(b)), None)
+    if i is None:
+        return None
+    j = i + 1
+    while j < len(blocks) and str(blocks[j].get("block_id", "")).startswith("quoted_"):
+        j += 1
+    head, tail = blocks[:i], [dict(b) for b in blocks[j:]]
+    secs = []
+    if show:
+        label = _section(f"*{QUOTED_LABEL}:*")
+        chunks = _chunks(_quote_lines(_body_mrkdwn(quoted)), BODY_CHARS)
+        room = max(MAX_BLOCKS - len(head) - len(tail) - 2, 0)
+        secs = [dict(_section(c), block_id=f"quoted_{k}") for k, c in enumerate(chunks[:room])]
+        if len(chunks) > room:
+            secs.append(dict(_section("_(the rest of the thread is longer than a card shows; "
+                                      "open the draft to read it)_"), block_id="quoted_cut"))
+    else:
+        label = _section(f"*{QUOTED_LABEL}:* {len(quoted):,} characters, hidden. "
+                         "Tap *Show thread* to read it.")
+    for b in tail:
+        if b.get("type") == "actions":
+            b["elements"] = [dict(e) for e in b.get("elements") or []]
+            for e in b["elements"]:
+                if e.get("action_id") in (SHOW_QUOTED_ACTION, HIDE_QUOTED_ACTION):
+                    e["action_id"] = HIDE_QUOTED_ACTION if show else SHOW_QUOTED_ACTION
+                    e["text"] = {"type": "plain_text", "emoji": True,
+                                 "text": ":scroll: Hide thread" if show else ":scroll: Show thread"}
+    return head + [label] + secs + tail
+
+
+def quoted_thread_text(quoted: str) -> str:
+    """The quoted thread as one message, quoted; Slack folds a long one
+    behind its own Show more."""
+    return f"*{QUOTED_LABEL}:*\n" + _quote_lines(_body_mrkdwn(quoted))[:39000]
 
 
 def draft_card_fits(card: ConfirmationCard) -> bool:
