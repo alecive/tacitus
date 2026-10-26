@@ -210,6 +210,14 @@ def test_an_interpreter_newer_than_the_wheels_is_passed_over(tmp_path):
     _stub(bin_, "python3", 'case "$1" in --version) echo "Python 3.15.0";; *) exit 0;; esac')
     _stub(bin_, "python3.12", 'case "$1" in --version) echo "Python 3.12.9";; *) exit 0;; esac')
     r = _run(["--check"], path=str(bin_))
+    # The search tries Homebrew's python@3.1x before PATH's versioned names,
+    # so on a host that has one it is found first.
+    brew = [f"{p}/opt/python@{v}/libexec/bin/python3" for p in ("/opt/homebrew", "/usr/local")
+            for v in ("3.13", "3.12")]
+    if any(os.path.exists(f) for f in brew):
+        assert any(re.search(rf"ok\s+python3\s+\S+ \({re.escape(f)}\)", r.stdout)
+                   for f in brew), r.stdout
+        return
     assert re.search(r"ok\s+python3\s+3\.12\.9 \(.*python3\.12\)", r.stdout), r.stdout
     os.remove(bin_ / "python3.12")
     fixed = [f for f in ("/opt/homebrew/bin/python3", "/usr/local/bin/python3") if os.path.exists(f)]
