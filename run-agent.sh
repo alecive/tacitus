@@ -492,6 +492,28 @@ if [[ -n "$USER_RULES" ]]; then
     SKILL_CONTENT="${SKILL_CONTENT}"$'\n\n'"${USER_RULES}"
 fi
 
+# EA_LITERAL_COMMANDS=1 in .env (off by default): a fifth repeated rule, for
+# a model that writes compound shell commands, which this lane's literal
+# allowlist refuses (cd, &&, pipes, python3 -c). Off, the prompt is as before.
+RULE_COUNT=four
+LITERAL_RULE=""
+if [[ "${EA_LITERAL_COMMANDS:-}" == 1 ]]; then
+    RULE_COUNT=five
+    LITERAL_RULE="5. EVERY Bash CALL IS ONE COMMAND THIS LANE GRANTS, matched literally:
+   python3 ${EA_BOT_SCRIPT_DIR}/preprocessor/<script>.py ... for one of the
+   granted scripts (that absolute path), jq '<filter>' <file>, cat <file> or
+   ls <dir>. No cd, no && or ;, no pipe, no python3 -c, no \$(...), no ~.
+   Outlook mail goes through graph_actions.py (search-mail, get-message,
+   get-conversation, create-reply, create-draft), Gmail through
+   gmail_client.py; never run graph_client.py. Read files with the Read
+   tool, filter JSON with jq, and write files with Write or Edit. A call
+   refused for its FORM (a pipe, a cd, a relative path): rewrite it as one
+   granted command and run it again. A call refused by design (send-draft,
+   create-event, any verb that waits for a button) stays refused; never
+   retry it. Never finish the run as if the shell were gone.
+"
+fi
+
 PROMPT="You are running as the EA agent '${AGENT}' at $(date).
 ${PREPROCESS_WARNING:+
 ${PREPROCESS_WARNING}
@@ -505,7 +527,7 @@ The CLAUDE.md with full operating instructions is at: ${EA_BOT_SCRIPT_DIR}/CLAUD
 Topic guides (drafting voice, scheduling, reimbursement, briefing data, inbox completion, project store) are in ${EA_BOT_SCRIPT_DIR}/docs/ea/; read the one your task needs.
 You run from ${EA_BOT_HOME}, so that CLAUDE.md is NOT loaded for you; the
 install's own facts (CLAUDE.local.md) are in the skill text above. These
-four rules from CLAUDE.md are the ones this lane gets wrong, so they are
+${RULE_COUNT:-four} rules from CLAUDE.md are the ones this lane gets wrong, so they are
 repeated here in full:
 
 1. A SEARCH THAT FINDS NOTHING IS NOT PROOF THAT NOTHING HAPPENED. Never
@@ -529,7 +551,7 @@ repeated here in full:
    closes it by hand. Measured: id-less rows score 0% closure recall at
    every revision ever shipped; the same rows with ids score 100%.
    ledger.py add derives the conversation id from the message id for you.
-
+${LITERAL_RULE:-}
 CRITICAL OUTPUT RULE: claude -p only captures text from the FINAL assistant turn.
 Any text you write BEFORE a tool call is SILENTLY DROPPED and the user sees nothing.
 Therefore: do ALL tool calls (reading files, updating state, writing ledger) FIRST,

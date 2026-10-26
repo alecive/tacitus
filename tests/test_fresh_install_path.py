@@ -181,6 +181,27 @@ def test_briefing_model_follows_the_installs_pin():
     assert model(EA_MODEL="m-chat", EA_BRIEFING_MODEL="m-brief") == "m-brief"
 
 
+
+def test_the_literal_command_rule_is_opt_in():
+    """EA_LITERAL_COMMANDS=1 adds rule 5 to the cron prompt; unset, the
+    prompt says four rules and carries no fifth."""
+    start = RUN_AGENT.index("RULE_COUNT=four")
+    gate = RUN_AGENT[start:RUN_AGENT.index("\nfi\n", start) + 4]
+
+    def rules(**env):
+        out = subprocess.run(["bash", "-c", gate + 'printf "%s|%s" "$RULE_COUNT" "$LITERAL_RULE"'],
+                             capture_output=True, text=True,
+                             env={"PATH": os.environ["PATH"], "EA_BOT_SCRIPT_DIR": "/srv/ea", **env}).stdout
+        return out.split("|", 1)
+
+    assert rules() == ["four", ""]
+    assert rules(EA_LITERAL_COMMANDS="0") == ["four", ""]
+    count, rule = rules(EA_LITERAL_COMMANDS="1")
+    assert count == "five" and rule.startswith("5. EVERY Bash CALL")
+    assert "/srv/ea/preprocessor/<script>.py" in rule and "$(...)" in rule
+    assert "mail_actions" not in rule and "never\n   retry it" in rule
+    assert "${RULE_COUNT:-four} rules from CLAUDE.md" in RUN_AGENT and "${LITERAL_RULE:-}" in RUN_AGENT
+
 # ── the doctor on an email profile ───────────────────────────────────
 
 def _doctor(ea_dir: Path, profile: str) -> dict:
