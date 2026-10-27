@@ -1051,9 +1051,13 @@ case "$AGENT" in
                 set -e
                 log "Open-claim audit: ${AUDIT_SUMMARY:-apply failed rc=$AUDIT_APPLY_RC}"
                 if [[ "$AUDIT_APPLY_RC" == "0" && -s "$AUDIT_NOTE" ]]; then
-                    AUDIT_REWRITE_PROMPT="$PROMPT"$'\n\n'"$(cat "$AUDIT_NOTE")"
+                    # Text only, with no tools: the run's work (drafts, staged
+                    # cards, ledger writes) is done. The agent's own prompt
+                    # would have it do all of it again, and every staged card
+                    # posted twice.
+                    AUDIT_REWRITE_PROMPT="You wrote the ${AGENT} message below. Apply the corrections that follow and write it again. You have no tools here: everything the run did (drafts, cards, ledger changes) is already done, so do not repeat or mention it."$'\n\n'"$(cat "$AUDIT_NOTE")"$'\n\nThe message to rewrite:\n-----\n'"$(cat "$AUDIT_DRAFT")"$'\n-----\nOutput only the rewritten message, with nothing before or after it.'
                     set +e
-                    AUDIT_OUTPUT=$(invoke_claude "$AUDIT_REWRITE_PROMPT" "$MODEL" "$ALLOWED_TOOLS" "$DISALLOWED_TOOLS" "${AGENT}-audit-rewrite")
+                    AUDIT_OUTPUT=$(invoke_claude "$AUDIT_REWRITE_PROMPT" "$MODEL" "" "$DISALLOWED_TOOLS" "${AGENT}-audit-rewrite")
                     set -e
                     AUDIT_OUTPUT=$(strip_preamble <<< "$AUDIT_OUTPUT" 2>>"$LOG_FILE")
                     if [[ "$(validate_output "$AUDIT_OUTPUT" "$AGENT")" == "ok" ]]; then
