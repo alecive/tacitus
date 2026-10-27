@@ -188,7 +188,7 @@ def _etype(entry: dict) -> str:
 # Ledger entry types that are scheduling-shaped. The calendar-match
 # signal only fires on entries with these types (or matching the
 # scheduling-keyword fallback below).
-_SCHEDULING_TYPES: set[str] = {"scheduling"}
+_SCHEDULING_TYPES = ledger_mod.CALENDAR_MATCH_TYPES
 # `calls? (?!for)`: "Call for ... Projects" is a solicitation, not a
 # phone call, and a bare `call\b` reads it as scheduling.
 _SCHEDULING_KEYWORDS = re.compile(
@@ -204,9 +204,9 @@ _SCHEDULING_KEYWORDS = re.compile(
 # feels, so the calendar signal refuses them; only real completion
 # evidence (a confirmation, an ack in the thread, a completion report)
 # closes a deliverable.
-_DELIVERABLE_TYPES: set[str] = {
-    "deadline", "task", "reimbursement", "draft_pending", "ae_review_request",
-}
+# ae_review_request is a plugin's type, named here until plugins can
+# declare traits; an undeclared plugin type keeps exactly this behaviour.
+_DELIVERABLE_TYPES = ledger_mod.DELIVERABLE_TYPES | {"ae_review_request"}
 
 # Entry types that name a CORRESPONDENCE obligation: the work is a reply.
 # These are the only types `sender_reply_match` may close, because
@@ -216,7 +216,7 @@ _DELIVERABLE_TYPES: set[str] = {
 # the pre-briefing pass, so this is a second lock on a door the caller
 # normally keeps shut; `scrub_closures` takes `open_entries` from whoever
 # calls it, and one caller passing include_plugins would open it.
-_REPLY_SHAPED_TYPES: set[str] = {"response_needed", "scheduling", "follow_up"}
+_REPLY_SHAPED_TYPES = ledger_mod.REPLY_SHAPED_TYPES
 
 
 def _user_identity_tokens() -> set[str]:

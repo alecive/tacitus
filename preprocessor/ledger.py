@@ -41,6 +41,7 @@ import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from typing import NamedTuple
 from urllib.parse import quote as _url_quote
 
 try:
@@ -337,17 +338,51 @@ def is_detector_row(entry_id: str) -> bool:
 # is refused, so a rule written against a type sees every row of that kind.
 # A plugin row ('plugin:<name>' in source) keeps its own type: the plugin
 # owns its rows and queries them by that type.
+class Type(NamedTuple):
+    """A kind of row: what it means, and the traits the rules read.
+
+    closes_on_reply  a send in the row's thread finishes it (REPLY_TYPES)
+    reply_shaped     "the user wrote back" may close it (sender_reply_match)
+    deliverable      only completion evidence closes it; the calendar
+                     signal is refused (a guard)
+    calendar_match   the calendar-match signal may close it
+    waiting          someone else owes it; off the user's list (a guard)
+    on_user          counted as work on the user (project dashboard)
+    """
+    meaning: str
+    closes_on_reply: bool = False
+    reply_shaped: bool = False
+    deliverable: bool = False
+    calendar_match: bool = False
+    waiting: bool = False
+    on_user: bool = False
+
+
 TYPES = {
-    "response_needed": "a reply to someone is owed",
-    "follow_up": "the user owes someone a nudge or a follow-up message",
-    "scheduling": "a meeting to arrange or attend",
-    "task": "work the user owes: a document, form, purchase, introduction, decision",
-    "deadline": "a dated submission, registration or report",
-    "waiting": "someone else owes the user a deliverable",
-    "reimbursement": "receipts and reimbursement paperwork",
-    "dispute": "a billing or refund dispute",
-    "draft_pending": "a staged draft waiting for the user to send it",
+    "response_needed": Type("a reply to someone is owed",
+                            closes_on_reply=True, reply_shaped=True, on_user=True),
+    "follow_up": Type("the user owes someone a nudge or a follow-up message",
+                      closes_on_reply=True, reply_shaped=True),
+    "scheduling": Type("a meeting to arrange or attend",
+                       reply_shaped=True, calendar_match=True, on_user=True),
+    "task": Type("work the user owes: a document, form, purchase, introduction, decision",
+                 deliverable=True, on_user=True),
+    "deadline": Type("a dated submission, registration or report",
+                     deliverable=True, on_user=True),
+    "waiting": Type("someone else owes the user a deliverable", waiting=True),
+    "reimbursement": Type("receipts and reimbursement paperwork", deliverable=True),
+    "dispute": Type("a billing or refund dispute"),
+    "draft_pending": Type("a staged draft waiting for the user to send it",
+                          closes_on_reply=True, deliverable=True),
 }
+
+
+def types_with(trait: str) -> frozenset:
+    """The types that have `trait` on. Rules read these sets, never a list
+    of type names of their own."""
+    return frozenset(t for t, d in TYPES.items() if getattr(d, trait))
+
+
 TYPE_ALIASES = {
     "needs_response": "response_needed", "priority_alert": "response_needed",
     "dropped_thread": "response_needed",
@@ -405,11 +440,16 @@ def is_waiting(entry: dict) -> bool:
     """Someone else owes this row's deliverable. The user's own send in the
     thread (a nudge, a thank-you, an answer to a side question) never
     finishes it; only their delivery does."""
-    return canonical_type(entry.get("type")) == "waiting"
+    return canonical_type(entry.get("type")) in WAITING_TYPES
 
 
 # Types whose deliverable is the user's own message in the row's thread.
-REPLY_TYPES = ("response_needed", "follow_up", "draft_pending")
+REPLY_TYPES = types_with("closes_on_reply")
+REPLY_SHAPED_TYPES = types_with("reply_shaped")
+DELIVERABLE_TYPES = types_with("deliverable")
+CALENDAR_MATCH_TYPES = types_with("calendar_match")
+WAITING_TYPES = types_with("waiting")
+ON_USER_TYPES = types_with("on_user")
 
 # What finishes a row, declared when it is written (`add --closes-on`):
 #   reply       the user's reply to its correspondent (a task that is an
@@ -450,7 +490,7 @@ def checked_type(value: str | None, source: str | None) -> str:
         return t
     if t not in TYPES:
         raise ValueError(f"unknown type {value!r}; use one of: "
-                         + ", ".join(f"{k} ({v})" for k, v in TYPES.items()))
+                         + ", ".join(f"{k} ({v.meaning})" for k, v in TYPES.items()))
     return t
 
 
@@ -1974,7 +2014,7 @@ def cmd_normalize(args) -> int:
 
 def cmd_types(args) -> int:
     """The type and status words a row may carry."""
-    _output({"types": TYPES, "statuses": list(STATUSES),
+    _output({"types": {k: v.meaning for k, v in TYPES.items()}, "statuses": list(STATUSES),
              "aliases": {**TYPE_ALIASES, **STATUS_IS_TYPE}})
     return 0
 
