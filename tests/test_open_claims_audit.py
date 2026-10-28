@@ -354,8 +354,11 @@ def test_run_agent_wires_the_audit_between_validation_and_the_post():
     assert 'open_claims_audit.py" prepare' in body and 'open_claims_audit.py" apply' in body
     # the question is asked with NO tools, on the cheap model
     assert 'invoke_claude "$AUDIT_PROMPT" "sonnet" "" "$DISALLOWED_TOOLS"' in body
-    # the rewrite reuses the agent's own prompt plus the note, once
-    assert 'AUDIT_REWRITE_PROMPT="$PROMPT"$\'\\n\\n\'"$(cat "$AUDIT_NOTE")"' in body
+    # the rewrite gets the draft and the note, with NO tools: the agent's
+    # own prompt re-ran the whole skill and staged every card a second time
+    assert 'AUDIT_REWRITE_PROMPT="$PROMPT' not in body
+    assert '"$(cat "$AUDIT_NOTE")"' in body and '"$(cat "$AUDIT_DRAFT")"' in body
+    assert 'invoke_claude "$AUDIT_REWRITE_PROMPT" "$MODEL" "" "$DISALLOWED_TOOLS"' in body
     assert body.count("invoke_claude ") == 2
     # a rewrite that fails validation is discarded, never posted
     assert 'validate_output "$AUDIT_OUTPUT" "$AGENT"' in body
