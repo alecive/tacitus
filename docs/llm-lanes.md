@@ -644,6 +644,10 @@ one-click confirm (closure.py):
 Open obligations: 3 | Inbox: 41 messages | _written by the remote model_
 ```
 
+With `"obligation_split": {"enabled": true}` in `ea-config.json` the
+footer splits the total by list instead: `Open: 2 · Follow-up: 0 ·
+Waiting on others: 1` (and `· Snoozed: N` when there are snoozed rows).
+
 The afternoon update for the same day:
 
 <!-- example: briefing-afternoon -->

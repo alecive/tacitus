@@ -734,3 +734,36 @@ def test_times_follow_the_users_configured_zone_not_the_machines(tmp_path, monke
     import preprocess
     assert preprocess._event_local_day(dinner_ev) == dinner_day
     assert preprocess._user_today() == datetime.now(ZoneInfo(zone)).strftime("%Y-%m-%d")
+def test_the_footer_splits_the_obligations_by_list():
+    import preprocess
+    # waiting by type (and its older spellings), whatever the status; the
+    # parked rows by status; an open follow_up-type row is open work
+    rows = [{"status": "open", "type": "task"}, {"status": "open", "type": "waiting"},
+            {"status": "follow_up", "type": "awaiting"}, {"status": "follow_up", "type": "lor"},
+            {"status": "snoozed", "type": "task"}, {"status": "open", "type": "follow_up"}]
+    by = preprocess._obligations_by_list(rows)
+    assert by == {"open": 2, "follow_up": 1, "snoozed": 1, "waiting": 2}
+    assert sum(by.values()) == len(rows)
+    b = _briefing()
+    b["delta_summary"]["obligations_by_list"] = by
+    c = rb.candidates(b, today=NOW.date())
+    post = rb.render_morning(b, c, {"get_done_today": [], "flexes": [], "needs_you": []},
+                             now=NOW, drafts=[], escalated=[])
+    assert ("Open: 2 · Follow-up: 1 · Snoozed: 1 · Waiting on others: 2 | Inbox: 40 messages"
+            in post)
+
+
+def test_the_footer_split_is_off_unless_the_install_turns_it_on(tmp_path):
+    import ea_config
+    cfg = tmp_path / "ea-config.json"
+    assert not ea_config.obligation_split_enabled(cfg)
+    cfg.write_text('{"obligation_split": {"enabled": "yes"}}')
+    assert not ea_config.obligation_split_enabled(cfg)
+    cfg.write_text('{"obligation_split": {"enabled": true}}')
+    assert ea_config.obligation_split_enabled(cfg)
+    b = _briefing()
+    b["delta_summary"].pop("obligations_by_list", None)
+    c = rb.candidates(b, today=NOW.date())
+    post = rb.render_morning(b, c, {"get_done_today": [], "flexes": [], "needs_you": []},
+                             now=NOW, drafts=[], escalated=[])
+    assert "Open obligations: " in post and "Waiting on others" not in post

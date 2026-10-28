@@ -475,6 +475,14 @@ one this list is the only notice.]
 Open obligations: [N] | Inbox: [N] messages
 ```
 
+`Open obligations: [N]` is `delta_summary.open_obligations`. When
+`delta_summary.obligations_by_list` is present (the install turned the
+split on), print its counts in place of it: `Open: [N] · Follow-up: [N] ·
+Waiting on others: [N]`, with `· Snoozed: [N]` after Follow-up when it is
+not 0. Never count the rows yourself. Waiting rows are owed by someone
+else, and follow-up and snoozed rows are parked until a date, so none of
+them is open work.
+
 Then post threads ONLY for items requiring user input (draft approvals, scheduling choices).
 
 After writing the briefing text, STOP. Do NOT make any more tool calls.

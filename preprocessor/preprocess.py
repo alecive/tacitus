@@ -1941,6 +1941,7 @@ def compute_merged_availability(
 # Obligations ledger management (SQLite via ledger.py)
 # -------------------------------------------------------------------
 import ledger as _ledger_mod
+import ea_config as _ea_config
 import scheduled_sends as _scheduled_sends_mod
 
 
@@ -2261,6 +2262,23 @@ def _mail_gate(msgs: list, label: str, budget_s: float = 60.0):
     import mail_gate
     return mail_gate.Gate(msgs, label=label, graph=graph, budget_s=budget_s)
 
+
+def _obligations_by_list(entries: list) -> dict:
+    """The non-closed rows split by list, by STATUS except for waiting:
+    waiting is a row someone else owes (ledger.is_waiting, the type),
+    whatever its status; follow_up and snoozed are rows parked until a
+    date (their status); open is every other row, the work in front of the
+    user now, so an open row of type follow_up counts as open. The four
+    add up to open_obligations."""
+    out = {"open": 0, "follow_up": 0, "snoozed": 0, "waiting": 0}
+    for e in entries:
+        if _ledger_mod.is_waiting(e):
+            out["waiting"] += 1
+        elif e.get("status") in ("follow_up", "snoozed"):
+            out[e["status"]] += 1
+        else:
+            out["open"] += 1
+    return out
 
 def run_full_daily(force_full: bool = False) -> dict:
     """
@@ -2662,6 +2680,10 @@ def run_full_daily(force_full: bool = False) -> dict:
             "flagged_count": len(flagged),
             "events_next_14d": len(calendar),
             "open_obligations": len(open_obligations),
+            # ea-config.json "obligation_split": {"enabled": true}; off, the
+            # footer keeps its one total.
+            **({"obligations_by_list": _obligations_by_list(open_obligations)}
+               if _ea_config.obligation_split_enabled() else {}),
         },
         # Ranked queue, computed in code. The briefing LEADS with today_top
         # (each entry carries its reason); everything_else is digest-only.

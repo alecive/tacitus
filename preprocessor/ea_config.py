@@ -348,6 +348,13 @@ def mail_tagger_enabled(config_path: Path | None = None) -> bool:
     return isinstance(val, dict) and val.get("enabled") is True
 
 
+def obligation_split_enabled(config_path: Path | None = None) -> bool:
+    """Does the briefing footer split the open rows by list? Only a literal
+    true turns it on; off, the footer keeps its one total."""
+    val = load(config_path).get("obligation_split")
+    return isinstance(val, dict) and val.get("enabled") is True
+
+
 def mail_tagger_model(config_path: Path | None = None) -> str:
     """The model the tagger calls; a non-string value reads as the default."""
     val = load(config_path).get("mail_tagger")
