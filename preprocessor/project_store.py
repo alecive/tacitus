@@ -516,6 +516,16 @@ def cmd_pack(args) -> int:
     return _out(pack)
 
 
+def alias_weight(alias: str) -> int:
+    """What one alias hit scores. A name, an acronym, a number or a
+    phrase (`Northwind`, `ORION`, `4417`, `foundation repair`) names the
+    project: 3, the floor every caller places on. One lowercase word
+    (`foundation`, `settlement`) is a common word that turns up in
+    unrelated mail (a science foundation, a court settlement): 2, so it
+    places an item only with a second signal."""
+    return 2 if alias.isalpha() and alias.islower() else 3
+
+
 def match_projects(text: str, conn=None) -> list:
     """Deterministic project lookup for dispatch injection: name words,
     aliases, and member names/emails, scored. Returns [{id, score}]."""
@@ -530,9 +540,9 @@ def match_projects(text: str, conn=None) -> list:
     for r in conn.execute("SELECT id,name,aliases,status FROM projects"):
         if r["status"] == "closed":
             continue
-        for alias in filter(None, (r["aliases"] or "").split(",")):
-            if f" {alias.strip().lower()} " in hay:
-                bump(r["id"], 3)
+        for alias in filter(None, (a.strip() for a in (r["aliases"] or "").split(","))):
+            if f" {alias.lower()} " in hay:
+                bump(r["id"], alias_weight(alias))
         name_tokens = [t for t in re.split(r"\W+", r["name"].lower())
                        if len(t) >= 4]
         n_hits = sum(1 for t in name_tokens if f" {t} " in hay)
@@ -552,6 +562,25 @@ def match_projects(text: str, conn=None) -> list:
             bump(r["project_id"], 1)
     return sorted(({"id": k, "score": v} for k, v in scores.items()),
                   key=lambda x: -x["score"])
+
+
+TRACE = 1   # the least word score that confirms the mail tagger's call
+
+
+def checked_call(call: str | None, hits: list) -> list | None:
+    """The mail tagger's project call on an item (mail_tagger.call_for)
+    checked against the item's word match (`hits`, match_projects).
+    [call] when the words show any trace of that project (a member, two
+    name words, an alias: a score of TRACE or more); [] when they show
+    none, or when the tagger named no project; None when the tagger made
+    no call (Gmail, a row from chat, the tagger off), and the word match
+    decides alone. The model reads the whole message and the words keep
+    it honest: a call the words do not echo is most often a guess."""
+    if call is None:
+        return None
+    if call and any(h["id"] == call and h["score"] >= TRACE for h in hits):
+        return [call]
+    return []
 
 
 def suggest_projects(text: str, conn=None, limit: int = 3) -> list:
@@ -895,7 +924,8 @@ def main() -> int:
     p.add_argument("--parent")
     p.add_argument("--summary")
     p.add_argument("--next-actions", dest="next_actions")
-    p.add_argument("--aliases", help="comma-separated match aliases")
+    p.add_argument("--aliases", help="comma-separated match aliases; one lowercase "
+                   "word is a common word and needs a second signal to place mail")
     p.set_defaults(func=cmd_add_project)
 
     p = sub.add_parser("update-project", allow_abbrev=False)
