@@ -48,7 +48,7 @@ from urllib.parse import parse_qs, quote, urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import project_store  # noqa: E402
-from ledger import canonical_type  # noqa: E402
+from ledger import ON_USER_TYPES, canonical_type  # noqa: E402
 
 PORT = int(os.environ.get("EA_DASH_PORT", "8377"))
 HTML_PATH = Path(__file__).resolve().parent / "dashboard.html"
@@ -268,7 +268,7 @@ VALID_STATUS = ("active", "dormant", "closed")
 # on someone else or on a date. The ball being on the user is the desk's
 # primary signal; activity by anyone else is not a reason to rank a
 # project up.
-_ON_YOU = {"response_needed", "deadline", "task", "scheduling"}
+_ON_YOU = ON_USER_TYPES
 
 
 def apply_op(op: dict) -> dict:
