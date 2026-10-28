@@ -666,6 +666,30 @@ def test_inflight_thread_names_the_holder():
         rb.INFLIGHT_FILE, rb.SEND_LOCK_FILE = orig
 
 
+def test_a_dispatch_is_typed_as_the_users_request_before_the_paste():
+    """The TUI wraps a long paste as pasted content, and a message that is
+    only a paste read as material from elsewhere. A typed lead line comes
+    first, then the paste, then Enter."""
+    from types import SimpleNamespace
+    steps = []
+
+    def run(cmd, **kwargs):
+        if "send-keys" in cmd:
+            steps.append(("keys", cmd[-1]))
+        elif "paste-buffer" in cmd:
+            steps.append(("paste", ""))
+        return SimpleNamespace(returncode=0, stdout="")
+    orig = (rb.SEND_LOCK_FILE, rb._run, rb._tui_ready, rb.time.sleep)
+    with tempfile.TemporaryDirectory() as td:
+        try:
+            rb.SEND_LOCK_FILE = Path(td) / "send.lock"
+            rb._run, rb._tui_ready, rb.time.sleep = run, (lambda: True), (lambda _: None)
+            assert rb.send("[slack-dispatch id=x] hello")
+        finally:
+            rb.SEND_LOCK_FILE, rb._run, rb._tui_ready, rb.time.sleep = orig
+    assert steps[:3] == [("keys", rb.DISPATCH_LEAD), ("paste", ""), ("keys", "Enter")]
+
+
 if __name__ == "__main__":
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     passed = failed = 0

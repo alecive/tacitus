@@ -476,6 +476,16 @@ def test_resident_replies_carry_the_usage_footer():
     assert "response = reply + footer" in fn
 
 
+def test_a_cold_resident_follow_up_carries_the_thread():
+    """A follow-up the pane has not seen (it rotated past the hard cap)
+    reached a fresh session with no thread, which could not tell who
+    "him" was. It now carries the thread so far, as the per-thread lane does."""
+    fn = _fn_body("_try_resident_dispatch")
+    assert "if is_thread_reply and not _rctx.thread_seen(rctx_session_id, thread_ts):" in fn
+    assert "fetch_thread_history(channel, thread_ts)" in fn
+    assert "user_msg=dispatch_msg," in fn
+
+
 def test_a_new_message_opens_its_thread_under_the_key_it_already_has():
     """On Zulip a new post already has its thread key (its topic), and every
     follow-up uses that key; keying the first turn by message id split one

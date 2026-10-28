@@ -57,6 +57,7 @@ fi
 # tokens. There is no allow list in this lane: bypass mode makes one moot.
 exec sudo -n -u ea-bot env \
     HOME=/home/ea-bot \
+    SHELL=/bin/bash \
     EA_DIR=/home/ea-bot/.ea \
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/home/ea-bot/.local/bin \
     bash -c '
