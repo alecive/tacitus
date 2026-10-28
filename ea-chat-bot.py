@@ -9199,8 +9199,19 @@ def _try_resident_dispatch(channel: str, thread_ts: str, msg_ts: str,
     skill_blurb = skill_instructions if skill_instructions.strip() else ""
     rctx_session_id = _resident.session_id()
 
+    # A follow-up the pane has not seen in this session (it rotated past
+    # the hard cap, or restarted) carries the thread so far, as the
+    # per-thread lane does; a cold pane cannot know who "him" is.
+    dispatch_msg = user_msg
+    if is_thread_reply and not _rctx.thread_seen(rctx_session_id, thread_ts):
+        history = fetch_thread_history(channel, thread_ts)
+        if history:
+            dispatch_msg = (f"{user_msg}\n\n[This is a follow-up in a thread this "
+                            f"session has not seen. The thread so far ([EA] is you, "
+                            f"[User] is the user):]\n{history}")
+
     dispatch_text, rctx_debug = _rctx.build_dispatch(
-        user_msg=user_msg, thread_ts=thread_ts, msg_ts=msg_ts,
+        user_msg=dispatch_msg, thread_ts=thread_ts, msg_ts=msg_ts,
         session_id=rctx_session_id, briefing_blurb=briefing_blurb,
         skill_blurb=skill_blurb, detected_skills=detected_skills,
         scheduling_ctx=scheduling_ctx, needed_modules=needed_modules)

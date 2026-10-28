@@ -103,6 +103,7 @@ ROTATE_MAX_BYTES = 500_000
 # thread would stay slow, so rotate even mid-thread and eat one cold start.
 ROTATE_HARD_MAX_BYTES = 2 * ROTATE_MAX_BYTES
 PENDING_EXPIRE_S = 12 * 3600
+DISPATCH_LEAD = "Slack dispatch from the user, act on it: "
 PANE_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "ea-resident-pane.sh"
 TRANSCRIPT_DIR = Path("/home/ea-bot/.claude/projects/-home-ea-bot-ea-system")
 TMUX_TARGET = "ea-resident"
@@ -801,6 +802,12 @@ def send(text: str) -> bool:
                 time.sleep(1.0)
             if _run(["tmux", "load-buffer", "-b", "ea-bridge", "-"],
                     input_text=text).returncode != 0:
+                return False
+            # A line typed before the paste: the TUI wraps a long paste as
+            # pasted content, and a message that is only a paste reads as
+            # material from elsewhere rather than the user's request.
+            if _run(["tmux", "send-keys", "-t", TMUX_TARGET, "-l",
+                     DISPATCH_LEAD]).returncode != 0:
                 return False
             if _run(["tmux", "paste-buffer", "-p", "-b", "ea-bridge",
                      "-t", TMUX_TARGET]).returncode != 0:
