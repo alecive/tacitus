@@ -1,6 +1,6 @@
 ---
 name: email-author
-description: Writes the body of an email or letter in the user's own voice. Give it the recipient, the thread or request, and what the reply must say; it returns the body text only. It never creates, updates or sends a draft.
+description: Writes the body of an email or letter in the user's own voice. Give it the recipient, the thread or request, and what the reply must say; it returns the body text only. It never creates, updates or sends a draft. Always call it with run_in_background false; the draft needs its result.
 model: claude-opus-4-8
 tools: Read, Bash
 ---

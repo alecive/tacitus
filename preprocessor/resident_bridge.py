@@ -539,6 +539,29 @@ _TASK_ID_RE = re.compile(r"<task-id>([0-9A-Za-z_-]{2,})</task-id>")
 # a task notification, or a blocking read of the task's output.
 _TASK_READ_TOOLS = {"TaskOutput", "Monitor", "TaskStop"}
 BACKGROUND_HOLD_S = 150.0
+# A draft the model makes after a launch means it moved on without the
+# result (it wrote the body itself): the hold would only delay the reply.
+_DRAFT_VERB_RE = re.compile(r"(?:mail_actions|graph_actions|gmail_client)\.py\s+"
+                            r"(?:create-reply|create-draft|create-forward|update-draft)\b")
+
+
+def _draft_uses(entry: dict) -> set[str]:
+    """tool_use ids of draft-making Bash calls in this assistant entry."""
+    if entry.get("type") != "assistant":
+        return set()
+    content = (entry.get("message") or {}).get("content")
+    return {c.get("id") or "" for c in content if isinstance(content, list)
+            and isinstance(c, dict) and c.get("type") == "tool_use"
+            and _DRAFT_VERB_RE.search(str((c.get("input") or {}).get("command") or ""))}
+
+
+def _ok_results(entry: dict) -> set[str]:
+    """tool_use ids answered without an error in this user entry."""
+    content = (entry.get("message") or {}).get("content")
+    if entry.get("type") != "user" or not isinstance(content, list):
+        return set()
+    return {c.get("tool_use_id") or "" for c in content if isinstance(c, dict)
+            and c.get("type") == "tool_result" and not c.get("is_error")}
 
 
 def _task_reads(entry: dict) -> set[str]:
@@ -569,6 +592,7 @@ def segment_background_pending(entries: list[dict], dispatch_id: str) -> bool:
     launched: set[str] = set()
     resolved: set[str] = set()
     unnamed_launches = 0
+    draft_uses: set[str] = set()
     for e in entries:
         text = _marker_text(e)
         if DISPATCH_MARKER_PREFIX in text:
@@ -596,6 +620,11 @@ def segment_background_pending(entries: list[dict], dispatch_id: str) -> bool:
                 resolved.add(tid)
             else:
                 unnamed_launches = max(0, unnamed_launches - 1)
+        if launched or unnamed_launches:
+            draft_uses |= _draft_uses(e) - {""}
+            if draft_uses & _ok_results(e):
+                resolved |= launched
+                unnamed_launches = 0
     return bool(launched - resolved) or unnamed_launches > 0
 
 

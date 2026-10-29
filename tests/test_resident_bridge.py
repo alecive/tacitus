@@ -527,6 +527,19 @@ def test_background_agent_holds_the_segment_until_its_result_is_read():
     assert rb.segment_background_pending(entries, "id-1") is False
     assert rb.find_segment_reply(entries, "id-1")[0] == ":email: Draft created to Gus."
 
+    # the model gave up on the result and drafted itself: nothing to wait for
+    drafted = before[:3] + [
+        _assistant_u([{"type": "tool_use", "name": "Bash", "id": "b1", "input": {
+            "command": "python3 /x/preprocessor/mail_actions.py create-reply --provider outlook"}}], "a7"),
+        json.dumps({"type": "user", "message": {"content": [
+            {"type": "tool_result", "tool_use_id": "b1", "content": "{}"}]}}),
+        _assistant_u([{"type": "text", "text": ":email: Draft created to Gus."}], "a8"),
+    ]
+    assert rb.segment_background_pending(rb.parse_entries("\n".join(drafted)), "id-1") is False
+    failed = drafted[:4] + [json.dumps({"type": "user", "message": {"content": [
+        {"type": "tool_result", "tool_use_id": "b1", "is_error": True, "content": "Exit code 2"}]}})]
+    assert rb.segment_background_pending(rb.parse_entries("\n".join(failed)), "id-1") is True
+
     m2 = rb.make_marker("t2", "id-2")
     entries = rb.parse_entries("\n".join(before + [_user(f"{m2} next ask", "u5")]))
     assert rb.segment_background_pending(entries, "id-1") is True
