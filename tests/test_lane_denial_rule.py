@@ -77,20 +77,6 @@ def test_installed_cli_still_prints_that_denial():
     raise AssertionError(f"{real}: the CLI no longer prints {DENIAL!r}")
 
 
-if __name__ == "__main__":
-    tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
-    failed = 0
-    for t in tests:
-        try:
-            t()
-            print(f"PASS {t.__name__}")
-        except Exception as e:  # noqa: BLE001
-            failed += 1
-            print(f"FAIL {t.__name__}: {e}")
-    print(f"{len(tests) - failed} passed, {failed} failed")
-    sys.exit(1 if failed else 0)
-
-
 def test_tools_block_renders_with_every_placeholder_stubbed():
     """The block is an f-string: a literal brace in its prose (a JSON example)
     becomes a format spec and raises on every chat turn, which py_compile
@@ -103,3 +89,17 @@ def test_tools_block_renders_with_every_placeholder_stubbed():
     names = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
     out = eval(compile(tree, "<tools-block>", "eval"), {n: "x" for n in names})
     assert out.startswith("Tools available")
+
+
+if __name__ == "__main__":
+    tests = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
+    failed = 0
+    for t in tests:
+        try:
+            t()
+            print(f"PASS {t.__name__}")
+        except Exception as e:  # noqa: BLE001
+            failed += 1
+            print(f"FAIL {t.__name__}: {e}")
+    print(f"{len(tests) - failed} passed, {failed} failed")
+    sys.exit(1 if failed else 0)
