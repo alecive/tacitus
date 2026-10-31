@@ -12736,7 +12736,8 @@ def _owner_dm_channels() -> set:
             out.add(dm)
     except Exception as e:
         log.warning(f"owner DM lookup failed: {e}")
-    if OWNER_SLACK_USER_ID and FRONTEND.name == "zulip":
+    # A shadowed frontend is named "<primary>+<shadow>" (ShadowFrontend).
+    if OWNER_SLACK_USER_ID and FRONTEND.name.split("+", 1)[0] == "zulip":
         out.add(f"dm:{OWNER_SLACK_USER_ID}")
     return out
 

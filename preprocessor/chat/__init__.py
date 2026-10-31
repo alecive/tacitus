@@ -14,6 +14,7 @@ prompts outside the bot.
 from __future__ import annotations
 
 import importlib
+import logging
 import os
 from collections.abc import Mapping
 from pathlib import Path
@@ -124,6 +125,12 @@ def _platform_module(name: str):
         raise
 
 
+# Front ends that can shadow the configured one (chat.shadow): the bot
+# runs the configured one wrapped in a ShadowFrontend that mirrors it.
+SHADOWS = ("web",)
+WEB_STORE_NAME = "webchat.sqlite"
+
+
 def load_frontend(*, for_cli: bool = False, ea_dir: str | Path | None = None,
                   env: Mapping[str, str] | None = None) -> ChatFrontend:
     """Build the configured frontend. for_cli builds a sender-only client
@@ -133,8 +140,65 @@ def load_frontend(*, for_cli: bool = False, ea_dir: str | Path | None = None,
     Secrets come by the owner_trust rule: `env` (default os.environ), then
     the owner-private secrets.env, then the checked legacy .env.secrets of
     `ea_dir` (default ~/.ea). A missing one raises KeyError, as a hard
-    lookup in `env` did."""
+    lookup in `env` did.
+
+    A `shadow` in the chat block wraps the frontend in a ShadowFrontend
+    that mirrors it into that one. A command-line sender gets the frontend
+    alone: the web chat's store and event stream belong to the bot. A
+    shadow that fails to build is logged and the frontend runs alone."""
     cfg = ea_config.get_chat(_config_path(ea_dir))
+    shadow = str(cfg.get("shadow") or "")
+    if shadow and shadow not in SHADOWS:
+        raise ChatError(f"unknown chat shadow {shadow!r}; expected one of {', '.join(SHADOWS)}")
+    primary = _load_primary(cfg, for_cli=for_cli, ea_dir=ea_dir, env=env)
+    if not shadow or for_cli or shadow == cfg.get("frontend"):
+        return primary
+    from .shadow_frontend import ShadowFrontend
+    try:
+        web = _build_web(_with_web_store(cfg, ea_dir))
+    except Exception:
+        logging.getLogger("chat").exception(
+            "the %s shadow did not build; %s runs alone", shadow, cfg.get("frontend"))
+        return primary
+    return ShadowFrontend(primary, web)
+
+
+def _web_class():
+    """botcore's WebFrontend, imported on first use, so an install that
+    runs without the web chat never loads it."""
+    from . import _botcore_path  # noqa: F401
+    try:
+        from botcore.chat import web_frontend
+    except ModuleNotFoundError as e:
+        if e.name == "botcore.chat.web_frontend":
+            raise ChatError("frontend 'web' is not installed yet") from e
+        raise
+    return web_frontend.WebFrontend
+
+
+def _with_web_store(cfg: dict, ea_dir: str | Path | None) -> dict:
+    """The chat block with `web.store_path` set when the block leaves it
+    empty: `<private_dir>/webchat.sqlite` for the owner's bot,
+    `<ea_dir>/state/webchat.sqlite` for any other process."""
+    web = dict(cfg["web"]) if isinstance(cfg.get("web"), dict) else {}
+    if not web.get("store_path"):
+        if ea_dir is None and owner_trust.is_owner_process():
+            web["store_path"] = str(private_dir() / WEB_STORE_NAME)
+        else:
+            web["store_path"] = str(Path(ea_dir or owner_trust.ea_dir()) / "state"
+                                    / WEB_STORE_NAME)
+    return {**cfg, "web": web}
+
+
+def _build_web(cfg: dict) -> ChatFrontend:
+    """The web chat front end for the chat block `cfg`, built from its
+    `web` section."""
+    return _web_class().from_config(cfg.get("web") or {})
+
+
+def _load_primary(cfg: dict, *, for_cli: bool, ea_dir: str | Path | None,
+                  env: Mapping[str, str] | None) -> ChatFrontend:
+    """The frontend `cfg["frontend"]` names (see load_frontend)."""
     env = os.environ if env is None else env
     legacy = Path(ea_dir) / owner_trust.LEGACY_SECRETS_FILE if ea_dir else None
     name = cfg.get("frontend")
