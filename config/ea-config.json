@@ -41,6 +41,7 @@
   "room_reply_check_note": "Project rooms only. After a turn, a reply that states an item's status with no ledger or mail read behind it, or that says something does not exist, goes back to its own session once with the sentences to verify; the second pass returns the reply to post. Each bounce is logged to ~/.ea/logs/reply-check.jsonl. false switches the pass off.",
   "chat": {
     "frontend": "slack",
+    "shadow": "",
     "zulip": {
       "site": "",
       "bot_email": "",

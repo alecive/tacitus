@@ -129,6 +129,8 @@ DEFAULTS = {
     # get_chat); this file's copy shapes the resident's wording.
     "chat": {
         "frontend": "slack",
+        # A second front end that mirrors the first ("web"), or "" for none.
+        "shadow": "",
         "zulip": {
             "site": "",
             "bot_email": "",
