@@ -580,7 +580,7 @@ Neutral types live in `chat/types.py`: `InboundMessage`, `ActionEvent`,
 `Status` enum whose values are today's reaction names (eyes, hourglass,
 check, cross, ...).
 
-**The three adapters.**
+**The adapters.**
 
 - `SlackFrontend` (`chat/slack_frontend.py`) owns the bolt App and the
   WebClient and runs Socket Mode. It translates Slack events into the
@@ -605,6 +605,21 @@ check, cross, ...).
 - `MemoryFrontend` (`chat/memory_frontend.py`) records every outbound
   call and lets tests inject messages, clicks, reactions and typed codes
   through the same registry and resolvers the real frontends use.
+- `WebFrontend` (`chat/web_frontend.py`) is Tacitus's own chat: the bot
+  process serves a phone-first web app (`chat/webui/`, static files, no
+  build step) and a JSON API over loopback HTTP, stdlib only. Messages,
+  cards, reactions and files live in a SQLite store; the browser follows
+  one server-sent event stream with replay from the last seen sequence.
+  The owner reaches it over the tailnet (`tailscale serve` proxies a
+  path to the port and its identity header is the login) or by a pair
+  token. The contract is `docs/webchat.md`.
+- `ShadowFrontend` (`chat/shadow_frontend.py`) drives a primary (Zulip)
+  and mirrors every post, update, card, status line, reaction and file
+  into a shadow (the web front end) under the primary's ids, and takes
+  the owner's input from either side: a web message is posted into the
+  primary as the bot with a `**You (web):**` prefix, then dispatched to
+  the core as the owner. A shadow failure is logged and never reaches
+  the core. `chat.shadow` in the chat block names it.
 
 **The handler registry, and why the name `app` survives.** Each frontend
 carries a `HandlerRegistry` with `action`, `view` and `event`

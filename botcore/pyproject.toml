@@ -12,6 +12,13 @@ dependencies = []
 [project.optional-dependencies]
 slack = ["slack_bolt", "slack_sdk", "requests"]
 zulip = ["zulip", "requests"]
+# The web chat relay's end-to-end layer (chat/relay_crypto.py).
+relay = ["cryptography"]
 
 [tool.setuptools.packages.find]
 include = ["botcore*"]
+
+# The web chat's static app ships inside the package (chat/web_frontend.py
+# serves it).
+[tool.setuptools.package-data]
+"botcore.chat" = ["webui/*"]
