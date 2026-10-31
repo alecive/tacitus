@@ -1,0 +1,788 @@
+"""Tests for the web chat frontend: the store and the ChatFrontend verbs,
+the mirror entry points, and the HTTP API on an ephemeral loopback port."""
+from __future__ import annotations
+
+import http.client
+import json
+import sys
+import threading
+import urllib.error
+import urllib.parse
+import urllib.request
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "preprocessor"))
+
+from chat import load_frontend, prompt_strings_for_config  # noqa: E402
+import chat as chat_pkg  # noqa: E402
+from chat.base import AlreadyArchived, ChatError, NotArchived, RoomNameTaken  # noqa: E402
+from chat.cards import CardAction, CardField, CardSelect, ConfirmationCard  # noqa: E402
+from chat.memory_frontend import SLACK_LIKE_PROMPT_STRINGS  # noqa: E402
+from chat.types import THREAD_KEY_RE, ActionEvent, FileRef, InboundMessage, MessageRef, Status  # noqa: E402
+from chat import web_frontend as wf  # noqa: E402
+from chat.web_frontend import WebFrontend, parse_multipart  # noqa: E402
+import ea_config  # noqa: E402
+
+LOGIN = "owner@example.test"
+OWNER_H = {"Tailscale-User-Login": LOGIN}
+
+
+def make(tmp_path, **cfg) -> WebFrontend:
+    base = {"port": 0, "tailscale_login": LOGIN}
+    base.update(cfg)
+    f = WebFrontend.from_config(base, store_path=tmp_path / "priv" / "webchat.sqlite",
+                                webui_dir=tmp_path / "webui")
+    f.poll_s = f.pair_delay_s = 0.02
+    return f
+
+
+def card(**kw) -> ConfirmationCard:
+    args = dict(kind="send", title=":lock: Send this draft?",
+                fields=[CardField("To", "someone@example.test")], body="Hello there.",
+                actions=[CardAction("approve_send", "Send", {"token": "t-1"}, "primary", "send"),
+                         CardAction("cancel_send", "Cancel", {"token": "t-1"}, "", "cancel")],
+                block_id="blk")
+    args.update(kw)
+    return ConfirmationCard(**args)
+
+
+@pytest.fixture
+def fe(tmp_path):
+    f = make(tmp_path)
+    f.ping_s = 0.2
+    f.start()
+    yield f
+    f.stop()
+
+
+def call(f: WebFrontend, method: str, path: str, body=None, headers=None, raw=None):
+    data = json.dumps(body).encode() if body is not None else raw
+    h = {"Content-Type": "application/json"} if body is not None else {}
+    h.update(headers or {})
+    req = urllib.request.Request(f.url + path, data=data, method=method, headers=h)
+    try:
+        with urllib.request.urlopen(req, timeout=5) as r:
+            return r.status, r.headers, r.read()
+    except urllib.error.HTTPError as e:
+        return e.code, e.headers, e.read()
+
+
+def owner(f, method, path, body=None, headers=None, raw=None):
+    return call(f, method, path, body, {**OWNER_H, **(headers or {})}, raw)
+
+
+def catcher(f: WebFrontend):
+    """Record every dispatched message and action; `ev` is set on each."""
+    got: list = []
+    ev = threading.Event()
+
+    def on_msg(m):
+        got.append(m)
+        ev.set()
+
+    def on_action(a):
+        got.append(a)
+        ev.set()
+    f.registry.event("message")(on_msg)
+    f.registry.action("approve_send")(on_action)
+    f.registry.action("pick")(on_action)
+    return got, ev
+
+
+def multipart(fields: dict, boundary: str = "b0undary") -> tuple[bytes, str]:
+    out = b""
+    for name, val in fields.items():
+        if isinstance(val, tuple):
+            fname, ctype, data = val
+            out += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"{name}\"; "
+                    f"filename=\"{fname}\"\r\nContent-Type: {ctype}\r\n\r\n").encode() + data
+        else:
+            out += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"{name}\"\r\n\r\n"
+                    f"{val}").encode()
+        out += b"\r\n"
+    out += f"--{boundary}--\r\n".encode()
+    return out, f"multipart/form-data; boundary={boundary}"
+
+
+class Stream:
+    """An open event stream read line by line."""
+
+    def __init__(self, f: WebFrontend, query: str = "", headers=None) -> None:
+        self.conn = http.client.HTTPConnection("127.0.0.1", f.port, timeout=5)
+        self.conn.request("GET", f"{f.base_path}/api/events{query}",
+                          headers={**OWNER_H, **(headers or {})})
+        self.resp = self.conn.getresponse()
+
+    def lines(self, until):
+        """Read lines until `until(lines)` is true; return them."""
+        seen: list[str] = []
+        while not until(seen):
+            seen.append(self.resp.fp.readline().decode().rstrip("\n"))
+        return seen
+
+    def events(self, n: int) -> list[dict]:
+        out, cur = [], {}
+        while len(out) < n:
+            line = self.resp.fp.readline().decode().rstrip("\n")
+            if line == "":
+                if "data" in cur:
+                    out.append(cur)
+                cur = {}
+                continue
+            key, _, val = line.partition(": ")
+            if key in ("id", "event", "data"):
+                cur[key] = val
+        return out
+
+    def close(self) -> None:
+        self.conn.close()
+
+
+# the store and the verbs
+
+
+def test_post_opens_a_thread_and_a_reply_stays_in_it(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    try:
+        ref = f.post("main", "first")
+        assert (ref.channel, ref.id, ref.thread_key) == ("main", "w1", "t1")
+        assert THREAD_KEY_RE.match(ref.thread_key) and THREAD_KEY_RE.match(ref.id)
+        reply = f.post("main", "second", thread_ts=ref.thread_key)
+        by_id = f.post("main", "third", thread_ts=ref.id)
+        assert reply.thread_key == by_id.thread_key == ref.thread_key
+        msgs = f.thread_replies("main", ref.thread_key)
+        assert [m.text for m in msgs] == ["first", "second", "third"]
+        assert [m.is_reply for m in msgs] == [False, True, True]
+        assert msgs[0].reply_count == 2 and msgs[0].is_self and msgs[0].user_id == "bot"
+        assert f.thread_replies("main", ref.id)[0].msg_id == ref.id
+        assert f.message_posted_at(ref) == pytest.approx(ref.posted_at)
+        assert ref.permalink.endswith(f"#/main/{ref.thread_key}/{ref.id}")
+    finally:
+        f.stop()
+
+
+def test_recent_messages_are_thread_openers_after_a_time_or_an_id(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    try:
+        a = f.post("main", "a")
+        f.post("main", "a reply", thread_ts=a.thread_key)
+        b = f.post("main", "b")
+        f.post("dm", "elsewhere")
+        assert [m.msg_id for m in f.recent_messages("main", 0)] == [a.id, b.id]
+        assert [m.msg_id for m in f.recent_messages("main", 0, since_id=a.id)] == [b.id]
+        assert f.recent_messages("main", b.posted_at + 1) == []
+        assert all(not m.is_reply for m in f.recent_messages("main", 0))
+    finally:
+        f.stop()
+
+
+def test_bot_text_is_converted_to_the_markdown_the_app_renders(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    try:
+        ref = f.post("main", "*bold* and _it_ see <https://example.test/x|the page> :x:")
+        row = f.store.message("main", ref.id)
+        assert row["text"] == ("**bold** and *it* see [the page](https://example.test/x) :x:")
+        assert f.update(ref, "now *done*")
+        assert f.store.message("main", ref.id)["text"] == "now **done**"
+        assert "[#ea](" in f.mention("main")
+    finally:
+        f.stop()
+
+
+def test_updated_at_starts_at_posted_at_and_rises_on_a_change(tmp_path):
+    f = make(tmp_path)
+    f.inbound = lambda ev: None
+    f.start()
+    try:
+        f.mirror_channel("stream:7", "ea", "main")
+        row = f.mirror_post(MessageRef("stream:7", "1", "stream:7:topic:x", 1000.0), "x")
+        assert row["posted_at"] == row["updated_at"] == 1000.0
+    finally:
+        f.stop()
+    f = make(tmp_path / "b")
+    f.start()
+    try:
+        ref = f.post("main", "x")
+        c = f.post_card("dm", card())
+        assert f.store.message("main", ref.id)["updated_at"] == ref.posted_at
+        f.react("main", ref.id, Status.EYES)
+        assert f.store.message("main", ref.id)["updated_at"] == ref.posted_at
+        f.update(ref, "y")
+        f.update_card(c, card(title="t2"))
+        f.replace_card_with_status(c, "done")
+        assert f.store.message("main", ref.id)["updated_at"] > ref.posted_at
+        assert f.store.message("dm", c.id)["updated_at"] > c.posted_at
+    finally:
+        f.stop()
+
+
+def test_reactions_toggle(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    try:
+        ref = f.post("main", "x")
+        assert f.react("main", ref.id, Status.EYES)
+        assert f.react("main", ref.id, "hourglass_flowing_sand")
+        assert f.react("main", ref.id, Status.EYES)
+        assert f.store.message("main", ref.id)["reactions"] == ["eyes", "hourglass_flowing_sand"]
+        assert f.unreact("main", ref.id, Status.EYES)
+        assert f.store.message("main", ref.id)["reactions"] == ["hourglass_flowing_sand"]
+        assert not f.react("main", "w999", Status.DONE)
+    finally:
+        f.stop()
+
+
+def test_cards_are_stored_as_json_and_settle_to_a_status(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    try:
+        c = card(select=CardSelect("pick", "Pick one", [("A", "a"), ("B", "b")]))
+        assert f.card_fits(card(body="x" * 100000))
+        ref = f.post_card("dm", c)
+        row = f.store.message("dm", ref.id)
+        assert row["kind"] == "card" and row["card"]["title"] == c.title
+        assert row["card"]["actions"][0] == {"id": "approve_send", "label": "Send",
+                                             "value": {"token": "t-1"}, "style": "primary",
+                                             "word": "send"}
+        assert row["card"]["select"]["options"] == [["A", "a"], ["B", "b"]]
+        assert f.update_card(ref, card(title="Changed"))
+        assert f.store.message("dm", ref.id)["card"]["title"] == "Changed"
+        assert f.replace_card_with_status(ref, ":white_check_mark: *Sent*")
+        row = f.store.message("dm", ref.id)
+        # the status line stays as the core wrote it: the app renders it as card text
+        assert row["kind"] == "status" and row["text"] == ":white_check_mark: *Sent*"
+        assert not f.update_card(MessageRef("dm", "w999", "t999"), c)
+    finally:
+        f.stop()
+
+
+def test_rooms(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    try:
+        room = f.create_private_room("ea-proj", "A project")
+        assert room.id == "r1" and room.name == "ea-proj" and room.url.endswith("#/r1")
+        with pytest.raises(RoomNameTaken):
+            f.create_private_room("EA-proj")
+        assert f.create_private_room("ea-other").id == "r2"
+        info = f.channel_info("r1")
+        assert info.is_private and info.is_member and not info.is_archived and not info.is_dm
+        assert f.channel_info("dm").is_dm and f.is_dm("dm") and not f.is_dm("main")
+        assert not f.channel_info("nope").exists
+        assert f.channel_members("r1") == {"owner", "bot"} and f.channel_members("nope") is None
+        f.set_description("r1", "new purpose")
+        assert f.store.channel("r1")["description"] == "new purpose"
+        f.archive("r1")
+        with pytest.raises(AlreadyArchived):
+            f.archive("r1")
+        assert f.archived_map() == {"main": False, "r1": True, "r2": False}
+        f.unarchive("r1")
+        with pytest.raises(NotArchived):
+            f.unarchive("r1")
+        with pytest.raises(ChatError):
+            f.archive("nope")
+        with pytest.raises(ChatError):
+            f.post("nope", "x")
+        assert f.dm_channel("owner") == "dm"
+    finally:
+        f.stop()
+
+
+def test_upload_and_download(tmp_path, monkeypatch):
+    monkeypatch.setenv("EA_DIR", str(tmp_path))
+    f = make(tmp_path)
+    f.start()
+    try:
+        src = tmp_path / "report.pdf"
+        src.write_bytes(b"%PDF-1 \x00\xff")
+        main = f.post("main", "here")
+        ref = f.upload("main", src, thread_ts=main.thread_key, comment="the *report*")
+        assert ref.id == "f1" and ref.name == "report.pdf" and ref.mimetype == "application/pdf"
+        assert ref.url == "/chat/api/files/f1"
+        row = f.thread_replies("main", main.thread_key)[-1]
+        assert row.files[0].id == "f1" and row.subtype == "file_share"
+        assert row.text == "the **report**"
+        got = f.download(ref, tmp_path / "uploads")
+        assert Path(got).read_bytes() == b"%PDF-1 \x00\xff" and got.endswith("_report.pdf")
+        assert f.download(FileRef("x", url="/chat/api/files/f1"), tmp_path / "uploads")
+        assert f.download(FileRef("x", id="f99"), tmp_path / "uploads") is None
+    finally:
+        f.stop()
+
+
+def test_every_write_appends_an_event(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    try:
+        start = f.store.max_event_seq()
+        ref = f.post("main", "x")
+        f.update(ref, "y")
+        f.react("main", ref.id, Status.EYES)
+        c = f.post_card("dm", card())
+        f.replace_card_with_status(c, "done")
+        f.create_private_room("ea-r")
+        types = [t for _s, t, _p in f.store.events_since(start)]
+        assert types == ["message", "update", "reaction", "card", "status", "channel"]
+        assert set(types) <= set(wf.EVENT_TYPES)
+    finally:
+        f.stop()
+
+
+def test_prompt_strings_and_attributes(tmp_path):
+    f = make(tmp_path)
+    ps = f.prompt_strings()
+    assert set(ps) == set(SLACK_LIKE_PROMPT_STRINGS)
+    assert ps["confirm_location"] == "the Send button is on the card in your DM thread"
+    assert "web chat" in ps["platform"] and "Markdown" in ps["format_rule_main"]
+    assert f.llm_tool_grants() == ""
+    assert f.capabilities == {"buttons", "select", "files", "private_rooms", "reactions"}
+    assert tuple(f.limits) == (20000, 20000, 200, 0)
+    assert (f.owner_id, f.bot_user_id, f.main_channel, f.sched_channel) == \
+        ("owner", "bot", "main", "")
+    src = (ROOT / "botcore/botcore/chat/web_frontend.py").read_text()
+    assert "\u2014" not in src and "\u2013" not in src
+
+
+def test_from_config_needs_a_store(tmp_path):
+    with pytest.raises(ChatError):
+        WebFrontend.from_config({})
+    f = WebFrontend.from_config({"store_path": str(tmp_path / "s.sqlite")})
+    assert f.store_path == tmp_path / "s.sqlite" and f.port == 8470
+    assert f.base_path == "/chat" and f.bind == "127.0.0.1"
+    assert WebFrontend.from_config({"base_path": "/"}, store_path=tmp_path / "t").base_path == ""
+
+
+def test_parse_multipart_keeps_binary_bytes():
+    data = bytes(range(256)) + b"\r\n--b0und\r\n\n\r"
+    body, ctype = multipart({"text": "hi", "file": ("a.bin", "application/octet-stream", data)})
+    parts = parse_multipart(ctype, body)
+    assert parts["file"]["data"] == data and parts["file"]["filename"] == "a.bin"
+    assert parts["text"]["data"] == b"hi" and parts["text"]["filename"] is None
+    with pytest.raises(ValueError):
+        parse_multipart("application/json", b"{}")
+
+
+# the mirror entry points (shadow mode)
+
+
+def test_mirrors_store_under_the_primary_ids_and_are_idempotent(tmp_path):
+    f = make(tmp_path)
+    f.inbound = lambda ev: None
+    f.start()
+    try:
+        assert f.store.channels() == []
+        f.mirror_channel("stream:7", "ea", "main")
+        f.mirror_channel("stream:7", "ea", "main")
+        ref = MessageRef("stream:7", "1001", "stream:7:topic:hello", 1000.0)
+        start = f.store.max_event_seq()
+        f.mirror_post(ref, "*hi*")
+        f.mirror_post(ref, "*hi*")
+        row = f.store.message("stream:7", "1001")
+        assert row["text"] == "**hi**" and row["thread_key"] == "stream:7:topic:hello"
+        assert row["posted_at"] == 1000.0 and row["author"] == "bot"
+        f.mirror_update(ref, "*edited*")
+        f.mirror_reaction("stream:7", "1001", Status.EYES, True)
+        f.mirror_reaction("stream:7", "1001", Status.EYES, True)
+        types = [t for _s, t, _p in f.store.events_since(start)]
+        assert types == ["message", "update", "reaction"]
+        cref = MessageRef("stream:8", "1002", "stream:8:topic:lock", 1001.0)
+        f.mirror_card(cref, card())
+        f.mirror_card(cref, card())
+        f.mirror_card_status(cref, "Sent")
+        assert f.store.message("stream:8", "1002")["kind"] == "status"
+        assert f.store.channel("stream:8")["kind"] == "room"   # a placeholder row
+        f.mirror_channel("stream:8", "ea-dm", "dm")
+        assert f.store.channel("stream:8")["kind"] == "dm"
+        f.mirror_post(MessageRef("stream:7", "1003", "stream:7:topic:hello"), "typed", "owner")
+        assert f.store.message("stream:7", "1003")["author"] == "owner"
+        assert [m["id"] for m in f.store.thread("stream:7", "stream:7:topic:hello")] == \
+            ["1001", "1003"]
+    finally:
+        f.stop()
+
+
+def test_mirror_file_keeps_the_bytes_when_given_a_path(tmp_path):
+    f = make(tmp_path)
+    f.inbound = lambda ev: None
+    f.start()
+    try:
+        src = tmp_path / "pic.png"
+        src.write_bytes(b"\x89PNG data")
+        ref = MessageRef("stream:7", "1100", "stream:7:topic:files")
+        row = f.mirror_file(ref, FileRef("pic.png", url="https://chat.example.test/user_uploads/1/pic.png",
+                                         id="/user_uploads/1/pic.png"), path=src)
+        assert row["file"]["url"] == "/chat/api/files/%2Fuser_uploads%2F1%2Fpic.png"
+        status, headers, body = owner(f, "GET", "/api/files/%2Fuser_uploads%2F1%2Fpic.png")
+        assert status == 200 and body == b"\x89PNG data"
+        ref2 = MessageRef("stream:7", "1101", "stream:7:topic:files")
+        row2 = f.mirror_file(ref2, FileRef("b.txt", url="https://chat.example.test/u/b.txt",
+                                           id="/u/b.txt"))
+        # no bytes here: no id, and the primary's absolute url
+        assert row2["file"]["id"] == "" and row2["file"]["url"] == "https://chat.example.test/u/b.txt"
+    finally:
+        f.stop()
+
+
+# HTTP
+
+
+def test_api_needs_the_owner_and_static_files_do_not(tmp_path):
+    (tmp_path / "webui").mkdir()
+    (tmp_path / "webui" / "index.html").write_text("<!doctype html><title>t</title>")
+    (tmp_path / "webui" / "app.js").write_text("console.log(1)")
+    f = make(tmp_path)
+    f.start()
+    try:
+        status, _h, body = call(f, "GET", "/api/me")
+        assert status == 401 and json.loads(body) == {"error": "not the owner"}
+        assert call(f, "GET", "/api/channels", headers={"Tailscale-User-Login": "x@example.test"})[0] == 401
+        assert call(f, "GET", "/api/channels", headers={"Cookie": "ea_web=wrong"})[0] == 401
+        status, _h, body = owner(f, "GET", "/api/me")
+        assert status == 200 and json.loads(body)["owner"] == "owner"
+        status, h, body = call(f, "GET", "/")
+        assert status == 200 and b"<title>t</title>" in body
+        csp = h["Content-Security-Policy"]
+        assert "script-src 'self'" in csp and "style-src 'self';" in csp and "unsafe" not in csp
+        status, h, _b = call(f, "GET", "/app.js")
+        assert status == 200 and h["Content-Type"].startswith("text/javascript")
+        conn = http.client.HTTPConnection("127.0.0.1", f.port, timeout=5)
+        conn.request("GET", "/chat")
+        resp = conn.getresponse()
+        assert resp.status == 301 and resp.getheader("Location") == "/chat/"
+        conn.close()
+        (tmp_path / "webui" / "sw.js").write_text("self.addEventListener('fetch', () => {})")
+        (tmp_path / "webui" / "manifest.webmanifest").write_text("{}")
+        assert call(f, "GET", "/sw.js")[1]["Content-Type"].startswith("text/javascript")
+        assert call(f, "GET", "/manifest.webmanifest")[1]["Content-Type"] == \
+            "application/manifest+json"
+        assert call(f, "GET", "/some/route")[0] == 200          # an app route
+        assert call(f, "GET", "/missing.css")[0] == 404
+        assert call(f, "GET", "/..%2Fpriv%2Fwebchat.sqlite")[0] == 404
+        assert call(f, "GET", "/.hidden")[0] == 404
+        req = urllib.request.Request(f.url.rsplit("/chat", 1)[0] + "/other")
+        with pytest.raises(urllib.error.HTTPError):
+            urllib.request.urlopen(req, timeout=5)
+    finally:
+        f.stop()
+
+
+def test_pairing_sets_the_cookie(tmp_path):
+    f = make(tmp_path, tailscale_login="", public_url="https://host.example.test/chat")
+    f.start()
+    try:
+        token = f.pair_token()
+        assert token and (tmp_path / "priv" / "webchat-pair.token").stat().st_mode & 0o077 == 0
+        assert call(f, "POST", "/api/pair", {"token": "nope"})[0] == 401
+        status, h, _b = call(f, "POST", "/api/pair", {"token": token})
+        cookie = h["Set-Cookie"]
+        assert status == 200 and cookie.startswith(f"ea_web={token};")
+        for attr in ("HttpOnly", "SameSite=Strict", "Secure", "Path=/chat"):
+            assert attr in cookie
+        assert call(f, "GET", "/api/me", headers={"Cookie": f"ea_web={token}"})[0] == 200
+        # the header counts only when a login is configured
+        assert call(f, "GET", "/api/me", headers={"Tailscale-User-Login": ""})[0] == 401
+    finally:
+        f.stop()
+
+
+def test_a_post_from_another_origin_is_refused(fe):
+    status, _h, _b = owner(fe, "POST", "/api/channels/main/messages", {"text": "x"},
+                           {"Origin": "https://evil.example.test"})
+    assert status == 401
+    status, _h, _b = owner(fe, "POST", "/api/channels/main/messages", {"text": "x"},
+                           {"Origin": f"http://127.0.0.1:{fe.port}"})
+    assert status == 200
+
+
+def test_posting_a_message_dispatches_an_inbound_message(fe):
+    got, ev = catcher(fe)
+    status, _h, body = owner(fe, "POST", "/api/channels/main/messages", {"text": "hello bot"})
+    row = json.loads(body)
+    assert status == 200 and row["author"] == "owner" and row["text"] == "hello bot"
+    assert ev.wait(5)
+    msg = got[0]
+    assert isinstance(msg, InboundMessage)
+    assert (msg.channel, msg.msg_id, msg.thread_key, msg.user_id) == \
+        ("main", row["id"], row["thread_key"], "owner")
+    assert not msg.is_reply and not msg.is_bot and not msg.is_self and not msg.is_dm
+    ev.clear()
+    status, _h, body = owner(fe, "POST", "/api/channels/dm/messages", {"text": "x"})
+    ev.wait(5)
+    assert got[-1].is_dm
+    ev.clear()
+    owner(fe, "POST", "/api/channels/main/messages",
+          {"text": "more", "thread_key": row["thread_key"]})
+    assert ev.wait(5)
+    assert got[-1].is_reply and got[-1].thread_key == row["thread_key"]
+    assert owner(fe, "POST", "/api/channels/main/messages", {"text": ""})[0] == 400
+    assert owner(fe, "POST", "/api/channels/nope/messages", {"text": "x"})[0] == 404
+    assert owner(fe, "POST", "/api/channels/main/messages",
+                 {"text": "x", "thread_key": "t999"})[0] == 404
+    assert owner(fe, "POST", "/api/channels/main/messages", raw=b"not json",
+                 headers={"Content-Type": "application/json"})[0] == 400
+
+
+def test_a_card_click_dispatches_an_action_with_the_stored_value(fe):
+    got, ev = catcher(fe)
+    ref = fe.post_card("dm", card(select=CardSelect("pick", "Pick", [("A", "a"), ("B", "b")])))
+    path = f"/api/cards/dm/{ref.id}/actions"
+    status, _h, body = owner(fe, "POST", path, {"action_id": "approve_send",
+                                                "value": {"token": "forged"}})
+    assert status == 200 and json.loads(body) == {"ok": True}
+    assert ev.wait(5)
+    a = got[0]
+    assert isinstance(a, ActionEvent)
+    assert (a.action_id, a.user_id, a.source, a.value, a.block_id) == \
+        ("approve_send", "owner", "button", {"token": "t-1"}, "blk")
+    assert (a.card.channel, a.card.id, a.card.thread_key) == ("dm", ref.id, ref.thread_key)
+    ev.clear()
+    assert owner(fe, "POST", path, {"action_id": "pick", "selected": "b"})[0] == 200
+    assert ev.wait(5)
+    assert (got[-1].source, got[-1].selected) == ("select", "b")
+    assert owner(fe, "POST", path, {"action_id": "pick", "selected": "zzz"})[0] == 400
+    assert owner(fe, "POST", path, {"action_id": "nope"})[0] == 400
+    assert owner(fe, "POST", "/api/cards/dm/w999/actions", {"action_id": "approve_send"})[0] == 404
+    fe.replace_card_with_status(ref, "Sent")
+    assert owner(fe, "POST", path, {"action_id": "approve_send"})[0] == 400
+
+
+def test_an_upload_stores_the_file_and_dispatches_a_file_ref(fe, tmp_path, monkeypatch):
+    monkeypatch.setenv("EA_DIR", str(tmp_path))
+    got, ev = catcher(fe)
+    data = b"%PDF-1.4\r\n\x00\x01binary\r\n"
+    body, ctype = multipart({"text": "please read",
+                             "file": ("notes v2.pdf", "application/pdf", data)})
+    status, _h, out = owner(fe, "POST", "/api/channels/dm/files", raw=body,
+                            headers={"Content-Type": ctype})
+    row = json.loads(out)
+    assert status == 200 and row["kind"] == "file" and row["text"] == "please read"
+    assert row["file"]["name"] == "notes v2.pdf" and row["file"]["size"] == len(data)
+    assert ev.wait(5)
+    msg = got[0]
+    assert msg.subtype == "file_share" and msg.text == "please read"
+    ref = msg.files[0]
+    assert ref.url == row["file"]["url"] and ref.mimetype == "application/pdf"
+    status, h, got_bytes = owner(fe, "GET", "/api/files/" + ref.id)
+    assert status == 200 and got_bytes == data
+    assert h["Content-Disposition"].startswith("attachment;")
+    assert "sandbox" in h["Content-Security-Policy"]
+    assert Path(fe.download(ref, tmp_path / "uploads")).read_bytes() == data
+    assert call(fe, "GET", "/api/files/" + ref.id)[0] == 401
+    assert owner(fe, "GET", "/api/files/f999")[0] == 404
+    body, ctype = multipart({"text": "no file"})
+    assert owner(fe, "POST", "/api/channels/dm/files", raw=body,
+                 headers={"Content-Type": ctype})[0] == 400
+
+
+def test_threads_list_newest_first_and_a_thread_oldest_first(fe):
+    a = fe.post("main", "a")
+    b = fe.post("main", "b")
+    fe.post("main", "a2", thread_ts=a.thread_key)
+    status, _h, body = owner(fe, "GET", "/api/channels/main/threads")
+    rows = json.loads(body)
+    assert status == 200 and [r["id"] for r in rows] == [b.id, a.id]
+    assert rows[1]["reply_count"] == 1 and rows[1]["last_at"] >= rows[1]["posted_at"]
+    assert {"seq", "thread_key", "reply_count", "last_at"} <= set(rows[0])
+    # before= is the smallest first-message seq the app holds
+    status, _h, body = owner(fe, "GET", f"/api/channels/main/threads?limit=1&before={rows[0]['seq']}")
+    assert [r["id"] for r in json.loads(body)] == [a.id]
+    status, _h, body = owner(fe, "GET", f"/api/channels/main/threads/{a.thread_key}")
+    assert [r["text"] for r in json.loads(body)] == ["a", "a2"]
+    assert owner(fe, "GET", "/api/channels/main/threads/t999")[0] == 404
+    assert owner(fe, "GET", "/api/channels/nope/threads")[0] == 404
+    assert owner(fe, "GET", "/api/channels/main/threads?limit=x")[0] == 400
+    chans = {c["id"]: c for c in json.loads(owner(fe, "GET", "/api/channels")[2])}
+    assert chans["main"]["unread"] == 0 and chans["main"]["kind"] == "main"
+    fe.post("main", "c")
+    chans = {c["id"]: c for c in json.loads(owner(fe, "GET", "/api/channels")[2])}
+    assert chans["main"]["unread"] == 1
+
+
+def test_encoded_channel_and_thread_ids_route(tmp_path):
+    f = make(tmp_path)
+    f.inbound = lambda ev: None
+    f.start()
+    try:
+        f.mirror_channel("stream:7", "ea", "main")
+        key = "stream:7:topic:a%2Fb%20c"
+        f.mirror_post(MessageRef("stream:7", "1", key), "x")
+        q = urllib.parse.quote
+        status, _h, body = owner(f, "GET", f"/api/channels/{q('stream:7', safe='')}/threads/"
+                                           f"{q(key, safe='')}")
+        assert status == 200 and json.loads(body)[0]["thread_key"] == key
+    finally:
+        f.stop()
+
+
+def test_events_replay_from_a_seq_and_deliver_new_ones(fe):
+    a = fe.post("main", "one")
+    seq_after_a = fe.store.max_event_seq()
+    fe.post("main", "two", thread_ts=a.thread_key)
+    s = Stream(fe, "?since=" + str(seq_after_a))
+    try:
+        assert s.resp.status == 200
+        assert s.resp.getheader("Content-Type").startswith("text/event-stream")
+        first = s.events(1)[0]
+        assert first["event"] == "message" and json.loads(first["data"])["text"] == "two"
+        fe.react("main", a.id, Status.EYES)
+        nxt = s.events(1)[0]
+        assert nxt["event"] == "reaction" and int(nxt["id"]) > int(first["id"])
+        assert json.loads(nxt["data"])["reactions"] == ["eyes"]
+    finally:
+        s.close()
+    # Last-Event-ID wins over a since= the browser keeps in the URL
+    s = Stream(fe, "?since=0", headers={"Last-Event-ID": str(seq_after_a)})
+    try:
+        assert json.loads(s.events(1)[0]["data"])["text"] == "two"
+    finally:
+        s.close()
+
+
+def test_a_seq_from_another_store_still_gets_live_events(fe):
+    s = Stream(fe, "?since=999999")
+    try:
+        s.lines(lambda seen: "retry: 3000" in seen)
+        fe.post("main", "after a reset")
+        assert json.loads(s.events(1)[0]["data"])["text"] == "after a reset"
+    finally:
+        s.close()
+
+
+def test_a_chunked_body_is_read(fe):
+    got, ev = catcher(fe)
+    conn = http.client.HTTPConnection("127.0.0.1", fe.port, timeout=5)
+    try:
+        conn.request("POST", "/chat/api/channels/main/messages",
+                     body=iter([b'{"text": ', b'"in chunks"}']),
+                     headers={**OWNER_H, "Content-Type": "application/json",
+                              "Transfer-Encoding": "chunked"}, encode_chunked=True)
+        resp = conn.getresponse()
+        assert resp.status == 200 and json.loads(resp.read())["text"] == "in chunks"
+    finally:
+        conn.close()
+    assert ev.wait(5) and got[0].text == "in chunks"
+
+
+def test_an_idle_stream_gets_ping_comments(fe):
+    s = Stream(fe)
+    try:
+        lines = s.lines(lambda seen: ": ping" in seen)
+        assert lines[0] == "retry: 3000"
+    finally:
+        s.close()
+    assert call(fe, "GET", "/api/events")[0] == 401
+
+
+def test_stop_closes_open_streams(tmp_path):
+    f = make(tmp_path)
+    f.start()
+    s = Stream(f)
+    s.lines(lambda seen: "retry: 3000" in seen)
+    f.stop()
+    assert s.resp.fp.readline() in (b"", b"\n")
+    s.close()
+
+
+def test_shadow_mode_hands_web_input_to_the_composite(tmp_path):
+    f = make(tmp_path)
+    handed: list = []
+
+    def composite(ev):
+        handed.append(ev)
+        if isinstance(ev, InboundMessage):
+            ref = MessageRef(ev.channel, str(9000 + len(handed)),
+                             ev.thread_key or "stream:7:topic:new", 5.0)
+            if ev.files:
+                assert Path(ev.raw["path"]).read_bytes() == b"bytes"
+                f.mirror_file(ref, FileRef(ev.files[0].name, id="/user_uploads/9.txt"),
+                              "owner", text=ev.text)
+            else:
+                f.mirror_post(ref, ev.text, "owner")
+            return ref
+        return None
+    f.inbound = composite
+    got, _ev = catcher(f)
+    f.start()
+    try:
+        f.mirror_channel("stream:7", "ea", "main")
+        status, _h, body = owner(f, "POST", "/api/channels/stream%3A7/messages", {"text": "hi"})
+        row = json.loads(body)
+        assert status == 200 and row["id"] == "9001" and row["author"] == "owner"
+        assert isinstance(handed[0], InboundMessage) and handed[0].msg_id == ""
+        assert handed[0].user_id == "owner" and handed[0].raw == {"source": "web"}
+        body, ctype = multipart({"file": ("n.txt", "text/plain", b"bytes")})
+        status, _h, out = owner(f, "POST", "/api/channels/stream%3A7/files", raw=body,
+                                headers={"Content-Type": ctype})
+        row = json.loads(out)
+        assert status == 200 and row["file"]["id"] == "stream:7:9002"
+        assert row["file"]["url"] == "/chat/api/files/stream%3A7%3A9002"
+        # the composite kept no bytes; the frontend stored them under the row
+        assert owner(f, "GET", "/api/files/stream%3A7%3A9002")[2] == b"bytes"
+        assert not list((tmp_path / "priv" / "webchat-files" / "incoming").iterdir())
+        cref = MessageRef("stream:7", "9100", "stream:7:topic:lock", 6.0)
+        f.mirror_card(cref, card())
+        assert owner(f, "POST", "/api/cards/stream%3A7/9100/actions",
+                     {"action_id": "approve_send"})[0] == 200
+        click = handed[-1]
+        assert isinstance(click, ActionEvent) and click.card.id == "9100"
+        assert click.value == {"token": "t-1"}
+        assert got == []                   # nothing went to the registry
+        assert f.store.channel("main") is None
+    finally:
+        f.stop()
+
+
+# wiring
+
+
+def _ea_dir(tmp_path, chat):
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "ea-config.json").write_text(json.dumps({"chat": chat}))
+    return tmp_path
+
+
+def test_load_frontend_builds_the_web_frontend(tmp_path):
+    assert "web" in chat_pkg.FRONTENDS
+    ea = _ea_dir(tmp_path, {"frontend": "web", "web": {"port": 0, "base_path": "/c"}})
+    f = load_frontend(ea_dir=ea, env={})
+    f.poll_s = 0.02
+    assert isinstance(f, WebFrontend) and f.name == "web"
+    assert f.store_path == tmp_path / "state" / "webchat.sqlite"
+    assert f.base_path == "/c" and f.bind == "127.0.0.1"
+    assert prompt_strings_for_config(ea)["confirm_location"] == \
+        "the Send button is on the card in your DM thread"
+    f.start()
+    try:
+        assert f.port and f.ping()
+        assert call(f, "GET", "/api/me")[0] == 401
+    finally:
+        f.stop()
+
+
+def test_load_frontend_takes_the_store_path_key(tmp_path):
+    ea = _ea_dir(tmp_path, {"frontend": "web", "web": {"store_path": str(tmp_path / "x.db")}})
+    assert load_frontend(ea_dir=ea, env={}).store_path == tmp_path / "x.db"
+
+
+def test_an_owner_process_keeps_the_store_in_the_private_dir(tmp_path, monkeypatch):
+    monkeypatch.setattr(chat_pkg.owner_trust, "is_owner_process", lambda: True)
+    monkeypatch.setattr(chat_pkg, "private_dir", lambda: tmp_path / "priv")
+    assert chat_pkg._web_store_path({}, None) == tmp_path / "priv" / "webchat.sqlite"
+    assert chat_pkg._web_store_path({}, tmp_path / "ea") == \
+        tmp_path / "ea" / "state" / "webchat.sqlite"
+
+
+def test_get_chat_defaults_the_web_block(tmp_path):
+    p = tmp_path / "ea-config.json"
+    p.write_text(json.dumps({"chat": {"frontend": "web", "web": {"port": 9000}}}))
+    web = ea_config.get_chat(p)["web"]
+    assert web["port"] == 9000 and web["bind"] == "127.0.0.1" and web["base_path"] == "/chat"
+    assert set(web) == {"bind", "port", "base_path", "public_url", "tailscale_login",
+                        "pair_token_file", "store_path"}
+    assert ea_config.get_chat(tmp_path / "missing.json")["web"]["port"] == 8470
