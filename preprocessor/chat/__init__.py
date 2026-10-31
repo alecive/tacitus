@@ -5,11 +5,11 @@ loading, secrets, and the writer for downloaded files. Its submodules
 (chat.base, chat.slack_frontend, ...) are the botcore modules themselves.
 
 `load_frontend()` builds the frontend named by `chat.frontend` in
-ea-config.json ("slack" by default). The platform modules are imported
-only when chosen, so a Slack deployment never imports the Zulip client
-and the reverse. `prompt_strings_for_config()` gives the platform's
-prompt wording without constructing a client, for code that assembles
-prompts outside the bot.
+ea-config.json ("slack" by default; "web" is the bot's own web chat,
+docs/webchat.md). The platform modules are imported only when chosen, so
+a Slack deployment never imports the Zulip client and the reverse.
+`prompt_strings_for_config()` gives the platform's prompt wording without
+constructing a client, for code that assembles prompts outside the bot.
 """
 from __future__ import annotations
 
@@ -100,7 +100,7 @@ __all__ = [
     "load_frontend", "prompt_strings_for_config", "private_dir",
 ]
 
-FRONTENDS = ("slack", "zulip", "memory")
+FRONTENDS = ("slack", "zulip", "memory", "web")
 
 
 def private_dir() -> Path:
@@ -154,7 +154,25 @@ def load_frontend(*, for_cli: bool = False, ea_dir: str | Path | None = None,
     if name == "memory":
         from .memory_frontend import MemoryFrontend
         return MemoryFrontend.from_config(cfg.get("memory", {}))
+    if name == "web":
+        mod = _platform_module("web")
+        web = cfg.get("web") or {}
+        return mod.WebFrontend.from_config(web, store_path=_web_store_path(web, ea_dir))
     raise ChatError(f"unknown chat frontend {name!r}; expected one of {', '.join(FRONTENDS)}")
+
+
+WEB_STORE_FILE = "webchat.sqlite"
+
+
+def _web_store_path(web: Mapping, ea_dir: str | Path | None) -> Path:
+    """The web chat's store: the block's `store_path`, else
+    `<private_dir>/webchat.sqlite` for an owner process, else
+    `<ea_dir>/state/webchat.sqlite`."""
+    if web.get("store_path"):
+        return Path(str(web["store_path"]))
+    if ea_dir is None and owner_trust.is_owner_process():
+        return private_dir() / WEB_STORE_FILE
+    return Path(ea_dir or owner_trust.ea_dir()) / "state" / WEB_STORE_FILE
 
 
 def _trusted_slack_owner(env: Mapping[str, str], cfg: dict, for_cli: bool) -> Mapping[str, str]:
@@ -204,4 +222,6 @@ def prompt_strings_for_config(ea_dir: str | Path | None = None) -> dict[str, str
         except ChatError:
             from .memory_frontend import SLACK_LIKE_PROMPT_STRINGS
             return dict(SLACK_LIKE_PROMPT_STRINGS)
+    if name == "web":
+        return dict(_platform_module("web").WebFrontend.PROMPT_STRINGS)
     raise ChatError(f"unknown chat frontend {name!r}; expected one of {', '.join(FRONTENDS)}")

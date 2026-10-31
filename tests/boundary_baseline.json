@@ -25,6 +25,14 @@
       "lines": [
         "adopt_file(entry, 0o640)"
       ]
+    },
+    {
+      "file": "botcore/botcore/chat/web_frontend.py",
+      "rule": "py-sqlite",
+      "reason": "Opens the path chat.load_frontend names: <private_dir>/webchat.sqlite in an owner process (or its own chat.json's store_path), <ea_dir>/state/ only outside one.",
+      "lines": [
+        "self._conn = sqlite3.connect(str(self.path), check_same_thread=False, timeout=10)"
+      ]
     }
   ]
 }
