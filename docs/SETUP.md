@@ -12,6 +12,7 @@ name.
 - [Choose a profile](#choose-a-profile)
 - [Microsoft Graph app registration](#microsoft-graph-app-registration)
 - [Google OAuth app](#google-oauth-app)
+- [Web chat (shadow mode today)](#web-chat-shadow-mode-today)
 - [Zulip server](#zulip-server)
 - [Slack](#slack)
 - [The service account](#the-service-account)
@@ -295,6 +296,43 @@ block) so the solver can never offer those slots away. Do not create
 intended way to opt a commitment out. To change any rule later, edit the
 calendar, never a config file (`docs/SCHEDULING.md`,
 `skills/scheduling-rules.md`).
+
+## Web chat (shadow mode today)
+
+Tacitus has its own chat interface, served by the bot process itself:
+a phone-first web app and a JSON API on a loopback port, no Zulip, no
+Docker. The contract and the API are in [docs/webchat.md](webchat.md);
+the off-tailnet relay, designed and not yet wired, is in
+[docs/webchat-relay.md](webchat-relay.md). Today it runs in **shadow
+mode** beside Zulip: the bot posts to both, and you can read and answer
+in either; the web side never blocks the Zulip side.
+
+1. Add a `web` block to the chat block the bot reads
+   (`~/.ea-private/chat.json` after hardening, else `ea-config.json`):
+
+   ```json
+   "shadow": "web",
+   "web": {
+     "bind": "127.0.0.1",
+     "port": 8470,
+     "base_path": "/chat",
+     "public_url": "https://<host>.<tailnet>.ts.net/chat",
+     "tailscale_login": "<your Tailscale login, as `tailscale whois` reports it>"
+   }
+   ```
+
+   `"frontend": "web"` with no `shadow` runs the web chat alone.
+2. Publish the port on your tailnet, as the owner:
+   `tailscale serve --bg --set-path /chat http://127.0.0.1:8470/chat`.
+   Tailscale adds your login as a request header, which is the sign-in.
+3. `sudo systemctl restart ea-chat-bot`, then open the `public_url` on
+   your phone and add it to the home screen.
+4. Without Tailscale on the phone, pairing by token works: write a
+   token to `<private dir>/webchat-pair.token` (the `pair_token_file`
+   key moves it) and enter it once in the app.
+
+The store is `<private dir>/webchat.sqlite`; files you upload from the
+app sit beside it.
 
 ## Zulip server
 
