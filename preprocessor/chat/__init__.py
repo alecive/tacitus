@@ -128,7 +128,6 @@ def _platform_module(name: str):
 # Front ends that can shadow the configured one (chat.shadow): the bot
 # runs the configured one wrapped in a ShadowFrontend that mirrors it.
 SHADOWS = ("web",)
-WEB_STORE_NAME = "webchat.sqlite"
 
 
 def load_frontend(*, for_cli: bool = False, ea_dir: str | Path | None = None,
@@ -177,16 +176,9 @@ def _web_class():
 
 
 def _with_web_store(cfg: dict, ea_dir: str | Path | None) -> dict:
-    """The chat block with `web.store_path` set when the block leaves it
-    empty: `<private_dir>/webchat.sqlite` for the owner's bot,
-    `<ea_dir>/state/webchat.sqlite` for any other process."""
+    """The chat block with `web.store_path` filled by `_web_store_path`."""
     web = dict(cfg["web"]) if isinstance(cfg.get("web"), dict) else {}
-    if not web.get("store_path"):
-        if ea_dir is None and owner_trust.is_owner_process():
-            web["store_path"] = str(private_dir() / WEB_STORE_NAME)
-        else:
-            web["store_path"] = str(Path(ea_dir or owner_trust.ea_dir()) / "state"
-                                    / WEB_STORE_NAME)
+    web["store_path"] = str(_web_store_path(web, ea_dir))
     return {**cfg, "web": web}
 
 
