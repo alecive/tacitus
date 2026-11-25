@@ -10584,6 +10584,41 @@ EVENT_SWEEP_IDLE_AGE_S = 120
 EVENT_SWEEP_BUSY_AGE_S = ROOM_TIMEOUT_SECONDS + 300
 
 
+SCHEDULED_RUN_MAX_S = 3600  # a run marker older than this was left by a killed run
+
+
+def _scheduled_run_active(now: float | None = None) -> bool:
+    """True while run-agent.sh runs a scheduled lane (its marker in the
+    private dir, younger than SCHEDULED_RUN_MAX_S)."""
+    now = time.time() if now is None else now
+    try:
+        marks = list(_chat.private_dir().glob("scheduled-run.*"))
+    except OSError:
+        return False
+    for m in marks:
+        try:
+            if now - m.stat().st_mtime < SCHEDULED_RUN_MAX_S:
+                return True
+        except OSError:
+            continue
+    return False
+
+
+def _scheduled_post_for(mtime: float) -> dict | None:
+    """{channel, thread_ts} of the EA-channel post a scheduled run made
+    after staging a card at `mtime` (chat_notify's record, within an hour),
+    so the card goes into that post's thread, beside the briefing that
+    names it, not at the channel's top level. None otherwise."""
+    try:
+        rec = json.loads((_chat.private_dir() / "last-ea-post.json").read_text())
+        at = float(rec.get("at") or 0)
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+    if mtime and rec.get("ts") and 0 <= at - mtime < SCHEDULED_RUN_MAX_S:
+        return {"channel": rec.get("channel") or CHANNEL_ID, "thread_ts": rec["ts"]}
+    return None
+
+
 def _pending_events_poller():
     """Sweep pending-event*.json and pending-schedule-send.json that no
     dispatch claimed.
@@ -10611,6 +10646,9 @@ def _pending_events_poller():
              + PUBLISH_ACTION_FILES + GOOGLE_SIGNIN_ACTION_FILES + BROWSER_ACTION_FILES)
     while True:
         try:
+            if _scheduled_run_active():
+                time.sleep(60)  # its cards wait for the post it makes at its end
+                continue
             busy = _dispatches_active() > 0
             min_age = EVENT_SWEEP_BUSY_AGE_S if busy else EVENT_SWEEP_IDLE_AGE_S
             actions = _claim_event_actions(min_age_s=min_age,
@@ -10619,6 +10657,7 @@ def _pending_events_poller():
                                                  files=swept)
             for action in actions:
                 owner = _dispatch_that_could_have_written(
+                    action.get("_mtime") or 0) or _scheduled_post_for(
                     action.get("_mtime") or 0)
                 channel = (owner or {}).get("channel") or CHANNEL_ID
                 thread_ts = (owner or {}).get("thread_ts")

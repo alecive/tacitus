@@ -149,6 +149,14 @@ if [[ "$AGENT" == "morning-briefing" && "$NOW" != true ]]; then
     fi
 fi
 
+# While this run goes, the bot's event sweeper leaves the cards no
+# conversation owns where they are: they are this run's, and go into the
+# thread of the post it makes at its end (chat_notify records that post).
+# Removed on exit; the sweeper ignores one older than an hour.
+RUN_MARK="${EA_PRIVATE_DIR:-$HOME/.ea-private}/scheduled-run.${AGENT}.$$"
+: > "$RUN_MARK" 2>/dev/null || true
+trap 'rm -f "$RUN_MARK"' EXIT
+
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 LOG_FILE="$LOG_DIR/${AGENT}-${TIMESTAMP}.log"
 

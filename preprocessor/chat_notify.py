@@ -262,6 +262,27 @@ def _send_slack(channel_key: str, parts: list[str], blocks: Optional[list]) -> b
     return all_ok
 
 
+LAST_EA_POST = "last-ea-post.json"
+
+
+def _note_ea_post(ref) -> None:
+    """Record where this EA-channel post went ({channel, ts, at}, owner
+    private): the bot's event sweeper threads the cards a scheduled run
+    staged under the post that run made, not at the channel's top level."""
+    try:
+        try:
+            import owner_trust
+        except ModuleNotFoundError:  # imported as preprocessor.<mod>
+            from preprocessor import owner_trust
+        import time
+        path = owner_trust.private_dir() / LAST_EA_POST
+        tmp = path.with_suffix(".tmp")
+        tmp.write_text(json.dumps({"channel": ref.channel, "ts": ref.id, "at": time.time()}))
+        os.replace(tmp, path)
+    except Exception as e:
+        print(f"WARNING: the post's place was not recorded ({e}); its cards post at the top level")
+
+
 def _send_through_shadow(parts: list[str]) -> bool | None:
     """Beside a web chat shadow, the parts through the composite into the
     EA channel: the same posts on Slack, made with the bot's token, each
@@ -276,10 +297,11 @@ def _send_through_shadow(parts: list[str]) -> bool | None:
         channel = getattr(fe, "main_channel", "")
         if getattr(fe, "shadow", None) is None or not channel:
             return None
-        fe.post(channel, parts[0])
+        ref = fe.post(channel, parts[0])
     except Exception as e:
         print(f"WARNING: no web chat copy of this post ({e}); posting to Slack alone")
         return None
+    _note_ea_post(ref)
     ok = True
     for part in parts[1:]:
         try:
